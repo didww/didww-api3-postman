@@ -1,0 +1,1086 @@
+{
+	"info": {
+		"_postman_id": "6e754e30-7626-4a02-8778-8dfbbfcea6bf",
+		"name": "Scenario: Buying a random number within a specific DID group",
+		"description": "To do this you need to select a DID Group by country (UK) and city name (London) as well as by DID Group Type (local). You also need to select a Stock keeping unit (sku_id) which indicates DID number price and one of its available capacity options (usually DID price + 0 channels/2 channels).\n\nThis is how this functionality looks in DIDWW user panel:\n\n![](https://user-images.githubusercontent.com/120269/143892525-f39554cc-8fa2-4aad-a9f3-6dc4b866e551.png)\n\n> ### Attention\n> \n> Requests should be run one-by-one on real environment for real values usage\n\n#### Environment variables\n\n| Name | Description |\n| --- | --- |\n| `baseUrl` | API host url |\n| `apiKey` | Your DIDWW API key |\n\n#### Collection variables\n\n| Name | Description |\n| --- | --- |\n| `did_group_type.id` | Local group type id |\n| `country.id` | GB country id |\n| `city.id` | London id |\n| `stock_keeping_unit.id` | ID of Stock keeping unit with 2 channels included |",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15857673"
+	},
+	"item": [
+		{
+			"name": "Get DID Group Types",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"DID group type exist\", function () {",
+							"    const response = pm.response.json();",
+							"",
+							"    pm.expect(response.data).to.be.an('array')",
+							"    pm.expect(response.data.length).to.be.greaterThan(0)",
+							"    ",
+							"    const didGroup = response.data[0]",
+							"    ",
+							"    pm.expect(didGroup).is.not.undefined",
+							"    pm.expect(didGroup.attributes.name).to.eq(\"Local\")",
+							"",
+							"    // set collection variable value if test successful",
+							"    pm.collectionVariables.set('did_group_type.id', didGroup.id);",
+							"",
+							"    // proceed next request in Collection Runner if test successful",
+							"    postman.setNextRequest(\"Get Countries\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.api+json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/vnd.api+json",
+						"type": "text"
+					},
+					{
+						"key": "Api-Key",
+						"value": "{{apiKey}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{host}}/v3/did_group_types?filter[name]=Local",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v3",
+						"did_group_types"
+					],
+					"query": [
+						{
+							"key": "filter[name]",
+							"value": "Local",
+							"description": "`string` - Filters by Group Type name field.\n\n* **Allow blank** - *No*. \n* **Allow array** - *Yes*. "
+						}
+					]
+				},
+				"description": "Returns a list of DID Group Types. A DID Group Type defines a broad category of DID services supported by DIDWW (for example, mobile, local and toll-free)."
+			},
+			"response": [
+				{
+					"name": "200 OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							},
+							{
+								"key": "Api-Key",
+								"value": "yourDidwwApiKey",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://sandbox-api.didww.com/v3/did_group_types",
+							"protocol": "https",
+							"host": [
+								"sandbox-api",
+								"didww",
+								"com"
+							],
+							"path": [
+								"v3",
+								"did_group_types"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 08 Jan 2022 17:51:59 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/vnd.api+json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-Download-Options",
+							"value": "noopen"
+						},
+						{
+							"key": "X-Permitted-Cross-Domain-Policies",
+							"value": "none"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "strict-origin-when-cross-origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"b8696fcf72b540880c4e4746fe7930f5\""
+						},
+						{
+							"key": "Cache-Control",
+							"value": "max-age=0, private, must-revalidate"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "8c50a10b-5cae-4e25-9f3c-752d24add500"
+						},
+						{
+							"key": "X-Runtime",
+							"value": "0.093925"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "https://doc.in.didww.com"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Origin, X-Requested-With, Content-Type, Accept, auth-key, x-api-key, api-key, x-api-token, x-admin-session-token, Cache-Control"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "GET, POST, DELETE, PUT, PATCH, OPTIONS"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": [\n    {\n        \"id\": \"5827aaef-b3e7-4282-ab9f-e9c17a3e9b93\",\n        \"type\": \"did_group_types\",\n        \"attributes\": {\n            \"name\": \"Local\"\n           }\n     },\n     {\n         \"id\": \"842b298a-9243-4989-a455-4bceac0c7e0e\",\n         \"type\": \"did_group_types\",\n         \"attributes\": {\n             \"name\": \"National\"\n         }\n     },\n     {\n         \"id\": \"96462614-64cf-4898-a434-4e03f8d7f6ab\",\n         \"type\": \"did_group_types\",\n         \"attributes\": {\n             \"name\": \"Toll-free\"\n         }\n     },\n     {\n         \"id\": \"bf31407e-d583-4a1b-b8ee-a5f0d77d865a\",\n         \"type\": \"did_group_types\",\n         \"attributes\": {\n             \"name\": \"Mobile\"\n         }\n     },\n     {\n         \"id\": \"5ad07e30-11f3-4ff9-ba87-fd06575c8f06\",\n         \"type\": \"did_group_types\",\n         \"attributes\": {\n             \"name\": \"Shared Cost\"\n         }\n     },\n     {\n         \"id\": \"e961316f-7f16-4d29-b619-2fd7c421c738\",\n         \"type\": \"did_group_types\",\n         \"attributes\": {\n             \"name\": \"Global\"\n         }\n     }\n     ],\n     \"meta\": {\n         \"total_records\": 6\n         },\n         \"links\": {\n             \"first\": \"https://api.didww.comv3/did_group_types?page%5Bnumber%5D=1&page%5Bsize%5D=50\",\n             \"last\": \"https://api.didww.com/v3/did_group_types?page%5Bnumber%5D=1&page%5Bsize%5D=50\"\n         }\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Countries",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Country exist\", function () {",
+							"    const response = pm.response.json();",
+							"",
+							"    pm.expect(response.data).to.be.an('array')",
+							"    pm.expect(response.data.length).to.be.greaterThan(0)",
+							"",
+							"    const country = response.data[0]",
+							"    ",
+							"    pm.expect(country).is.not.undefined",
+							"    pm.expect(country.attributes.iso).to.eq(\"GB\")",
+							"",
+							"    // set collection variable value if test successful",
+							"    pm.collectionVariables.set('country.id', country.id);",
+							"",
+							"    // proceed next request in Collection Runner if test successful",
+							"    postman.setNextRequest(\"Get Cities\");",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.api+json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/vnd.api+json",
+						"type": "text"
+					},
+					{
+						"key": "Api-Key",
+						"value": "{{apiKey}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{host}}/v3/countries?filter[iso]=GB",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v3",
+						"countries"
+					],
+					"query": [
+						{
+							"key": "filter[iso]",
+							"value": "GB",
+							"description": "`string` - Filters by country iso field. \n\n* **Allow blank** - *Yes*. \n* **Allow array** - *Yes*."
+						}
+					]
+				},
+				"description": "Returns a list of countries. [Pagination](#pagination) is disabled."
+			},
+			"response": [
+				{
+					"name": "200 Ok",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							},
+							{
+								"key": "Api-Key",
+								"value": "yourDidwwApiKey",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://sandbox-api.didww.com/v3/countries",
+							"protocol": "https",
+							"host": [
+								"sandbox-api",
+								"didww",
+								"com"
+							],
+							"path": [
+								"v3",
+								"countries"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Jan 2022 18:20:12 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/vnd.api+json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-Download-Options",
+							"value": "noopen"
+						},
+						{
+							"key": "X-Permitted-Cross-Domain-Policies",
+							"value": "none"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "strict-origin-when-cross-origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"b719acb528d183d36780a26baca217d2\""
+						},
+						{
+							"key": "Cache-Control",
+							"value": "max-age=0, private, must-revalidate"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "e4f142e4-64db-449f-ad53-d5271e66fe7a"
+						},
+						{
+							"key": "X-Runtime",
+							"value": "0.189214"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "https://doc.in.didww.com"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Origin, X-Requested-With, Content-Type, Accept, auth-key, x-api-key, api-key, x-api-token, x-admin-session-token, Cache-Control"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "GET, POST, DELETE, PUT, PATCH, OPTIONS"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": [\n    {\n        \"id\": \"9c56fe0f-eff0-4742-85f6-24868959344a\",\n        \"type\": \"countries\",\n        \"attributes\": {\n            \"name\": \"United Kingdom\",\n            \"prefix\": \"44\",\n            \"iso\": \"GB\"\n           }\n     },\n     {\n         \"id\": \"5d3d7640-16d2-4dc0-9aca-408789fbefc6\",\n         \"type\": \"countries\",\n         \"attributes\": {\n             \"name\": \"United States\",\n             \"prefix\": \"1\",\n             \"iso\": \"US\"\n         }\n     }\n     ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Cities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"City exist\", function () {",
+							"    const response = pm.response.json();",
+							"",
+							"    pm.expect(response.data).to.be.an('array')",
+							"    pm.expect(response.data.length).to.be.greaterThan(0)",
+							"    ",
+							"    const city = response.data[0]",
+							"    ",
+							"    pm.expect(city).is.not.undefined",
+							"    pm.expect(city.attributes.name).to.eq(\"London\")",
+							"",
+							"    // set collection variable value if test successful",
+							"    pm.collectionVariables.set('city.id', city.id);",
+							"",
+							"    // proceed next request in Collection Runner if test successful",
+							"    postman.setNextRequest(\"Get DID Groups\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.api+json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/vnd.api+json",
+						"type": "text"
+					},
+					{
+						"key": "Api-Key",
+						"value": "{{apiKey}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{host}}/v3/cities?filter[name]=London&filter[country.id]={{country.id}}",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v3",
+						"cities"
+					],
+					"query": [
+						{
+							"key": "filter[name]",
+							"value": "London",
+							"description": "`string` - Filters by city name field. \n\n* **Allow blank** - *Yes*. \n* **Allow array** - *Yes*. "
+						},
+						{
+							"key": "filter[country.id]",
+							"value": "{{country.id}}",
+							"description": "`integer` - A country.id field. \n\n* **Allow blank** - *Yes*. \n* **Allow array** - *Yes*. "
+						}
+					]
+				},
+				"description": "Returns a list of cities. Maximum [page size](#pagination) is 1000. Default page size is 1000."
+			},
+			"response": [
+				{
+					"name": "200 Ok (Filter by name or country.id)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Api-Key",
+								"value": "yourDidwwApiKey",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://sandbox-api.didww.com/v3/cities?filter[name]=Springfield&filter[country.id]=3b11ad09-dc7e-451a-9d32-ae9c1604aaa8",
+							"protocol": "https",
+							"host": [
+								"sandbox-api",
+								"didww",
+								"com"
+							],
+							"path": [
+								"v3",
+								"cities"
+							],
+							"query": [
+								{
+									"key": "filter[name]",
+									"value": "Springfield"
+								},
+								{
+									"key": "filter[country.id]",
+									"value": "3b11ad09-dc7e-451a-9d32-ae9c1604aaa8"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 03 Jan 2022 21:27:40 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/vnd.api+json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-Download-Options",
+							"value": "noopen"
+						},
+						{
+							"key": "X-Permitted-Cross-Domain-Policies",
+							"value": "none"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "strict-origin-when-cross-origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "0ae0bdc0-e698-4bfd-8477-0055b9f149bc"
+						},
+						{
+							"key": "X-Runtime",
+							"value": "0.084163"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "https://doc.in.didww.com"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Origin, X-Requested-With, Content-Type, Accept, auth-key, x-api-key, api-key, x-api-token, x-admin-session-token, Cache-Control"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "GET, POST, DELETE, PUT, PATCH, OPTIONS"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						}
+					],
+					"cookie": [],
+					"body": "{\n\t\"data\": [{\n\t\t\"id\": \"79c1ee51-a2dd-4fb2-8c08-ab9120909118\",\n\t\t\"type\": \"cities\",\n\t\t\"attributes\": {\n\t\t\t\"name\": \"Springfield\"\n\t\t},\n\t\t\"relationships\": {\n\t\t\t\"country\": {\n\t\t\t\t\"links\": {\n\t\t\t\t\t\"self\": \"https://api.didww.com/v3/cities/79c1ee51-a2dd-4fb2-8c08-ab9120909118/relationships/country\",\n\t\t\t\t\t\"related\": \"https://api.didww.com/v3/cities/79c1ee51-a2dd-4fb2-8c08-ab9120909118/country\"\n\t\t\t\t}\n\t\t\t},\n\t\t\t\"region\": {\n\t\t\t\t\"links\": {\n\t\t\t\t\t\"self\": \"https://api.didww.com/v3/cities/79c1ee51-a2dd-4fb2-8c08-ab9120909118/relationships/region\",\n\t\t\t\t\t\"related\": \"https://api.didww.com/v3/cities/79c1ee51-a2dd-4fb2-8c08-ab9120909118/region\"\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}]\n}"
+				}
+			]
+		},
+		{
+			"name": "Get DID Groups",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Stock keeping init exist\", function () {",
+							"    let response = pm.response.json();",
+							"",
+							"    pm.expect(response.data).to.be.an('array')",
+							"    pm.expect(response.data.length).to.be.greaterThan(0)",
+							"",
+							"    // select a group Stock keeping unit with 2 channels included ",
+							"    let stock_keeping_unit = response.included.find( (sku) => {",
+							"        return sku.attributes.channels_included_count > 0",
+							"    });",
+							"",
+							"    pm.expect(stock_keeping_unit).is.not.undefined",
+							"",
+							"    // set collection variable value if test successful",
+							"    pm.collectionVariables.set('stock_keeping_unit.id', stock_keeping_unit.id);",
+							"",
+							"    // proceed next request in Collection Runner if test successful",
+							"    postman.setNextRequest(\"Create DID order\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.api+json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/vnd.api+json",
+						"type": "text"
+					},
+					{
+						"key": "Api-Key",
+						"value": "{{apiKey}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{host}}/v3/did_groups?include=stock_keeping_units&filter[is_available]=true&filter[country.id]={{country.id}}&filter[city.id]={{city.id}}&filter[did_group_type.id]={{did_group_type.id}}",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v3",
+						"did_groups"
+					],
+					"query": [
+						{
+							"key": "include",
+							"value": "stock_keeping_units",
+							"description": "Comma-separated values of include parameter.\nThe response will include a top-level object `relationships` with associated data under the appropriate resource key.\nDetails in [Inclusion of Related Resources](#inclusion-of-related-resources) Article.\n\n**Allowed values:**\n\ncountry - [Country Object](#country-object)\n***\nregion - [Region Object](#region-object)\n***\ncity - [City Object](#city-object)\n***\ndid_group_type - [DID Group Type Object](#did-group-type-object)\n***\nstock_keeping_units - A list of [Stock Keeping Unit Object](#stock-keeping-unit-object)\n***"
+						},
+						{
+							"key": "filter[is_available]",
+							"value": "true",
+							"description": "`boolean` - Filters by the is_available field. \n\n* **Allow blank** - *No*. \n* **Allow array** - *No*. "
+						},
+						{
+							"key": "filter[country.id]",
+							"value": "{{country.id}}",
+							"description": "`string` - Filters by the country.id field.\n\n* **Allow blank** - *Yes*. \n* **Allow array** - *Yes*."
+						},
+						{
+							"key": "filter[city.id]",
+							"value": "{{city.id}}",
+							"description": "`string` - Filters by the city.id field. \n\n* **Allow blank** - *Yes*. \n* **Allow array** - *Yes*."
+						},
+						{
+							"key": "filter[did_group_type.id]",
+							"value": "{{did_group_type.id}}",
+							"description": "`string` - Filters by the did_group_type.id field. \n\n* **Allow blank** - *Yes*. \n* **Allow array** - *Yes*. "
+						}
+					]
+				},
+				"description": "Returns a list of DID Groups, which is essentially a list of the current DIDWW coverage. DID Groups are phone numbers that share a common city or area code."
+			},
+			"response": [
+				{
+					"name": "200 OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							},
+							{
+								"key": "Api-Key",
+								"value": "{{apiKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v3/did_groups?include=stock_keeping_units&filter[city.id]=e696dec7-9c65-4e99-aab7-55a1f98154f0&filter[prefix]=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v3",
+								"did_groups"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "stock_keeping_units"
+								},
+								{
+									"key": "filter[city.id]",
+									"value": "e696dec7-9c65-4e99-aab7-55a1f98154f0"
+								},
+								{
+									"key": "filter[prefix]",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 08 Jan 2022 18:35:10 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/vnd.api+json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-Download-Options",
+							"value": "noopen"
+						},
+						{
+							"key": "X-Permitted-Cross-Domain-Policies",
+							"value": "none"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "strict-origin-when-cross-origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"35d592e9184a7aa897dc46b9a23a6665\""
+						},
+						{
+							"key": "Cache-Control",
+							"value": "max-age=0, private, must-revalidate"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "9bef6991-0c00-4ced-92a2-fd8ca1a49b21"
+						},
+						{
+							"key": "X-Runtime",
+							"value": "0.131263"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "https://doc.in.didww.com"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Origin, X-Requested-With, Content-Type, Accept, auth-key, x-api-key, api-key, x-api-token, x-admin-session-token, Cache-Control"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "GET, POST, DELETE, PUT, PATCH, OPTIONS"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": [\n    {\n        \"id\": \"fc271bcc-1f9c-4c19-8174-28b7c55a208a\",\n        \"type\": \"did_groups\",\n        \"attributes\": {\n            \"prefix\": \"20\",\n            \"local_prefix\": \"\",\n            \"features\": [\n            \"voice\",\n            \"voice_out\",\n            \"t38\"\n            ],\n            \"is_metered\": false,\n            \"area_name\": \"London\",\n            \"allow_additional_channels\": true\n        },\n        \"relationships\": {\n            \"country\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/did_groups/fc271bcc-1f9c-4c19-8174-28b7c55a208a/relationships/country\",\n                    \"related\": \"https://api.didww.com/v3/did_groups/fc271bcc-1f9c-4c19-8174-28b7c55a208a/country\"\n                }\n            },\n            \"city\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/did_groups/fc271bcc-1f9c-4c19-8174-28b7c55a208a/relationships/city\",\n                    \"related\": \"https://api.didww.com/v3/did_groups/fc271bcc-1f9c-4c19-8174-28b7c55a208a/city\"\n                }\n            },\n            \"did_group_type\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/did_groups/fc271bcc-1f9c-4c19-8174-28b7c55a208a/relationships/did_group_type\",\n                    \"related\": \"https://api.didww.com/v3/did_groups/fc271bcc-1f9c-4c19-8174-28b7c55a208a/did_group_type\"\n                }\n            },\n            \"region\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/did_groups/fc271bcc-1f9c-4c19-8174-28b7c55a208a/relationships/region\",\n                    \"related\": \"https://api.didww.com/v3/did_groups/fc271bcc-1f9c-4c19-8174-28b7c55a208a/region\"\n                }\n            },\n            \"stock_keeping_units\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/did_groups/fc271bcc-1f9c-4c19-8174-28b7c55a208a/relationships/stock_keeping_units\",\n            \"related\": \"https://api.didww.com/v3/did_groups/fc271bcc-1f9c-4c19-8174-28b7c55a208a/stock_keeping_units\"\n            },\n            \"data\": [\n            {\n                \"type\": \"stock_keeping_units\",\n                \"id\": \"0ba87a94-7143-48cb-a0f6-d50a6a0c8cfa\"\n            },\n            {\n                \"type\": \"stock_keeping_units\",\n                \"id\": \"1a86de53-3131-491f-9e4b-3392da45d441\"\n            }\n            ]\n            }\n        },\n        \"meta\": {\n            \"available_dids_enabled\": true,\n            \"needs_registration\": false,\n            \"is_available\": true,\n            \"total_count\": 932,\n            \"restrictions\": null\n        }\n    }\n    ],\n    \"included\": [\n    {\n        \"id\": \"0ba87a94-7143-48cb-a0f6-d50a6a0c8cfa\",\n        \"type\": \"stock_keeping_units\",\n        \"attributes\": {\n            \"setup_price\": \"0.0\",\n            \"monthly_price\": \"0.3\",\n            \"channels_included_count\": 0\n        }\n    },\n    {\n        \"id\": \"1a86de53-3131-491f-9e4b-3392da45d441\",\n        \"type\": \"stock_keeping_units\",\n        \"attributes\": {\n            \"setup_price\": \"0.0\",\n            \"monthly_price\": \"0.8\",\n            \"channels_included_count\": 2\n        }\n    }\n    ],\n    \"meta\": {\n        \"total_records\": 1\n    },\n    \"links\": {\n        \"first\": \"https://api.didww.com/v3/did_groups?filter%5Bcity.id%5D=e696dec7-9c65-4e99-aab7-55a1f98154f0&filter%5Bprefix%5D=20&include=stock_keeping_units&page%5Bnumber%5D=1&page%5Bsize%5D=50\",\n        \"last\": \"https://api.didww.com/v3/did_groups?filter%5Bcity.id%5D=e696dec7-9c65-4e99-aab7-55a1f98154f0&filter%5Bprefix%5D=20&include=stock_keeping_units&page%5Bnumber%5D=1&page%5Bsize%5D=50\""
+				}
+			]
+		},
+		{
+			"name": "Create DID order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"DID Order created\", ()=>{",
+							"    let response = pm.response.json();",
+							"",
+							"    pm.expect(response.data.type).to.eq('orders')",
+							"    pm.expect(response.data.attributes.status).to.eq('Pending')",
+							"    pm.expect(response.data.attributes.items).to.be.an('array')",
+							"    pm.expect(response.data.attributes.items[0].type).to.eq('did_order_items')",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.api+json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/vnd.api+json",
+						"type": "text"
+					},
+					{
+						"key": "Api-Key",
+						"value": "{{apiKey}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": {\n        \"type\": \"orders\",\n        \"attributes\": {\n            \"allow_back_ordering\": true,\n            \"items\": [\n                {\n                    \"type\": \"did_order_items\",\n                    \"attributes\": {\n                        \"qty\": 1,\n                        \"sku_id\": \"{{stock_keeping_unit.id}}\"\n                    }\n                }\n            ]\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "https://{{host}}/v3/orders",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v3",
+						"orders"
+					]
+				},
+				"description": "#### Request Body Scheme\n\n> `{`\n> \n> > **data** (*object, required*) `{`\n> > \n> > > **type** (*string, required*): **orders**\n> > \n> > > **attributes** (*object, required*) `{`\n> > > \n> > > > **allow_back_ordering** (*boolean, optional*)  \n> > > > Allowing back ordering.\n> > > \n> > > > **items** (*Array\\[CreateOrderItem\\], required*) `[`  \n> > > > Order items array.\n> > > > \n> > > > > `{`\n> > > > > \n> > > > > > **type** (*string*): **did_order_items**\n> > > > > \n> > > > > > **attributes** (*object*) `{`\n> > > > > > \n> > > > > > > **sku_id** (*string, required*)  \n> > > > > > > [Stock Keeping Unit Object](#stock-keeping-unit-object) ID. Should be used with one of optional parameters `qty`, `available_did_id` or `did_reservation_id`.\n> > > > > > \n> > > > > > > **qty** (*integer, required*)  \n> > > > > > > Quantity if ordering items. Should NOT be used with optional parameters `available_did_id` or `did_reservation_id`.\n> > > > > > \n> > > > > > > **did_reservation_id** (*string, optional*)  \n> > > > > > > Specific [DID Reservation Object](#did-reservation-object) ID.\n> > > > > > \n> > > > > > > **billing_cycles_count** (*integer, optional*)  \n> > > > > > > The number of Billing Cycles that this DID Number will renew until expiration.\n> > > > > > \n> > > > > > > **available_did_id** (*string, optional*)  \n> > > > > > > Specific [Available DID Object](#available-did-object) ID.\n> > > > > > \n> > > > > > `}`\n> > > > > \n> > > > > `}`\n> > > > \n> > > > `]`\n> > > \n> > > `}`\n> > \n> > `}`\n> \n> `}`"
+			},
+			"response": [
+				{
+					"name": "201 Created",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							},
+							{
+								"key": "Api-Key",
+								"value": "yourDidwwApiKey",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"data\": {\r\n        \"type\": \"orders\",\r\n        \"attributes\": {\r\n            \"allow_back_ordering\": true,\r\n            \"items\": [\r\n                {\r\n                    \"type\": \"did_order_items\",\r\n                    \"attributes\": {\r\n                        \"qty\": 15,\r\n                        \"sku_id\": \"a78bb6d8-b05e-4e12-afe6-ad84ac979088\"\r\n                    }\r\n                }\r\n            ]\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://sandbox-api.didww.com/v3/orders",
+							"protocol": "https",
+							"host": [
+								"sandbox-api",
+								"didww",
+								"com"
+							],
+							"path": [
+								"v3",
+								"orders"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 15 Jan 2022 13:26:16 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/vnd.api+json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "SAMEORIGIN"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-Download-Options",
+							"value": "noopen"
+						},
+						{
+							"key": "X-Permitted-Cross-Domain-Policies",
+							"value": "none"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "strict-origin-when-cross-origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache"
+						},
+						{
+							"key": "X-Request-Id",
+							"value": "47fd6c9d-6b89-43a9-a5e9-592ad64f2c60"
+						},
+						{
+							"key": "X-Runtime",
+							"value": "0.287493"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "https://doc.in.didww.com"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Origin, X-Requested-With, Content-Type, Accept, auth-key, x-api-key, api-key, x-api-token, x-admin-session-token, Cache-Control"
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "GET, POST, DELETE, PUT, PATCH, OPTIONS"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"id\": \"9eeaab6c-b758-41b8-af86-8978a86603a2\",\n        \"type\": \"orders\",\n        \"attributes\": {\n            \"reference\": \"FZH-374899\",\n            \"amount\": \"79.2\",\n            \"status\": \"Pending\",\n            \"created_at\": \"2017-06-25T14:56:31.513Z\",\n            \"description\": \"DID\",\n            \"items\": [\n                {\n                    \"type\": \"did_order_items\",\n                    \"attributes\": {\n                        \"qty\": 15,\n                        \"nrc\": \"5.00\",\n                        \"mrc\": \"5.00\",\n                        \"prorated_mrc\": true,\n                        \"billed_from\": \"2018-08-15\",\n                        \"billed_to\": \"2018-09-15\",\n                        \"did_group_id\": \"d01704b0-6522-47d5-8865-3398c417ed1d\"\n                    }\n                }\n            ]\n        }\n    }\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// prevent execution of next request in Collection Runner unless next request is defined.",
+					"postman.setNextRequest(null);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"apiKey is set in Environment variables\", ()=>{",
+					"    const apiKey = pm.variables.get(\"apiKey\")",
+					"    ",
+					"    pm.expect(apiKey, \"apiKey is absent in Environment Variables\").not.undefined",
+					"    pm.expect(apiKey, \"apiKey value is empty in Environment Variables\").not.empty",
+					"    pm.expect(apiKey, \"apiKey value is not redefined in Environment Variables\").not.eq(\"yourDidwwApiKey\")",
+					"",
+					"});",
+					"",
+					"pm.test(\"Status code is successful\", () => {",
+					"    pm.response.to.be.success;",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "did_group_type.id",
+			"value": "{{did_group_type.id}}"
+		},
+		{
+			"key": "country.id",
+			"value": "{{country.id}}"
+		},
+		{
+			"key": "city.id",
+			"value": "{{city.id}}"
+		},
+		{
+			"key": "stock_keeping_unit.id",
+			"value": "{{stock_keeping_unit.id}}"
+		}
+	]
+}

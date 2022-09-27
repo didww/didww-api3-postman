@@ -33707,6 +33707,7 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
+					"// for API version header. If customer has greater API version, then header is ignored",
 					"pm.request.headers.add({key: 'X-DIDWW-API-Version', value: '2021-12-15' })"
 				]
 			}
