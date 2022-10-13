@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a1a43656-e439-431c-971e-2c146d401fe2",
+		"_postman_id": "fe57012b-99ff-478b-b7fc-6e0c5508aabe",
 		"name": "DIDWW API3 2022-05-10 (Latest)",
 		"description": "The DIDWW API provides a simple yet powerful interface that allows you to fully integrate your own applications with DIDWW services. An extensive set of actions may be performed using this API, such as ordering and configuring phone numbers, setting capacity, creating SIP trunks and retrieving CDRs and other operational data. As such, this interface is the ideal tool for building alternative dashboards, developing mobile applications and automating front and back-end applications.\n\nThe DIDWW API is a fully compliant implementation of the [JSON API](https://jsonapi.org/format/) specification, which defines how an application should request that resources be fetched or modified, and how a server should respond to those requests. This REST (Representational State Transfer) interface provides an easy-to-use set of HTTP endpoints that let you access our services using GET, PUT, POST, PATCH and DELETE methods.\n\n> ###### Note\n> \n> This document assumes that you are familiar with web programming concepts, web data formats, and the JSON API specification. Additional Information about JSON is available on their official website.\n\n# API Keys\n\nTo use the DIDWW API in either the sandbox or production environment, you must register and receive an API key which will be used by your application.\n\n##### To receive your production API key:\n\n*   Sign into your DIDWW account at [https://my.didww.com](https://my.didww.com) and access the “API access settings” on the API page. If you do not have an account with DIDWW, please register for free.\n*   Click on “Send API security key to email” and you will receive your private key at your registered email address.\n    \n\nYou must include this key following the `Api-Key` prefix in your API requests as shown in the example below:\n\n###### http\n\n```\nGET /v3/countries HTTP/1.1\nHost: api.didww.com\nContent-Type: application/vnd.api+json\nApi-Key: 4D41E00J6KMXABS\n\n```\n\n###### curl\n\n``` bash\ncurl -i https://api.didww.com/v3/countries -H 'Api-Key: 4D41E00J6KMXABS' -H 'Content-Type: application/vnd.api+json'\n\n```\n\n##### To receive your sandbox API key:\n\nPlease contact [DIDWW Technical Support Team](https://www.didww.com/Contacts/).\n\nYou must include this key following the `Api-Key` prefix in your API requests as shown in the example below:\n\n###### http\n\n```\nGET /v3/countries HTTP/1.1\nHost: sandbox-api.didww.com\nContent-Type: application/vnd.api+json\nApi-Key: 4D41E00J6KMXABS\n\n```\n\n###### curl\n\n``` bash\ncurl -i https://sandbox-api.didww.com/v3/countries -H 'Api-Key: 4D41E00J6KMXABS' -H 'Content-Type: application/vnd.api+json'\n\n```\n\n# Environments and Endpoints\n\nDIDWW maintains both a sandbox and a production environment for the API.\n\nThe sandbox allows you to develop your application outside the production environment and therefore does not affect critical data. Operating your application in the sandbox is essentially the same as operating in the production environment, and all aspects of the API may be tested. However, no actual transactions take place that modify the DIDWW number inventory or cause charges to be incurred. This environment is important for testing the functionality and logic of your application before deploying to production or releasing to customers.\n\nThe endpoints are as follows:\n\n##### Sandbox environment:\n\n```\nhttps://sandbox-api.didww.com/v3/\n\n```\n\n##### Production environment:\n\n```\nhttps://api.didww.com/v3/\n\n```\n\n# Rate Limits\n\nRequests to any [https://api.didww.com/v3/](https://api.didww.com/v3/) endpoint are rate limited to ensure that the API remains responsive to all users. Rate limits are 10 requests per second and are applied to API-KEY instead of IP. After exceeding the limit, 429 HTTP status code will be returned.\n\n``` json\n{\n \"errors\": [\n   {\n     \"status\": \"429\",\n     \"detail\": \"Too Many Requests\"\n   }\n ]\n}\n\n```\n\n# API Versioning\n\nThe API 3 versioning controls the API behavior. The newer API versions may behave differently and contain additional resources and parameters. The used API version is defined by the date when the first API3 Request has been sent. Once API 3 is upgraded in a backwards-incompatible way, we release a new dated version to avoid breaking your current infrastructure. API version will not change automatically and customer is responsible for upgrading it via DIDWW User Panel.\n\nYou can see your current API 3 version in response `meta.api_version`. Currently used API 3 version can be reviewed on [https://my.didww.com/#/api](https://my.didww.com/#/api) page.\n\n# Upgrading API 3 Version\n\nThe newer version can be used by sending an `X-DIDWW-API-Version` header in your request. The invalid value of `X-DIDWW-API-Version` header will be ignored. The `meta.api_version` value will be affected by `X-DIDWW-API-Version` header. It will switch API 3 version per request basis and does not affect other requests.\n\nYou can change your API 3 version on [https://my.didww.com/#/api](https://my.didww.com/#/api) page.\n\nBefore changing your API 3 version check [API 3 Changelog](#changelog).\n\n> ###### Note\n> \n> If your currently used version is newer then the `X-DIDWW-API-Version` value sent, API will ignore the `X-DIDWW-API-Version` header. API 3 version downgrade is not available.\n\n# PHP SDK\n\n[https://github.com/didww/didww-api-3-php-sdk](https://github.com/didww/didww-api-3-php-sdk)\n\n# Ruby Client\n\n[https://github.com/didww/didww-v3-ruby](https://github.com/didww/didww-v3-ruby)\n\n[See it running live!](https://github.com/didww/didww-v3-rails-sample)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -3461,6 +3461,12 @@
 											"disabled": true
 										},
 										{
+											"key": "filter[meta.total_count_gteq]",
+											"value": "",
+											"description": "`integer` - Filters by the meta.total_count_gteq field. \n* **Allow blank** - *No*. \n* **Allow array** - *No*. ",
+											"disabled": true
+										},
+										{
 											"key": "sort",
 											"value": "",
 											"description": "Used for sorting the fields returned by the request, with a comma `,` separating the included fields.\nDetails in [Sorting](#sorting) Article.\n\n**country.name** - Sort by the `country.name` field.\n***\n**did_group_type.name** - Sort by the `did_group_type.name` field.\n***\n**prefix** - City `prefix` field.\n***\n**local_prefix** - Sort by the `local_prefix` field.\n***\n**is_metered** - Sort by the `is_metered` field.\n***\n**area_name** - Sort by the `area_name` field.\n***\n**allow_additional_channels** - Sort by the `allow_additional_channels` field.\n***",
@@ -4560,7 +4566,7 @@
 										},
 										{
 											"key": "filter[nanpa_prefix.id]",
-											"value": null,
+											"value": "",
 											"description": "`string` - Filters by nanpa_prefix id field. \n* **Allow blank** - *No*. \n* **Allow array** - *No*. ",
 											"disabled": true
 										}
@@ -6233,49 +6239,49 @@
 										},
 										{
 											"key": "filter[id]",
-											"value": null,
+											"value": "",
 											"description": "`string` - Filters by NANPA Prefixes `id` field. \n* **Allow blank** - *No*. \n* **Allow array** - *Yes*.",
 											"disabled": true
 										},
 										{
 											"key": "filter[npa]",
-											"value": null,
+											"value": "",
 											"description": "`string` - Filters by NANPA Prefixes `npa` field. \n* **Allow blank** - *Yes*. \n* **Allow array** - *Yes*.",
 											"disabled": true
 										},
 										{
 											"key": "filter[nxx]",
-											"value": null,
+											"value": "",
 											"description": "`string` - Filters by NANPA Prefixes `nxx` field. \n* **Allow blank** - *Yes*. \n* **Allow array** - *Yes*.",
 											"disabled": true
 										},
 										{
 											"key": "filter[npanxx]",
-											"value": null,
+											"value": "",
 											"description": "`string` - Filters by NANPA Prefixes `npa` / `nxx` fields. \n* **Allow blank** - *No*. \n* **Allow array** - *No*.",
 											"disabled": true
 										},
 										{
 											"key": "filter[country.id]",
-											"value": null,
+											"value": "",
 											"description": "`string` - Filters by NANPA Prefixes `country.id` field. \n* **Allow blank** - *Yes*. \n* **Allow array** - *Yes*.",
 											"disabled": true
 										},
 										{
 											"key": "filter[region.id]",
-											"value": null,
+											"value": "",
 											"description": "`string` - Filters by NANPA Prefixes `region.id` field. \n* **Allow blank** - *Yes*. \n* **Allow array** - *Yes*.",
 											"disabled": true
 										},
 										{
 											"key": "filter[did_group.is_available]",
-											"value": null,
+											"value": "",
 											"description": "`boolean` - Availability of DIDs in stock for prefix. \n* **Allow blank** - *No*. \n* **Allow array** - *No*.",
 											"disabled": true
 										},
 										{
 											"key": "filter[did_group.features]",
-											"value": null,
+											"value": "",
 											"description": "`string` - Availability of DIDs in stock with features for prefix. Can be one/several/all of “voice_in”, “voice_out”, “t38”, “sms_in”, “sms_out”. example: “voice_in,sms_in”. \n* **Allow blank** - *No*. \n* **Allow array** - *Yes*.",
 											"disabled": true
 										},
@@ -9522,7 +9528,7 @@
 										},
 										{
 											"key": "filter[did_group.features]",
-											"value": null,
+											"value": "",
 											"description": "`string` - Filters by the did_group.features field.  \nCan be one/several/all of **voice_in**, **voice_out**, **t38**, **sms_in**, **sms_out** (example: “voice_in,sms_in”). \n* **Allow blank** - *No*. \n* **Allow array** - *Yes*. ",
 											"disabled": true
 										},
@@ -23147,7 +23153,7 @@
 									"query": [
 										{
 											"key": "include",
-											"value": null,
+											"value": "",
 											"description": "Comma-separated values of include parameter.\nThe response will include a top-level object `relationships` with associated data under the appropriate resource key.\nDetails in [Inclusion of Related Resources](#inclusion-of-related-resources) Article.\n\n**Allowed values:**\n\ncountry - [Country Object](#country-object)\n***\nproofs - [Proof Object](#proofs-object)\n***\nproofs.proof_type - [Proof Type Object](#proof-type-object)\n***\naddresses - [Address Object](#addresses-object)\n***\naddresses.country - [Country Object](#country-object)\n***\npermanent_documents - [Permanent Document Object](#permament-document-object)\n***\npermanent_documents.template - [Supporting Document Template Object](#supporting-document-template-object)\n",
 											"disabled": true
 										}
@@ -23464,7 +23470,7 @@
 									"query": [
 										{
 											"key": "include",
-											"value": null,
+											"value": "",
 											"description": "Comma-separated values of include parameter.\nThe response will include a top-level object `relationships` with associated data under the appropriate resource key.\nDetails in [Inclusion of Related Resources](#inclusion-of-related-resources) Article.\n\n**Allowed values:**\n\ncountry - [Country Object](#country-object)\n***\nproofs - [Proof Object](#proofs-object)\n***\nproofs.proof_type - [Proof Type Object](#proof-type-object)\n***\naddresses - [Address Object](#addresses-object)\n***\naddresses.country - [Country Object](#country-object)\n***\npermanent_documents - [Permanent Document Object](#permament-document-object)\n***\npermanent_documents.template - [Supporting Document Template Object](#supporting-document-template-object)\n",
 											"disabled": true
 										}
@@ -33486,7 +33492,7 @@
 								}
 							]
 						},
-						"description": "<h1 id=\"create-cdr-in-export\"></h1>\n\n> **Attention**  \n> Please note that the Inbound/Outbound CDR export is available for current + 2 last months.\n\nCreates a single Export. DIDWW performs deletion of Export in 1 month after completion.\n\n#### Request Body Scheme\n\n> `{`\n> \n> > **data** (*object, required*) `{`\n> > \n> > > **type** (*string, required*): **exports**\n> > \n> > > **attributes** (*object, required*) `{`\n> > > \n> > > > **callback_url** (*string, optional*)  \n> > > > The HTTP or HTTPS endpoint to where events related to export will be delivered.  \n> > > > See [Callback details](#callback-details) for information about *callback_url*.\n> > > \n> > > > **callback_method** (*string, optional*)  \n> > > > The HTTP Method used for order events. **POST**, **GET** are supported methods.  \n> > > > See [Callback details](#callback-details) for information about *callback_method*.\n> > > \n> > > > **export_type** (*string, required*): **cdr_in**\n> > > > Type of requested CDRs. Possible values are **cdr_in** and **cdr_out**.\n> > > \n> > > > **filters** (*object, required*) `{`  \n> > > > Export Filters Object\n> > > > \n> > > > > **year** (*integer, NOT nullable, required*)  \n> > > > > Year of the CDR timestamp.\n> > > > \n> > > > > **month** (*integer, NOT nullable, required*)  \n> > > > > Month of the CDR timestamp.\n> > > > \n> > > > > **did_number** (*integer, NOT nullable, optional*)  \n> > > > > Filters CDRs by DID number.\n> > > > \n> > > > `}`\n> > > \n> > > `}`\n> > \n> > `}`\n> \n> `}`\n\n#### Request Body Example\n\n``` json\n{\n  \"data\": {\n    \"type\": \"exports\",\n    \"attributes\": {\n    \"export_type\": \"cdr_in\",\n      \"filters\": {\n        \"year\": 2017,\n        \"month\": 5,\n        \"did_number\": \"123456789\"\n      }\n    }\n  }\n}\n\n```"
+						"description": "<h1 id=\"create-cdr-in-export\"></h1>\n\n> **Attention**  \n> Please note that the Inbound/Outbound CDR export is available for current + 2 last months.\n\nCreates a single Export. DIDWW performs deletion of Export in 1 month after completion.\n\n#### Request Body Scheme\n\n> `{`\n> \n> > **data** (*object, required*) `{`\n> > \n> > > **type** (*string, required*): **exports**\n> > \n> > > **attributes** (*object, required*) `{`\n> > > \n> > > > **callback_url** (*string, optional*)  \n> > > > The HTTP or HTTPS endpoint to where events related to export will be delivered.  \n> > > > See [Callback details](#callbacks-details) for information about *callback_url*.\n> > > \n> > > > **callback_method** (*string, optional*)  \n> > > > The HTTP Method used for order events. **POST**, **GET** are supported methods.  \n> > > > See [Callback details](#callbacks-details) for information about *callback_method*.\n> > > \n> > > > **export_type** (*string, required*): **cdr_in**\n> > > > Type of requested CDRs. Possible values are **cdr_in** and **cdr_out**.\n> > > \n> > > > **filters** (*object, required*) `{`  \n> > > > Export Filters Object\n> > > > \n> > > > > **year** (*integer, NOT nullable, required*)  \n> > > > > Year of the CDR timestamp.\n> > > > \n> > > > > **month** (*integer, NOT nullable, required*)  \n> > > > > Month of the CDR timestamp.\n> > > > \n> > > > > **did_number** (*integer, NOT nullable, optional*)  \n> > > > > Filters CDRs by DID number.\n> > > > \n> > > > `}`\n> > > \n> > > `}`\n> > \n> > `}`\n> \n> `}`\n\n#### Request Body Example\n\n``` json\n{\n  \"data\": {\n    \"type\": \"exports\",\n    \"attributes\": {\n    \"export_type\": \"cdr_in\",\n      \"filters\": {\n        \"year\": 2017,\n        \"month\": 5,\n        \"did_number\": \"123456789\"\n      }\n    }\n  }\n}\n\n```"
 					},
 					"response": [
 						{
