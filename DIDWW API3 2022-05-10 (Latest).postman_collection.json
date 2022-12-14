@@ -16693,7 +16693,7 @@
 										{
 											"key": "include",
 											"value": "",
-											"description": "Comma-separated values of include parameter.\nThe response will include a top-level object `relationships` with associated data under the appropriate resource key.\nDetails in [Inclusion of Related Resources](#inclusion-of-related-resources) Article.\n\n**Allowed values:**\n\ndids - list of [DID Object](#did-object)\n***\ndefault_did - default [DID Object](#did-object)\n***",
+											"description": "Comma-separated values of include parameter.\nThe response will include a top-level object `relationships` with associated data under the appropriate resource key.\nDetails in [Inclusion of Related Resources](#inclusion-of-related-resources) Article.\n\n**Allowed values:**\n\ndids - list of [DID Object](#did-object)\n***",
 											"disabled": true
 										}
 									],
@@ -16715,18 +16715,15 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.api+json",
-												"type": "text"
+												"value": "application/vnd.api+json"
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.api+json",
-												"type": "text"
+												"value": "application/vnd.api+json"
 											},
 											{
 												"key": "Api-Key",
-												"value": "yourDidwwApiKey",
-												"type": "text"
+												"value": "yourDidwwApiKey"
 											}
 										],
 										"url": {
@@ -16746,7 +16743,7 @@
 									},
 									"status": "OK",
 									"code": 200,
-									"_postman_previewlanguage": "json",
+									"_postman_previewlanguage": "Text",
 									"header": [
 										{
 											"key": "Server",
@@ -16826,7 +16823,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"data\": {\n    \"id\": \"457bf47d-446d-41cd-91c3-dfbda7bf0753\",\n    \"type\": \"voice_out_trunks\",\n    \"attributes\": {\n      \"allowed_sip_ips\": [\n        \"0.0.0.0/0\"\n      ],\n      \"allowed_rtp_ips\": [\n        \"0.0.0.0/0\"\n      ],\n      \"allow_any_did_as_cli\": true,\n      \"status\": \"active\",\n      \"on_cli_mismatch_action\": \"replace_cli\",\n      \"name\": \"Outbound trunk 1\",\n      \"capacity_limit\": 100,\n      \"username\": \"671******\",\n      \"password\": \"3k0******\",\n      \"created_at\": \"2022-05-10T18:59:28.875Z\",\n      \"threshold_reached\": false,\n      \"threshold_amount\": \"10000.0\",\n      \"media_encryption_mode\": \"disabled\",\n      \"default_dst_action\": \"allow_all\",\n      \"dst_prefixes\": [],\n      \"force_symmetric_rtp\": false,\n      \"rtp_ping\": false,\n      \"callback_url\": null\n    },\n    \"relationships\": {\n      \"default_did\": {\n        \"links\": {\n          \"self\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/relationships/default_did\",\n          \"related\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/default_did\"\n        }\n      },\n      \"dids\": {\n        \"links\": {\n          \"self\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/relationships/dids\",\n          \"related\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/dids\"\n        }\n      }\n    },\n    \"meta\": {\n      \"spent_amount\": \"0.0\"\n    }\n  },\n  \"meta\": {\n    \"api_version\": \"2022-05-10\"\n  }\n}"
+									"body": "{\n  \"data\": {\n    \"id\": \"457bf47d-446d-41cd-91c3-dfbda7bf0753\",\n    \"type\": \"voice_out_trunks\",\n    \"attributes\": {\n      \"allowed_sip_ips\": [\n        \"0.0.0.0/0\"\n      ],\n      \"allowed_rtp_ips\": [\n        \"0.0.0.0/0\"\n      ],\n      \"allow_any_did_as_cli\": true,\n      \"status\": \"active\",\n      \"on_cli_mismatch_action\": \"send_original_cli\",\n      \"name\": \"Outbound trunk 1\",\n      \"capacity_limit\": 100,\n      \"username\": \"671******\",\n      \"password\": \"3k0******\",\n      \"created_at\": \"2022-05-10T18:59:28.875Z\",\n      \"threshold_reached\": false,\n      \"threshold_amount\": \"10000.0\",\n      \"media_encryption_mode\": \"disabled\",\n      \"default_dst_action\": \"allow_all\",\n      \"dst_prefixes\": [],\n      \"force_symmetric_rtp\": false,\n      \"rtp_ping\": false,\n      \"callback_url\": null\n    },\n    \"relationships\": {\n      \"dids\": {\n        \"links\": {\n          \"self\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/relationships/dids\",\n          \"related\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/dids\"\n        }\n      }\n    },\n    \"meta\": {\n      \"spent_amount\": \"0.0\"\n    }\n  },\n  \"meta\": {\n    \"api_version\": \"2022-05-10\"\n  }\n}"
 								}
 							]
 						},
@@ -16865,7 +16862,7 @@
 										{
 											"key": "include",
 											"value": "",
-											"description": "Comma-separated values of include parameter.\nThe response will include a top-level object `relationships` with associated data under the appropriate resource key.\nDetails in [Inclusion of Related Resources](#inclusion-of-related-resources) Article.\n\n**Allowed values:**\n\ndids - list of [DID Object](#did-object)\n***\ndefault_did - default [DID Object](#did-object)\n***",
+											"description": "Comma-separated values of include parameter.\nThe response will include a top-level object `relationships` with associated data under the appropriate resource key.\nDetails in [Inclusion of Related Resources](#inclusion-of-related-resources) Article.\n\n**Allowed values:**\n\ndids - list of [DID Object](#did-object)\n***",
 											"disabled": true
 										},
 										{
@@ -16917,12 +16914,6 @@
 											"disabled": true
 										},
 										{
-											"key": "filter[default_did.id]",
-											"value": "",
-											"description": "`string` - Filters by trunk `default_did.id` field. \n* **Allow blank** - *No*. \n* **Allow array** - *Yes*.",
-											"disabled": true
-										},
-										{
 											"key": "sort",
 											"value": "",
 											"description": "Used for sorting the fields returned by the request, with a comma `,` separating the included fields.\nDetails in [Sorting](#sorting) Article.\n\n**name** - The `name` field.\n***\n**created_at** - The `created_at` field.\n***\n**allow_any_did_as_cli** - The `allow_any_did_as_cli` field.\n***\n**threshold_reached** - The `threshold_reached` field.\n***",
@@ -16940,18 +16931,15 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.api+json",
-												"type": "text"
+												"value": "application/vnd.api+json"
 											},
 											{
 												"key": "Content-Type",
-												"value": "application/vnd.api+json",
-												"type": "text"
+												"value": "application/vnd.api+json"
 											},
 											{
 												"key": "Api-Key",
-												"value": "yourDidwwApiKey",
-												"type": "text"
+												"value": "yourDidwwApiKey"
 											}
 										],
 										"url": {
@@ -16970,7 +16958,7 @@
 									},
 									"status": "OK",
 									"code": 200,
-									"_postman_previewlanguage": "json",
+									"_postman_previewlanguage": "Text",
 									"header": [
 										{
 											"key": "Server",
@@ -17050,7 +17038,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"data\": [\n        {\n            \"id\": \"457bf47d-446d-41cd-91c3-dfbda7bf0753\",\n            \"type\": \"voice_out_trunks\",\n            \"attributes\": {\n                \"allowed_sip_ips\": [\n                    \"0.0.0.0/0\"\n                ],\n                \"allowed_rtp_ips\": [\n                    \"0.0.0.0/0\"\n                ],\n                \"allow_any_did_as_cli\": true,\n                \"status\": \"active\",\n                \"on_cli_mismatch_action\": \"replace_cli\",\n                \"name\": \"Outbound trunk 1\",\n                \"capacity_limit\": 100,\n                \"username\": \"****ff1onm\",\n                \"password\": \"****b4m55h\",\n                \"created_at\": \"2022-05-10T18:59:28.875Z\",\n                \"threshold_reached\": false,\n                \"threshold_amount\": \"10000.0\",\n                \"media_encryption_mode\": \"disabled\",\n                \"default_dst_action\": \"allow_all\",\n                \"dst_prefixes\": [],\n                \"force_symmetric_rtp\": false,\n                \"rtp_ping\": false,\n                \"callback_url\": null\n            },\n            \"relationships\": {\n                \"default_did\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/relationships/default_did\",\n                        \"related\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/default_did\"\n                    }\n                },\n                \"dids\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/relationships/dids\",\n                        \"related\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/dids\"\n                    }\n                }\n            },\n            \"meta\": {\n                \"spent_amount\": \"0.0\"\n            }\n        },\n        {\n            \"id\": \"d471975a-c6ee-4f84-80f0-fad67c5e22b1\",\n            \"type\": \"voice_out_trunks\",\n            \"attributes\": {\n                \"allowed_sip_ips\": [\n                    \"192.168.1.1/32\"\n                ],\n                \"allowed_rtp_ips\": [\n                    \"192.168.1.1/32\"\n                ],\n                \"allow_any_did_as_cli\": false,\n                \"status\": \"active\",\n                \"on_cli_mismatch_action\": \"send_original_cli\",\n                \"name\": \"Outbound trunk 11\",\n                \"capacity_limit\": 100,\n                \"username\": \"****rh5vb\",\n                \"password\": \"****kmgnda\",\n                \"created_at\": \"2021-12-02T07:17:40.125Z\",\n                \"threshold_reached\": false,\n                \"threshold_amount\": \"9999.0\",\n                \"media_encryption_mode\": \"disabled\",\n                \"default_dst_action\": \"allow_all\",\n                \"dst_prefixes\": [\n                    \"23\"\n                ],\n                \"force_symmetric_rtp\": false,\n                \"rtp_ping\": false,\n                \"callback_url\": null\n            },\n            \"relationships\": {\n                \"default_did\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/voice_out_trunks/d471975a-c6ee-4f84-80f0-fad67c5e22b1/relationships/default_did\",\n                        \"related\": \"https://api.didww.com/v3/voice_out_trunks/d471975a-c6ee-4f84-80f0-fad67c5e22b1/default_did\"\n                    }\n                },\n                \"dids\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/voice_out_trunks/d471975a-c6ee-4f84-80f0-fad67c5e22b1/relationships/dids\",\n                        \"related\": \"https://api.didww.com/v3/voice_out_trunks/d471975a-c6ee-4f84-80f0-fad67c5e22b1/dids\"\n                    }\n                }\n            },\n            \"meta\": {\n                \"spent_amount\": \"0.0\"\n            }\n        }\n    ],\n    \"meta\": {\n        \"total_records\": 2,\n        \"api_version\": \"2022-05-10\"\n    },\n    \"links\": {\n        \"first\": \"https://api.didww.com/v3/voice_out_trunks?page%5Bnumber%5D=1&page%5Bsize%5D=50\",\n        \"last\": \"https://api.didww.com/v3/voice_out_trunks?page%5Bnumber%5D=1&page%5Bsize%5D=50\"\n    }\n}"
+									"body": "{\n    \"data\": [\n        {\n            \"id\": \"457bf47d-446d-41cd-91c3-dfbda7bf0753\",\n            \"type\": \"voice_out_trunks\",\n            \"attributes\": {\n                \"allowed_sip_ips\": [\n                    \"0.0.0.0/0\"\n                ],\n                \"allowed_rtp_ips\": [\n                    \"0.0.0.0/0\"\n                ],\n                \"allow_any_did_as_cli\": true,\n                \"status\": \"active\",\n                \"on_cli_mismatch_action\": \"send_original_cli\",\n                \"name\": \"Outbound trunk 1\",\n                \"capacity_limit\": 100,\n                \"username\": \"****ff1onm\",\n                \"password\": \"****b4m55h\",\n                \"created_at\": \"2022-05-10T18:59:28.875Z\",\n                \"threshold_reached\": false,\n                \"threshold_amount\": \"10000.0\",\n                \"media_encryption_mode\": \"disabled\",\n                \"default_dst_action\": \"allow_all\",\n                \"dst_prefixes\": [],\n                \"force_symmetric_rtp\": false,\n                \"rtp_ping\": false,\n                \"callback_url\": null\n            },\n            \"relationships\": {\n                \"dids\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/relationships/dids\",\n                        \"related\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/dids\"\n                    }\n                }\n            },\n            \"meta\": {\n                \"spent_amount\": \"0.0\"\n            }\n        },\n        {\n            \"id\": \"d471975a-c6ee-4f84-80f0-fad67c5e22b1\",\n            \"type\": \"voice_out_trunks\",\n            \"attributes\": {\n                \"allowed_sip_ips\": [\n                    \"192.168.1.1/32\"\n                ],\n                \"allowed_rtp_ips\": [\n                    \"192.168.1.1/32\"\n                ],\n                \"allow_any_did_as_cli\": false,\n                \"status\": \"active\",\n                \"on_cli_mismatch_action\": \"send_original_cli\",\n                \"name\": \"Outbound trunk 11\",\n                \"capacity_limit\": 100,\n                \"username\": \"****rh5vb\",\n                \"password\": \"****kmgnda\",\n                \"created_at\": \"2021-12-02T07:17:40.125Z\",\n                \"threshold_reached\": false,\n                \"threshold_amount\": \"9999.0\",\n                \"media_encryption_mode\": \"disabled\",\n                \"default_dst_action\": \"allow_all\",\n                \"dst_prefixes\": [\n                    \"23\"\n                ],\n                \"force_symmetric_rtp\": false,\n                \"rtp_ping\": false,\n                \"callback_url\": null\n            },\n            \"relationships\": {\n                \"dids\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/voice_out_trunks/d471975a-c6ee-4f84-80f0-fad67c5e22b1/relationships/dids\",\n                        \"related\": \"https://api.didww.com/v3/voice_out_trunks/d471975a-c6ee-4f84-80f0-fad67c5e22b1/dids\"\n                    }\n                }\n            },\n            \"meta\": {\n                \"spent_amount\": \"0.0\"\n            }\n        }\n    ],\n    \"meta\": {\n        \"total_records\": 2,\n        \"api_version\": \"2022-05-10\"\n    },\n    \"links\": {\n        \"first\": \"https://api.didww.com/v3/voice_out_trunks?page%5Bnumber%5D=1&page%5Bsize%5D=50\",\n        \"last\": \"https://api.didww.com/v3/voice_out_trunks?page%5Bnumber%5D=1&page%5Bsize%5D=50\"\n    }\n}"
 								}
 							]
 						},
@@ -17090,7 +17078,7 @@
 										"voice_out_trunks"
 									]
 								},
-								"description": "<h1 id=\"create-voice-out-trunk\"></h1>\n\nCreates a voice out trunk.\n\n#### Request Body Scheme\n\n> `{`\n> \n> > **data** (*object, required*) `{`\n> > \n> > > **type** (*string, required*): **voice_out_trunks**  \n> > > Trunks\n> > \n> > > **attributes** (*object, required*) `{`  \n> > > Trunk configuration complex object.\n> > > \n> > > > **name** (*string, required, NOT nullable*)  \n> > > > The voice out trunk name.\n> > > \n> > > > **allowed_sip_ips** (*array[string], required, NOT nullable*)  \n> > > > The allowed originating IPs. Array from 0 to 15 items: IP v4/v6 single or subnet.\n> > >  \n> > > > **allowed_rtp_ips** (*array[string], NOT required, nullable*)  \n> > > > The allowed RTP IPs. Array from 0 to 10 items: IP v4/v6 single or subnet.\n> > >  \n> > > > **on_cli_mismatch_action** (*enumerate[string], required, NOT nullable*): **send_original_cli**, **replace_cli**, **reject_call**  \n> > > > Possible values are:\n> > > > *send_original_cli* - the system will pass the `FROM` header value to the termination gateway.\n> > > > *replace_cli* - the system will replace the `FROM` header value to the specified value in default_did relationship.\n> > > > *reject_call* - the system will reject the call if the `FROM` header value does not match any of the allowed DIDs.\n> > >  \n> > > > **capacity_limit** (*integer, NOT required, nullable*): \n> > > > The capacity limit of the voice out trunk. Allowed values from 0 to 32767.\n> > >  \n> > > > **allow_any_did_as_cli** (*boolean, NOT required, NOT nullable*): \n> > > > When set to `True`, passed than DIDs relationship can not be set to explicit DIDs. if DIDs relationship is omitted in payload already linked DIDs will be automatically unassigned. \n> > > > Default value is `false`.\n> > >  \n> > > > **status** (*enumerate[string], NOT required, NOT nullable*): **active**, **blocked**\n> > > > Can be either: *active* or *blocked*. \n> > > > Default value is `active`.\n> > >  \n> > > > **threshold_amount** (*string, NOT required, NOT nullable*): \n> > > > The outbound trunk 24 hour threshold limit. Can be from 0.0 to 100000.0.\n> > >  \n> > > > **default_dst_action** (*enumerate[string], NOT required, NOT nullable*): **allow_all**, **reject_all**\n> > > > Can be either: *allow_all* or *reject_all*.\n> > > > Default value is `allow_all`.\n> > >  \n> > > > **dst_prefixes** (*array[string], NOT required, nullable*)\n> > > > The allowed destination prefixes.\n> > >  \n> > > > **media_encryption_mode** (*enumerate[string], NOT required, NOT nullable*): **disabled**, **srtp_sdes**, **srtp_dtls**, **zrtp**\n> > > > Media encryption mode.\n> > > > See [RFC4568 about SRTP SDES](https://datatracker.ietf.org/doc/html/rfc4568), [RFC5764 about SRTP DTLS](https://datatracker.ietf.org/doc/html/rfc5764), and [RFC6189 about ZRTP](https://datatracker.ietf.org/doc/html/rfc6189) for more details.\n> > > > Possible values:\n> > > > *disabled* - Disabled\n> > > > *srtp_sdes* - SRTP SDES\n> > > > *srtp_dtls* - SRTP DTLS\n> > > > *zrtp* - ZRTP\n> > >  \n> > > > **callback_url** (*string, NOT required, nullable*)\n> > > > Can be null or valid HTTP(s) URL.\n> > > \n> > > > **force_symmetric_rtp** (*boolean, NOT required, NOT nullable*)\n> > > > Forced to work in Symmetric RTP / COMEDIA mode.\n> > > > Default value is `false`.\n> > >  \n> > > > **rtp_ping** (*boolean, NOT required, NOT nullable*)\n> > > > Use RTP PING when connecting a call.\n> > > > After establishing the call, DIDWW will send empty RTP packet RTP PING.\n> > > > It is necessary if both parties operate in Symmetric RTP / Comedia mode and expect the other party to start sending RTP first.\n> > > > Default value is `false`.\n> > >\n> > > `}`\n> > \n> > > **relationships** (*object, optional*) `{`\n> > > \n> > > > **default_did** (*object, optional*): [***to-one***](#updating-to-one-relationships)  \n> > > > Linkage for included [DID Object](#did-object)\n> > > > The DID number if `on_cli_mismatch_action` is set to `replace_cli`.\n> > > \n> > > > **dids** (*object, optional*): [***to-many***](#updating-to-many-relationships)  \n> > > > Linkage for included [DID Object](#did-object)\n> > > > The DID numbers if `allow_any_did_as_cli` is set to `false`.\n> > > \n> > > `}`\n> > \n> > `}`\n> \n> `}`\n\n#### Request Body Example:\n\n###### Voice OUT trunk\n\n``` json\n{\n  \"data\": {\n    \"type\": \"voice_out_trunks\",\n    \"attributes\": {\n      \"name\": \"Outbound trunk 11\",\n      \"allowed_sip_ips\": [\"192.168.1.1\"],\n      \"on_cli_mismatch_action\": \"send_original_cli\",\n      \"capacity_limit\": 100,\n      \"allow_any_did_as_cli\": true,\n      \"status\": \"active\",\n      \"threshold_amount\": \"9999.0\",\n      \"default_dst_action\": \"allow_all\",\n      \"dst_prefixes\": [\"23\"],\n      \"media_encryption_mode\": \"disabled\",\n      \"allowed_rtp_ips\": [\"192.168.1.1\"],\n      \"force_symmetric_rtp\": false,\n      \"rtp_ping\": false\n    }\n  }\n}\n```\n\n###### Voice OUT trunk with Replace CLI\n\n``` json\n{\n  \"data\": {\n    \"type\": \"voice_out_trunks\",\n    \"attributes\": {\n      \"name\": \"Outbound replace cli\",\n      \"allowed_sip_ips\": [\n        \"192.168.1.1\"\n      ],\n      \"on_cli_mismatch_action\": \"replace_cli\",\n      \"capacity_limit\": 300,\n      \"allow_any_did_as_cli\": true,\n      \"status\": \"blocked\",\n      \"threshold_amount\": \"1000.0\",\n      \"default_dst_action\": \"allow_all\",\n      \"dst_prefixes\": [\n        \"23\",\n        \"45\"\n      ],\n      \"media_encryption_mode\": \"disabled\",\n      \"allowed_rtp_ips\": [\n        \"192.168.1.1\"\n      ],\n      \"force_symmetric_rtp\": true,\n      \"callback_url\": \"http://10.201.10.1/test.php\",\n      \"rtp_ping\": true\n    },\n    \"relationships\": {\n      \"default_did\": {\n        \"data\": {\n          \"type\": \"dids\",\n          \"id\": \"e144b6a4-24d2-4ee4-8b13-07a04edc448b\"\n        }\n      }\n    }\n  }\n}\n```"
+								"description": "<h1 id=\"create-voice-out-trunk\"></h1>\n\nCreates a voice out trunk.\n\n#### Request Body Scheme\n\n> `{`\n> \n> > **data** (*object, required*) `{`\n> > \n> > > **type** (*string, required*): **voice_out_trunks**  \n> > > Trunks\n> > \n> > > **attributes** (*object, required*) `{`  \n> > > Trunk configuration complex object.\n> > > \n> > > > **name** (*string, required, NOT nullable*)  \n> > > > The voice out trunk name.\n> > > \n> > > > **allowed_sip_ips** (*array[string], required, NOT nullable*)  \n> > > > The allowed originating IPs. Array from 0 to 15 items: IP v4/v6 single or subnet.\n> > >  \n> > > > **allowed_rtp_ips** (*array[string], NOT required, nullable*)  \n> > > > The allowed RTP IPs. Array from 0 to 10 items: IP v4/v6 single or subnet.\n> > >  \n> > > > **on_cli_mismatch_action** (*enumerate[string], required, NOT nullable*): **send_original_cli**, **reject_call**  \n> > > > Possible values are:\n> > > > *send_original_cli* - the system will pass the `FROM` header value to the termination gateway.\n> > > > *reject_call* - the system will reject the call if the `FROM` header value does not match any of the allowed DIDs.\n> > >  \n> > > > **capacity_limit** (*integer, NOT required, nullable*): \n> > > > The capacity limit of the voice out trunk. Allowed values from 0 to 32767.\n> > >  \n> > > > **allow_any_did_as_cli** (*boolean, NOT required, NOT nullable*): \n> > > > When set to `True`, passed than DIDs relationship can not be set to explicit DIDs. if DIDs relationship is omitted in payload already linked DIDs will be automatically unassigned. \n> > > > Default value is `false`.\n> > >  \n> > > > **status** (*enumerate[string], NOT required, NOT nullable*): **active**, **blocked**\n> > > > Can be either: *active* or *blocked*. \n> > > > Default value is `active`.\n> > >  \n> > > > **threshold_amount** (*string, NOT required, NOT nullable*): \n> > > > The outbound trunk 24 hour threshold limit. Can be from 0.0 to 100000.0.\n> > >  \n> > > > **default_dst_action** (*enumerate[string], NOT required, NOT nullable*): **allow_all**, **reject_all**\n> > > > Can be either: *allow_all* or *reject_all*.\n> > > > Default value is `allow_all`.\n> > >  \n> > > > **dst_prefixes** (*array[string], NOT required, nullable*)\n> > > > The allowed destination prefixes.\n> > >  \n> > > > **media_encryption_mode** (*enumerate[string], NOT required, NOT nullable*): **disabled**, **srtp_sdes**, **srtp_dtls**, **zrtp**\n> > > > Media encryption mode.\n> > > > See [RFC4568 about SRTP SDES](https://datatracker.ietf.org/doc/html/rfc4568), [RFC5764 about SRTP DTLS](https://datatracker.ietf.org/doc/html/rfc5764), and [RFC6189 about ZRTP](https://datatracker.ietf.org/doc/html/rfc6189) for more details.\n> > > > Possible values:\n> > > > *disabled* - Disabled\n> > > > *srtp_sdes* - SRTP SDES\n> > > > *srtp_dtls* - SRTP DTLS\n> > > > *zrtp* - ZRTP\n> > >  \n> > > > **callback_url** (*string, NOT required, nullable*)\n> > > > Can be null or valid HTTP(s) URL.\n> > > \n> > > > **force_symmetric_rtp** (*boolean, NOT required, NOT nullable*)\n> > > > Forced to work in Symmetric RTP / COMEDIA mode.\n> > > > Default value is `false`.\n> > >  \n> > > > **rtp_ping** (*boolean, NOT required, NOT nullable*)\n> > > > Use RTP PING when connecting a call.\n> > > > After establishing the call, DIDWW will send empty RTP packet RTP PING.\n> > > > It is necessary if both parties operate in Symmetric RTP / Comedia mode and expect the other party to start sending RTP first.\n> > > > Default value is `false`.\n> > >\n> > > `}`\n> > \n> > > **relationships** (*object, optional*) `{`\n> > > \n> > > > **dids** (*object, optional*): [***to-many***](#updating-to-many-relationships)  \n> > > > Linkage for included [DID Object](#did-object)\n> > > > The DID numbers if `allow_any_did_as_cli` is set to `false`.\n> > > \n> > > `}`\n> > \n> > `}`\n> \n> `}`\n\n#### Request Body Example:\n\n###### Voice OUT trunk\n\n``` json\n{\n  \"data\": {\n    \"type\": \"voice_out_trunks\",\n    \"attributes\": {\n      \"name\": \"Outbound trunk 11\",\n      \"allowed_sip_ips\": [\"192.168.1.1\"],\n      \"on_cli_mismatch_action\": \"send_original_cli\",\n      \"capacity_limit\": 100,\n      \"allow_any_did_as_cli\": true,\n      \"status\": \"active\",\n      \"threshold_amount\": \"9999.0\",\n      \"default_dst_action\": \"allow_all\",\n      \"dst_prefixes\": [\"23\"],\n      \"media_encryption_mode\": \"disabled\",\n      \"allowed_rtp_ips\": [\"192.168.1.1\"],\n      \"force_symmetric_rtp\": false,\n      \"rtp_ping\": false\n    }\n  }\n}\n```"
 							},
 							"response": [
 								{
@@ -17100,19 +17088,15 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.api+json",
-												"type": "text"
+												"value": "application/vnd.api+json"
 											},
 											{
 												"key": "Content-Type",
-												"name": "Content-Type",
-												"value": "application/vnd.api+json",
-												"type": "text"
+												"value": "application/vnd.api+json"
 											},
 											{
 												"key": "Api-Key",
-												"value": "yourDidwwApiKey",
-												"type": "text"
+												"value": "yourDidwwApiKey"
 											}
 										],
 										"body": {
@@ -17140,7 +17124,7 @@
 									},
 									"status": "Created",
 									"code": 201,
-									"_postman_previewlanguage": "json",
+									"_postman_previewlanguage": "Text",
 									"header": [
 										{
 											"key": "Server",
@@ -17224,136 +17208,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"data\": {\n    \"id\": \"d471975a-c6ee-4f84-80f0-fad67c5e22b1\",\n    \"type\": \"voice_out_trunks\",\n    \"attributes\": {\n      \"allowed_sip_ips\": [\n        \"192.168.1.1/32\"\n      ],\n      \"allowed_rtp_ips\": [\n        \"192.168.1.1/32\"\n      ],\n      \"allow_any_did_as_cli\": true,\n      \"status\": \"active\",\n      \"on_cli_mismatch_action\": \"send_original_cli\",\n      \"name\": \"Outbound trunk 11\",\n      \"capacity_limit\": 100,\n      \"username\": \"euc******\",\n      \"password\": \"6fw******\",\n      \"created_at\": \"2021-12-02T07:17:40.125Z\",\n      \"threshold_reached\": false,\n      \"threshold_amount\": \"9999.0\",\n      \"media_encryption_mode\": \"disabled\",\n      \"default_dst_action\": \"allow_all\",\n      \"dst_prefixes\": [\n        \"23\"\n      ],\n      \"force_symmetric_rtp\": false,\n      \"rtp_ping\": false,\n      \"callback_url\": null\n    },\n    \"relationships\": {\n      \"default_did\": {\n        \"links\": {\n          \"self\": \"https://api.didww.com/v3/voice_out_trunks/d471975a-c6ee-4f84-80f0-fad67c5e22b1/relationships/default_did\",\n          \"related\": \"https://api.didww.com/v3/voice_out_trunks/d471975a-c6ee-4f84-80f0-fad67c5e22b1/default_did\"\n        }\n      },\n      \"dids\": {\n        \"links\": {\n          \"self\": \"https://api.didww.com/v3/voice_out_trunks/d471975a-c6ee-4f84-80f0-fad67c5e22b1/relationships/dids\",\n          \"related\": \"https://api.didww.com/v3/voice_out_trunks/d471975a-c6ee-4f84-80f0-fad67c5e22b1/dids\"\n        }\n      }\n    },\n    \"meta\": {\n      \"spent_amount\": \"0.0\"\n    }\n  },\n  \"meta\": {\n    \"api_version\": \"2022-05-10\"\n  }\n}"
-								},
-								{
-									"name": "201 Created (Replace CLI, callback)",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/vnd.api+json",
-												"type": "text"
-											},
-											{
-												"key": "Content-Type",
-												"name": "Content-Type",
-												"value": "application/vnd.api+json",
-												"type": "text"
-											},
-											{
-												"key": "Api-Key",
-												"value": "{{apiKey}}",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"data\": {\r\n        \"type\": \"voice_out_trunks\",\r\n        \"attributes\": {\r\n            \"name\": \"Outbound replace cli\",\r\n            \"allowed_sip_ips\": [\r\n                \"192.168.1.1\"\r\n            ],\r\n            \"on_cli_mismatch_action\": \"replace_cli\",\r\n            \"capacity_limit\": 300,\r\n            \"allow_any_did_as_cli\": true,\r\n            \"status\": \"blocked\",\r\n            \"threshold_amount\": \"1000.0\",\r\n            \"default_dst_action\": \"allow_all\",\r\n            \"dst_prefixes\": [\r\n                \"23\",\r\n                \"45\"\r\n            ],\r\n            \"media_encryption_mode\": \"disabled\",\r\n            \"allowed_rtp_ips\": [\r\n                \"192.168.1.1\"\r\n            ],\r\n            \"force_symmetric_rtp\": true,\r\n            \"callback_url\": \"http://10.201.10.1/test.php\",\r\n            \"rtp_ping\": true\r\n        },\r\n        \"relationships\": {\r\n            \"default_did\": {\r\n                \"data\": {\r\n                    \"type\": \"dids\",\r\n                    \"id\": \"e144b6a4-24d2-4ee4-8b13-07a04edc448b\"\r\n                }\r\n            }\r\n        }\r\n    }\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "https://api.didww.com/v3/voice_out_trunks",
-											"protocol": "https",
-											"host": [
-												"api",
-												"didww",
-												"com"
-											],
-											"path": [
-												"v3",
-												"voice_out_trunks"
-											]
-										}
-									},
-									"status": "Created",
-									"code": 201,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Server",
-											"value": "nginx"
-										},
-										{
-											"key": "Date",
-											"value": "Wed, 05 Jan 2022 19:35:29 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/vnd.api+json"
-										},
-										{
-											"key": "Transfer-Encoding",
-											"value": "chunked"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										},
-										{
-											"key": "X-Frame-Options",
-											"value": "SAMEORIGIN"
-										},
-										{
-											"key": "X-XSS-Protection",
-											"value": "1; mode=block"
-										},
-										{
-											"key": "X-Content-Type-Options",
-											"value": "nosniff"
-										},
-										{
-											"key": "X-Download-Options",
-											"value": "noopen"
-										},
-										{
-											"key": "X-Permitted-Cross-Domain-Policies",
-											"value": "none"
-										},
-										{
-											"key": "Referrer-Policy",
-											"value": "strict-origin-when-cross-origin"
-										},
-										{
-											"key": "Vary",
-											"value": "Accept"
-										},
-										{
-											"key": "Cache-Control",
-											"value": "no-cache"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "275b305d-af21-44b8-afc3-5985b1543d6f"
-										},
-										{
-											"key": "X-Runtime",
-											"value": "0.029857"
-										},
-										{
-											"key": "Access-Control-Allow-Origin",
-											"value": "https://doc.in.didww.com"
-										},
-										{
-											"key": "Access-Control-Allow-Headers",
-											"value": "Origin, X-Requested-With, Content-Type, Accept, auth-key, x-api-key, api-key, x-api-token, x-admin-session-token, Cache-Control"
-										},
-										{
-											"key": "Access-Control-Allow-Methods",
-											"value": "GET, POST, DELETE, PUT, PATCH, OPTIONS"
-										},
-										{
-											"key": "Access-Control-Allow-Credentials",
-											"value": "true"
-										}
-									],
-									"cookie": [],
-									"body": "{\n  \"data\": {\n    \"id\": \"138a6765-bd54-4814-8ce7-35adc524e1fb\",\n    \"type\": \"voice_out_trunks\",\n    \"attributes\": {\n      \"allowed_sip_ips\": [\n        \"192.168.1.1/32\"\n      ],\n      \"allowed_rtp_ips\": [\n        \"192.168.1.1/32\"\n      ],\n      \"allow_any_did_as_cli\": true,\n      \"status\": \"blocked\",\n      \"on_cli_mismatch_action\": \"replace_cli\",\n      \"name\": \"Outbound replace cli\",\n      \"capacity_limit\": 300,\n      \"username\": \"p2********\",\n      \"password\": \"88********\",\n      \"created_at\": \"2022-01-12T18:13:55.417Z\",\n      \"threshold_reached\": false,\n      \"threshold_amount\": \"1000.0\",\n      \"media_encryption_mode\": \"disabled\",\n      \"default_dst_action\": \"allow_all\",\n      \"dst_prefixes\": [\n        \"23\",\n        \"45\"\n      ],\n      \"force_symmetric_rtp\": true,\n      \"rtp_ping\": true,\n      \"callback_url\": \"http://10.201.10.1/test.php\"\n    },\n    \"relationships\": {\n      \"default_did\": {\n        \"links\": {\n          \"self\": \"https://api.didww.com/v3/voice_out_trunks/138a6765-bd54-4814-8ce7-35adc524e1fb/relationships/default_did\",\n          \"related\": \"https://api.didww.com/v3/voice_out_trunks/138a6765-bd54-4814-8ce7-35adc524e1fb/default_did\"\n        }\n      },\n      \"dids\": {\n        \"links\": {\n          \"self\": \"https://api.didww.com/v3/voice_out_trunks/138a6765-bd54-4814-8ce7-35adc524e1fb/relationships/dids\",\n          \"related\": \"https://api.didww.com/v3/voice_out_trunks/138a6765-bd54-4814-8ce7-35adc524e1fb/dids\"\n        }\n      }\n    },\n    \"meta\": {\n      \"spent_amount\": \"0.0\"\n    }\n  },\n  \"meta\": {\n    \"api_version\": \"2022-05-10\"\n  }\n}"
+									"body": "{\n  \"data\": {\n    \"id\": \"d471975a-c6ee-4f84-80f0-fad67c5e22b1\",\n    \"type\": \"voice_out_trunks\",\n    \"attributes\": {\n      \"allowed_sip_ips\": [\n        \"192.168.1.1/32\"\n      ],\n      \"allowed_rtp_ips\": [\n        \"192.168.1.1/32\"\n      ],\n      \"allow_any_did_as_cli\": true,\n      \"status\": \"active\",\n      \"on_cli_mismatch_action\": \"send_original_cli\",\n      \"name\": \"Outbound trunk 11\",\n      \"capacity_limit\": 100,\n      \"username\": \"euc******\",\n      \"password\": \"6fw******\",\n      \"created_at\": \"2021-12-02T07:17:40.125Z\",\n      \"threshold_reached\": false,\n      \"threshold_amount\": \"9999.0\",\n      \"media_encryption_mode\": \"disabled\",\n      \"default_dst_action\": \"allow_all\",\n      \"dst_prefixes\": [\n        \"23\"\n      ],\n      \"force_symmetric_rtp\": false,\n      \"rtp_ping\": false,\n      \"callback_url\": null\n    },\n    \"relationships\": {\n      \"dids\": {\n        \"links\": {\n          \"self\": \"https://api.didww.com/v3/voice_out_trunks/d471975a-c6ee-4f84-80f0-fad67c5e22b1/relationships/dids\",\n          \"related\": \"https://api.didww.com/v3/voice_out_trunks/d471975a-c6ee-4f84-80f0-fad67c5e22b1/dids\"\n        }\n      }\n    },\n    \"meta\": {\n      \"spent_amount\": \"0.0\"\n    }\n  },\n  \"meta\": {\n    \"api_version\": \"2022-05-10\"\n  }\n}"
 								},
 								{
 									"name": "201 Created (assigning allowed DID)",
@@ -17362,24 +17217,20 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.api+json",
-												"type": "text"
+												"value": "application/vnd.api+json"
 											},
 											{
 												"key": "Content-Type",
-												"name": "Content-Type",
-												"value": "application/vnd.api+json",
-												"type": "text"
+												"value": "application/vnd.api+json"
 											},
 											{
 												"key": "Api-Key",
-												"value": "{{apiKey}}",
-												"type": "text"
+												"value": "{{apiKey}}"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"data\": {\r\n        \"type\": \"voice_out_trunks\",\r\n        \"attributes\": {\r\n            \"name\": \"Outbound trunk 100\",\r\n            \"allowed_sip_ips\": [\r\n                \"192.168.1.1\"\r\n            ],\r\n            \"on_cli_mismatch_action\": \"replace_cli\",\r\n            \"capacity_limit\": 300,\r\n            \"allow_any_did_as_cli\": false,\r\n            \"status\": \"active\",\r\n            \"threshold_amount\": \"1000.0\",\r\n            \"default_dst_action\": \"allow_all\",\r\n            \"dst_prefixes\": [],\r\n            \"media_encryption_mode\": \"disabled\",\r\n            \"allowed_rtp_ips\": [\r\n                \"192.168.1.1\"\r\n            ],\r\n            \"force_symmetric_rtp\": false,\r\n            \"callback_url\": \"http://10.201.10.1/test.php\",\r\n            \"rtp_ping\": false\r\n        },\r\n        \"relationships\": {\r\n            \"default_did\": {\r\n                \"data\": {\r\n                    \"type\": \"dids\",\r\n                    \"id\": \"7a6c177d-a054-4c75-9b4c-b1596ed6fa25\"\r\n                }\r\n            },\r\n            \"dids\": {\r\n                \"data\": [\r\n                    {\r\n                        \"type\": \"dids\",\r\n                        \"id\": \"7a6c177d-a054-4c75-9b4c-b1596ed6fa25\"\r\n                    }\r\n                ]\r\n            }\r\n        }\r\n    }\r\n}",
+											"raw": "{\r\n    \"data\": {\r\n        \"type\": \"voice_out_trunks\",\r\n        \"attributes\": {\r\n            \"name\": \"Outbound trunk 100\",\r\n            \"allowed_sip_ips\": [\r\n                \"192.168.1.1\"\r\n            ],\r\n            \"on_cli_mismatch_action\": \"send_original_cli\",\r\n            \"capacity_limit\": 300,\r\n            \"allow_any_did_as_cli\": false,\r\n            \"status\": \"active\",\r\n            \"threshold_amount\": \"1000.0\",\r\n            \"default_dst_action\": \"allow_all\",\r\n            \"dst_prefixes\": [],\r\n            \"media_encryption_mode\": \"disabled\",\r\n            \"allowed_rtp_ips\": [\r\n                \"192.168.1.1\"\r\n            ],\r\n            \"force_symmetric_rtp\": false,\r\n            \"callback_url\": \"http://10.201.10.1/test.php\",\r\n            \"rtp_ping\": false\r\n        },\r\n        \"relationships\": {\r\n            \"dids\": {\r\n                \"data\": [\r\n                    {\r\n                        \"type\": \"dids\",\r\n                        \"id\": \"7a6c177d-a054-4c75-9b4c-b1596ed6fa25\"\r\n                    }\r\n                ]\r\n            }\r\n        }\r\n    }\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -17402,7 +17253,7 @@
 									},
 									"status": "Created",
 									"code": 201,
-									"_postman_previewlanguage": "json",
+									"_postman_previewlanguage": "Text",
 									"header": [
 										{
 											"key": "Server",
@@ -17482,7 +17333,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"data\": {\n        \"id\": \"2680024e-b2a1-4175-a1ec-8f40ea144e64\",\n        \"type\": \"voice_out_trunks\",\n        \"attributes\": {\n            \"allowed_sip_ips\": [\n                \"192.168.1.1/32\"\n            ],\n            \"allowed_rtp_ips\": [\n                \"192.168.1.1/32\"\n            ],\n            \"allow_any_did_as_cli\": false,\n            \"status\": \"active\",\n            \"on_cli_mismatch_action\": \"replace_cli\",\n            \"name\": \"Outbound trunk 100\",\n            \"capacity_limit\": 300,\n            \"username\": \"ok********\",\n            \"password\": \"m1********\",\n            \"created_at\": \"2022-03-03T09:29:20.694Z\",\n            \"threshold_reached\": false,\n            \"threshold_amount\": \"1000.0\",\n            \"media_encryption_mode\": \"disabled\",\n            \"default_dst_action\": \"allow_all\",\n            \"dst_prefixes\": [],\n            \"force_symmetric_rtp\": false,\n            \"rtp_ping\": false,\n            \"callback_url\": \"http://10.201.10.1/test.php\"\n        },\n        \"relationships\": {\n            \"default_did\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/voice_out_trunks/2680024e-b2a1-4175-a1ec-8f40ea144e64/relationships/default_did\",\n                    \"related\": \"https://api.didww.com/v3/voice_out_trunks/2680024e-b2a1-4175-a1ec-8f40ea144e64/default_did\"\n                }\n            },\n            \"dids\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/voice_out_trunks/2680024e-b2a1-4175-a1ec-8f40ea144e64/relationships/dids\",\n                    \"related\": \"https://api.didww.com/v3/voice_out_trunks/2680024e-b2a1-4175-a1ec-8f40ea144e64/dids\"\n                }\n            }\n        },\n        \"meta\": {\n            \"spent_amount\": \"0.0\"\n        }\n    },\n    \"meta\": {\n        \"api_version\": \"2022-05-10\"\n    }\n}"
+									"body": "{\n    \"data\": {\n        \"id\": \"2680024e-b2a1-4175-a1ec-8f40ea144e64\",\n        \"type\": \"voice_out_trunks\",\n        \"attributes\": {\n            \"allowed_sip_ips\": [\n                \"192.168.1.1/32\"\n            ],\n            \"allowed_rtp_ips\": [\n                \"192.168.1.1/32\"\n            ],\n            \"allow_any_did_as_cli\": false,\n            \"status\": \"active\",\n            \"on_cli_mismatch_action\": \"send_original_cli\",\n            \"name\": \"Outbound trunk 100\",\n            \"capacity_limit\": 300,\n            \"username\": \"ok********\",\n            \"password\": \"m1********\",\n            \"created_at\": \"2022-03-03T09:29:20.694Z\",\n            \"threshold_reached\": false,\n            \"threshold_amount\": \"1000.0\",\n            \"media_encryption_mode\": \"disabled\",\n            \"default_dst_action\": \"allow_all\",\n            \"dst_prefixes\": [],\n            \"force_symmetric_rtp\": false,\n            \"rtp_ping\": false,\n            \"callback_url\": \"http://10.201.10.1/test.php\"\n        },\n        \"relationships\": {\n            \"dids\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/voice_out_trunks/2680024e-b2a1-4175-a1ec-8f40ea144e64/relationships/dids\",\n                    \"related\": \"https://api.didww.com/v3/voice_out_trunks/2680024e-b2a1-4175-a1ec-8f40ea144e64/dids\"\n                }\n            }\n        },\n        \"meta\": {\n            \"spent_amount\": \"0.0\"\n        }\n    },\n    \"meta\": {\n        \"api_version\": \"2022-05-10\"\n    }\n}"
 								}
 							]
 						},
@@ -17530,7 +17381,7 @@
 										}
 									]
 								},
-								"description": "<h1 id=\"update-voice-out-trunk\"></h1>\n\nUpdates a Trunk.\n\n#### Request Body Scheme\n\n> `{`\n> \n> > **data** (*object, required*) `{`\n> > \n> > > **type** (*string, required*): **voice_out_trunks**  \n> > > Trunks\n> > \n> > > **id** (*string, required*)  \n> > > Unique ID identifier of Trunk.\n> > \n> > > **attributes** (*object, required*) `{`  \n> > > Trunk configuration complex object.\n> > > \n> > > > **name** (*string, required, NOT nullable*)  \n> > > > The voice out trunk name.\n> > > \n> > > > **allowed_sip_ips** (*array[string], required, NOT nullable*)  \n> > > > The allowed originating IPs. Array from 0 to 15 items: IP v4/v6 single or subnet.\n> > >  \n> > > > **allowed_rtp_ips** (*array[string], NOT required, nullable*)  \n> > > > The allowed RTP IPs. Array from 0 to 10 items: IP v4/v6 single or subnet.\n> > >  \n> > > > **on_cli_mismatch_action** (*enumerate[string], required, NOT nullable*): **send_original_cli**, **replace_cli**, **reject_call**  \n> > > > Possible values are:\n> > > > *send_original_cli* - the system will pass the `FROM` header value to the termination gateway.\n> > > > *replace_cli* - the system will replace the `FROM` header value to the specified value in default_did relationship.\n> > > > *reject_call* - the system will reject the call if the `FROM` header value does not match any of the allowed DIDs.\n> > >  \n> > > > **capacity_limit** (*integer, NOT required, nullable*): \n> > > > The capacity limit of the voice out trunk. Allowed values from 0 to 32767.\n> > >  \n> > > > **allow_any_did_as_cli** (*boolean, NOT required, NOT nullable*): \n> > > > When set to `True`, passed than DIDs relationship can not be set to explicit DIDs. if DIDs relationship is omitted in payload already linked DIDs will be automatically unassigned. \n> > > > Default value is `False`.\n> > >  \n> > > > **status** (*enumerate[string], NOT required, NOT nullable*): **active**, **blocked**\n> > > > Can be either: *active* or *blocked*. \n> > > > Default value is `active`.\n> > >  \n> > > > **threshold_amount** (*string, NOT required, NOT nullable*): \n> > > > The outbound trunk 24 hour threshold limit. Can be from 0.0 to 100000.0.\n> > >  \n> > > > **default_dst_action** (*enumerate[string], NOT required, NOT nullable*): **allow_all**, **reject_all**\n> > > > Can be either: *allow_all* or *reject_all*.\n> > > > Default value is `allow_all`.\n> > >  \n> > > > **dst_prefixes** (*array[string], NOT required, nullable*)\n> > > > The allowed destination prefixes.\n> > >  \n> > > > **media_encryption_mode** (*enumerate[string], NOT required, NOT nullable*): **disabled**, **srtp_sdes**, **srtp_dtls**, **zrtp**\n> > > > Media encryption mode.\n> > > > See [RFC4568 about SRTP SDES](https://datatracker.ietf.org/doc/html/rfc4568), [RFC5764 about SRTP DTLS](https://datatracker.ietf.org/doc/html/rfc5764), and [RFC6189 about ZRTP](https://datatracker.ietf.org/doc/html/rfc6189) for more details.\n> > > > Possible values:\n> > > > *disabled* - Disabled\n> > > > *srtp_sdes* - SRTP SDES\n> > > > *srtp_dtls* - SRTP DTLS\n> > > > *zrtp* - ZRTP\n> > >  \n> > > > **callback_url** (*string, NOT required, nullable*)\n> > > > Can be null or valid HTTP(s) URL.\n> > > \n> > > > **force_symmetric_rtp** (*boolean, NOT required, NOT nullable*)\n> > > > Forced to work in Symmetric RTP / COMEDIA mode.\n> > > > Default value is `false`.\n> > >  \n> > > > **rtp_ping** (*boolean, NOT required, NOT nullable*)\n> > > > Use RTP PING when connecting a call.\n> > > > After establishing the call, DIDWW will send empty RTP packet RTP PING.\n> > > > It is necessary if both parties operate in Symmetric RTP / Comedia mode and expect the other party to start sending RTP first.\n> > > > Default value is `false`.\n> > > \n> > > `}`\n> > \n> > > **relationships** (*object, optional*) `{`\n> > > \n> > > > **default_did** (*object, optional*): [***to-one***](#updating-to-one-relationships)  \n> > > > Linkage for included [DID Object](#did-object)\n> > > > The DID number if `on_cli_mismatch_action` is set to `replace_cli`.\n> > > \n> > > > **dids** (*object, optional*): [***to-many***](#updating-to-many-relationships)  \n> > > > Linkage for included [DID Object](#did-object)\n> > > > The DID numbers if `allow_any_did_as_cli` is set to `false`.\n> > > \n> > > `}`\n> > \n> > `}`\n> \n> `}`\n\n#### Request Body Example:\n\n###### Voice OUT trunk\n\n``` json\n{\n  \"data\": {\n    \"id\": \"457bf47d-446d-41cd-91c3-dfbda7bf0753\",\n    \"type\": \"voice_out_trunks\",\n    \"attributes\": {\n      \"name\": \"Outbound trunk 99\",\n      \"allowed_sip_ips\": [\n        \"192.168.1.1\"\n      ],\n      \"on_cli_mismatch_action\": \"replace_cli\",\n      \"capacity_limit\": 300,\n      \"allow_any_did_as_cli\": false,\n      \"status\": \"blocked\",\n      \"threshold_amount\": \"1000.0\",\n      \"default_dst_action\": \"allow_all\",\n      \"dst_prefixes\": [\n        \"23\",\n        \"45\"\n      ],\n      \"media_encryption_mode\": \"disabled\",\n      \"allowed_rtp_ips\": [\n        \"192.168.1.1\"\n      ],\n      \"force_symmetric_rtp\": true,\n      \"rtp_ping\": true\n    }\n  }\n}\n```\n\n###### Voice OUT trunk with Replace CLI\n\n``` json\n{\n  \"data\": {\n    \"id\": \"457bf47d-446d-41cd-91c3-dfbda7bf0753\",\n    \"type\": \"voice_out_trunks\",\n    \"attributes\": {\n      \"name\": \"Outbound trunk 99\",\n      \"allowed_sip_ips\": [\n        \"192.168.1.1\"\n      ],\n      \"on_cli_mismatch_action\": \"replace_cli\",\n      \"capacity_limit\": 300,\n      \"allow_any_did_as_cli\": true,\n      \"status\": \"active\",\n      \"threshold_amount\": \"1000.0\",\n      \"default_dst_action\": \"allow_all\",\n      \"dst_prefixes\": [\n        \"23\",\n        \"45\"\n      ],\n      \"media_encryption_mode\": \"disabled\",\n      \"allowed_rtp_ips\": [\n        \"192.168.1.1\"\n      ],\n      \"force_symmetric_rtp\": true,\n      \"rtp_ping\": true\n    },\n    \"relationships\": {\n      \"default_did\": {\n        \"data\": {\n          \"type\": \"dids\",\n          \"id\": \"e144b6a4-24d2-4ee4-8b13-07a04edc448b\"\n        }\n      }\n    }\n  }\n}\n```"
+								"description": "<h1 id=\"update-voice-out-trunk\"></h1>\n\nUpdates a Trunk.\n\n#### Request Body Scheme\n\n> `{`\n> \n> > **data** (*object, required*) `{`\n> > \n> > > **type** (*string, required*): **voice_out_trunks**  \n> > > Trunks\n> > \n> > > **id** (*string, required*)  \n> > > Unique ID identifier of Trunk.\n> > \n> > > **attributes** (*object, required*) `{`  \n> > > Trunk configuration complex object.\n> > > \n> > > > **name** (*string, required, NOT nullable*)  \n> > > > The voice out trunk name.\n> > > \n> > > > **allowed_sip_ips** (*array[string], required, NOT nullable*)  \n> > > > The allowed originating IPs. Array from 0 to 15 items: IP v4/v6 single or subnet.\n> > >  \n> > > > **allowed_rtp_ips** (*array[string], NOT required, nullable*)  \n> > > > The allowed RTP IPs. Array from 0 to 10 items: IP v4/v6 single or subnet.\n> > >  \n> > > > **on_cli_mismatch_action** (*enumerate[string], required, NOT nullable*): **send_original_cli**, **reject_call**  \n> > > > Possible values are:\n> > > > *send_original_cli* - the system will pass the `FROM` header value to the termination gateway.\n> > > > *reject_call* - the system will reject the call if the `FROM` header value does not match any of the allowed DIDs.\n> > >  \n> > > > **capacity_limit** (*integer, NOT required, nullable*): \n> > > > The capacity limit of the voice out trunk. Allowed values from 0 to 32767.\n> > >  \n> > > > **allow_any_did_as_cli** (*boolean, NOT required, NOT nullable*): \n> > > > When set to `True`, passed than DIDs relationship can not be set to explicit DIDs. if DIDs relationship is omitted in payload already linked DIDs will be automatically unassigned. \n> > > > Default value is `False`.\n> > >  \n> > > > **status** (*enumerate[string], NOT required, NOT nullable*): **active**, **blocked**\n> > > > Can be either: *active* or *blocked*. \n> > > > Default value is `active`.\n> > >  \n> > > > **threshold_amount** (*string, NOT required, NOT nullable*): \n> > > > The outbound trunk 24 hour threshold limit. Can be from 0.0 to 100000.0.\n> > >  \n> > > > **default_dst_action** (*enumerate[string], NOT required, NOT nullable*): **allow_all**, **reject_all**\n> > > > Can be either: *allow_all* or *reject_all*.\n> > > > Default value is `allow_all`.\n> > >  \n> > > > **dst_prefixes** (*array[string], NOT required, nullable*)\n> > > > The allowed destination prefixes.\n> > >  \n> > > > **media_encryption_mode** (*enumerate[string], NOT required, NOT nullable*): **disabled**, **srtp_sdes**, **srtp_dtls**, **zrtp**\n> > > > Media encryption mode.\n> > > > See [RFC4568 about SRTP SDES](https://datatracker.ietf.org/doc/html/rfc4568), [RFC5764 about SRTP DTLS](https://datatracker.ietf.org/doc/html/rfc5764), and [RFC6189 about ZRTP](https://datatracker.ietf.org/doc/html/rfc6189) for more details.\n> > > > Possible values:\n> > > > *disabled* - Disabled\n> > > > *srtp_sdes* - SRTP SDES\n> > > > *srtp_dtls* - SRTP DTLS\n> > > > *zrtp* - ZRTP\n> > >  \n> > > > **callback_url** (*string, NOT required, nullable*)\n> > > > Can be null or valid HTTP(s) URL.\n> > > \n> > > > **force_symmetric_rtp** (*boolean, NOT required, NOT nullable*)\n> > > > Forced to work in Symmetric RTP / COMEDIA mode.\n> > > > Default value is `false`.\n> > >  \n> > > > **rtp_ping** (*boolean, NOT required, NOT nullable*)\n> > > > Use RTP PING when connecting a call.\n> > > > After establishing the call, DIDWW will send empty RTP packet RTP PING.\n> > > > It is necessary if both parties operate in Symmetric RTP / Comedia mode and expect the other party to start sending RTP first.\n> > > > Default value is `false`.\n> > > \n> > > `}`\n> > \n> > > **relationships** (*object, optional*) `{`\n> > > \n> > > > **dids** (*object, optional*): [***to-many***](#updating-to-many-relationships)  \n> > > > Linkage for included [DID Object](#did-object)\n> > > > The DID numbers if `allow_any_did_as_cli` is set to `false`.\n> > > \n> > > `}`\n> > \n> > `}`\n> \n> `}`\n\n#### Request Body Example:\n\n###### Voice OUT trunk\n\n``` json\n{\n  \"data\": {\n    \"id\": \"457bf47d-446d-41cd-91c3-dfbda7bf0753\",\n    \"type\": \"voice_out_trunks\",\n    \"attributes\": {\n      \"name\": \"Outbound trunk 99\",\n      \"allowed_sip_ips\": [\n        \"192.168.1.1\"\n      ],\n      \"on_cli_mismatch_action\": \"send_original_cli\",\n      \"capacity_limit\": 300,\n      \"allow_any_did_as_cli\": false,\n      \"status\": \"blocked\",\n      \"threshold_amount\": \"1000.0\",\n      \"default_dst_action\": \"allow_all\",\n      \"dst_prefixes\": [\n        \"23\",\n        \"45\"\n      ],\n      \"media_encryption_mode\": \"disabled\",\n      \"allowed_rtp_ips\": [\n        \"192.168.1.1\"\n      ],\n      \"force_symmetric_rtp\": true,\n      \"rtp_ping\": true\n    }\n  }\n}\n```"
 							},
 							"response": [
 								{
@@ -17540,24 +17391,20 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.api+json",
-												"type": "text"
+												"value": "application/vnd.api+json"
 											},
 											{
 												"key": "Content-Type",
-												"name": "Content-Type",
-												"value": "application/vnd.api+json",
-												"type": "text"
+												"value": "application/vnd.api+json"
 											},
 											{
 												"key": "Api-Key",
-												"value": "yourDidwwApiKey",
-												"type": "text"
+												"value": "yourDidwwApiKey"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"data\": {\r\n        \"id\": \"457bf47d-446d-41cd-91c3-dfbda7bf0753\",\r\n        \"type\": \"voice_out_trunks\",\r\n        \"attributes\": {\r\n            \"name\": \"Outbound trunk 99\",\r\n            \"allowed_sip_ips\": [\r\n                \"192.168.1.1\"\r\n            ],\r\n            \"on_cli_mismatch_action\": \"replace_cli\",\r\n            \"capacity_limit\": 300,\r\n            \"allow_any_did_as_cli\": false,\r\n            \"status\": \"blocked\",\r\n            \"threshold_amount\": \"1000.0\",\r\n            \"default_dst_action\": \"allow_all\",\r\n            \"dst_prefixes\": [\r\n                \"23\",\r\n                \"45\"\r\n            ],\r\n            \"media_encryption_mode\": \"disabled\",\r\n            \"allowed_rtp_ips\": [\r\n                \"192.168.1.1\"\r\n            ],\r\n            \"force_symmetric_rtp\": true,\r\n            \"rtp_ping\": true\r\n        }\r\n    }\r\n}",
+											"raw": "{\r\n    \"data\": {\r\n        \"id\": \"457bf47d-446d-41cd-91c3-dfbda7bf0753\",\r\n        \"type\": \"voice_out_trunks\",\r\n        \"attributes\": {\r\n            \"name\": \"Outbound trunk 99\",\r\n            \"allowed_sip_ips\": [\r\n                \"192.168.1.1\"\r\n            ],\r\n            \"on_cli_mismatch_action\": \"send_original_cli\",\r\n            \"capacity_limit\": 300,\r\n            \"allow_any_did_as_cli\": false,\r\n            \"status\": \"blocked\",\r\n            \"threshold_amount\": \"1000.0\",\r\n            \"default_dst_action\": \"allow_all\",\r\n            \"dst_prefixes\": [\r\n                \"23\",\r\n                \"45\"\r\n            ],\r\n            \"media_encryption_mode\": \"disabled\",\r\n            \"allowed_rtp_ips\": [\r\n                \"192.168.1.1\"\r\n            ],\r\n            \"force_symmetric_rtp\": true,\r\n            \"rtp_ping\": true\r\n        }\r\n    }\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -17581,7 +17428,7 @@
 									},
 									"status": "OK",
 									"code": 200,
-									"_postman_previewlanguage": "json",
+									"_postman_previewlanguage": "Text",
 									"header": [
 										{
 											"key": "Server",
@@ -17665,141 +17512,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n  \"data\": {\n    \"id\": \"457bf47d-446d-41cd-91c3-dfbda7bf0753\",\n    \"type\": \"voice_out_trunks\",\n    \"attributes\": {\n      \"allowed_sip_ips\": [\n        \"192.168.1.1/32\"\n      ],\n      \"allowed_rtp_ips\": [\n        \"192.168.1.1/32\"\n      ],\n      \"allow_any_did_as_cli\": false,\n      \"status\": \"blocked\",\n      \"on_cli_mismatch_action\": \"replace_cli\",\n      \"name\": \"Outbound trunk 99\",\n      \"capacity_limit\": 300,\n      \"username\": \"91********\",\n      \"password\": \"zu********\",\n      \"created_at\": \"2022-05-10T18:59:28.875Z\",\n      \"threshold_reached\": false,\n      \"threshold_amount\": \"1000.0\",\n      \"media_encryption_mode\": \"disabled\",\n      \"default_dst_action\": \"allow_all\",\n      \"dst_prefixes\": [\n        \"23\",\n        \"45\"\n      ],\n      \"force_symmetric_rtp\": true,\n      \"rtp_ping\": true,\n      \"callback_url\": null\n    },\n    \"relationships\": {\n      \"default_did\": {\n        \"links\": {\n          \"self\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/relationships/default_did\",\n          \"related\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/default_did\"\n        }\n      },\n      \"dids\": {\n        \"links\": {\n          \"self\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/relationships/dids\",\n          \"related\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/dids\"\n        }\n      }\n    },\n    \"meta\": {\n      \"spent_amount\": \"0.0\"\n    }\n  },\n  \"meta\": {\n    \"api_version\": \"2022-05-10\"\n  }\n}"
-								},
-								{
-									"name": "200 OK (Setting Default DID)",
-									"originalRequest": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/vnd.api+json",
-												"type": "text"
-											},
-											{
-												"key": "Content-Type",
-												"name": "Content-Type",
-												"value": "application/vnd.api+json",
-												"type": "text"
-											},
-											{
-												"key": "Api-Key",
-												"value": "yourDidwwApiKey",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n  \"data\": {\r\n    \"id\": \"457bf47d-446d-41cd-91c3-dfbda7bf0753\",\r\n    \"type\": \"voice_out_trunks\",\r\n    \"attributes\": {\r\n      \"name\": \"Outbound trunk 99\",\r\n      \"allowed_sip_ips\": [\r\n        \"192.168.1.1\"\r\n      ],\r\n      \"on_cli_mismatch_action\": \"replace_cli\",\r\n      \"capacity_limit\": 300,\r\n      \"allow_any_did_as_cli\": true,\r\n      \"status\": \"active\",\r\n      \"threshold_amount\": \"1000.0\",\r\n      \"default_dst_action\": \"allow_all\",\r\n      \"dst_prefixes\": [\r\n        \"23\",\r\n        \"45\"\r\n      ],\r\n      \"media_encryption_mode\": \"disabled\",\r\n      \"allowed_rtp_ips\": [\r\n        \"192.168.1.1\"\r\n      ],\r\n      \"force_symmetric_rtp\": true,\r\n      \"rtp_ping\": true\r\n    },\r\n    \"relationships\": {\r\n      \"default_did\": {\r\n        \"data\": {\r\n          \"type\": \"dids\",\r\n          \"id\": \"e144b6a4-24d2-4ee4-8b13-07a04edc448b\"\r\n        }\r\n      }\r\n    }\r\n  }\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753",
-											"protocol": "https",
-											"host": [
-												"api",
-												"didww",
-												"com"
-											],
-											"path": [
-												"v3",
-												"voice_out_trunks",
-												"457bf47d-446d-41cd-91c3-dfbda7bf0753"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Server",
-											"value": "nginx"
-										},
-										{
-											"key": "Date",
-											"value": "Wed, 05 Jan 2022 19:03:08 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/vnd.api+json"
-										},
-										{
-											"key": "Transfer-Encoding",
-											"value": "chunked"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										},
-										{
-											"key": "X-Frame-Options",
-											"value": "SAMEORIGIN"
-										},
-										{
-											"key": "X-XSS-Protection",
-											"value": "1; mode=block"
-										},
-										{
-											"key": "X-Content-Type-Options",
-											"value": "nosniff"
-										},
-										{
-											"key": "X-Download-Options",
-											"value": "noopen"
-										},
-										{
-											"key": "X-Permitted-Cross-Domain-Policies",
-											"value": "none"
-										},
-										{
-											"key": "Referrer-Policy",
-											"value": "strict-origin-when-cross-origin"
-										},
-										{
-											"key": "Vary",
-											"value": "Accept"
-										},
-										{
-											"key": "ETag",
-											"value": "W/\"1147d6fe9b88d4c4a5cd3e949c235ca0\""
-										},
-										{
-											"key": "Cache-Control",
-											"value": "max-age=0, private, must-revalidate"
-										},
-										{
-											"key": "X-Request-Id",
-											"value": "3a7e0b5a-99ba-4d13-b5a3-245c026fe808"
-										},
-										{
-											"key": "X-Runtime",
-											"value": "0.131304"
-										},
-										{
-											"key": "Access-Control-Allow-Origin",
-											"value": "https://doc.in.didww.com"
-										},
-										{
-											"key": "Access-Control-Allow-Headers",
-											"value": "Origin, X-Requested-With, Content-Type, Accept, auth-key, x-api-key, api-key, x-api-token, x-admin-session-token, Cache-Control"
-										},
-										{
-											"key": "Access-Control-Allow-Methods",
-											"value": "GET, POST, DELETE, PUT, PATCH, OPTIONS"
-										},
-										{
-											"key": "Access-Control-Allow-Credentials",
-											"value": "true"
-										}
-									],
-									"cookie": [],
-									"body": "{\n   \"data\":    {\n      \"id\": \"457bf47d-446d-41cd-91c3-dfbda7bf0753\",\n      \"type\": \"voice_out_trunks\",\n      \"attributes\":       {\n         \"allowed_sip_ips\": [\"192.168.1.1/32\"],\n         \"allowed_rtp_ips\": [\"192.168.1.1/32\"],\n         \"allow_any_did_as_cli\": true,\n         \"status\": \"Active\",\n         \"on_cli_mismatch_action\": \"Replace CLI\",\n         \"name\": \"Outbound trunk 99\",\n         \"capacity_limit\": 300,\n         \"username\": \"91********\",\n         \"password\": \"zu********\",\n         \"created_at\": \"2021-12-01T18:59:28.875Z\",\n         \"threshold_reached\": false,\n         \"threshold_amount\": \"1000.0\",\n         \"media_encryption_mode\": \"Disable\",\n         \"default_dst_action\": \"Allow Calls\",\n         \"dst_prefixes\":          [\n            \"23\",\n            \"45\"\n         ],\n         \"force_symmetric_rtp\": true,\n         \"rtp_ping\": true,\n         \"callback_url\": \"http://10.201.10.1/test.php\"\n      },\n      \"relationships\":       {\n         \"default_did\": {\"links\":          {\n            \"self\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/relationships/default_did\",\n            \"related\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/default_did\"\n         }},\n         \"dids\": {\"links\":          {\n            \"self\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/relationships/dids\",\n            \"related\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/dids\"\n         }}\n  \"data\": {\n    \"id\": \"457bf47d-446d-41cd-91c3-dfbda7bf0753\",\n    \"type\": \"voice_out_trunks\",\n    \"attributes\": {\n      \"allowed_sip_ips\": [\n        \"192.168.1.1/32\"\n      ],\n      \"allowed_rtp_ips\": [\n        \"192.168.1.1/32\"\n      ],\n      \"allow_any_did_as_cli\": true,\n      \"status\": \"active\",\n      \"on_cli_mismatch_action\": \"replace_cli\",\n      \"name\": \"Outbound trunk 99\",\n      \"capacity_limit\": 300,\n      \"username\": \"91yunrdbeo\",\n      \"password\": \"zuh6dm9cwv\",\n      \"created_at\": \"2021-12-01T18:59:28.875Z\",\n      \"threshold_reached\": false,\n      \"threshold_amount\": \"1000.0\",\n      \"media_encryption_mode\": \"disabled\",\n      \"default_dst_action\": \"allow_all\",\n      \"dst_prefixes\": [\n        \"23\",\n        \"45\"\n      ],\n      \"force_symmetric_rtp\": true,\n      \"rtp_ping\": true,\n      \"callback_url\": \"http://10.201.10.1/test.php\"\n    },\n    \"relationships\": {\n      \"default_did\": {\n        \"links\": {\n          \"self\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/relationships/default_did\",\n          \"related\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/default_did\"\n        }\n      },\n      \"dids\": {\n        \"links\": {\n          \"self\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/relationships/dids\",\n          \"related\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/dids\"\n        }\n      }\n    },\n    \"meta\": {\n      \"spent_amount\": \"0.0\"\n    }\n  },\n  \"meta\": {\n    \"api_version\": \"2022-05-10\"\n  }\n}"
+									"body": "{\n  \"data\": {\n    \"id\": \"457bf47d-446d-41cd-91c3-dfbda7bf0753\",\n    \"type\": \"voice_out_trunks\",\n    \"attributes\": {\n      \"allowed_sip_ips\": [\n        \"192.168.1.1/32\"\n      ],\n      \"allowed_rtp_ips\": [\n        \"192.168.1.1/32\"\n      ],\n      \"allow_any_did_as_cli\": false,\n      \"status\": \"blocked\",\n      \"on_cli_mismatch_action\": \"send_original_cli\",\n      \"name\": \"Outbound trunk 99\",\n      \"capacity_limit\": 300,\n      \"username\": \"91********\",\n      \"password\": \"zu********\",\n      \"created_at\": \"2022-05-10T18:59:28.875Z\",\n      \"threshold_reached\": false,\n      \"threshold_amount\": \"1000.0\",\n      \"media_encryption_mode\": \"disabled\",\n      \"default_dst_action\": \"allow_all\",\n      \"dst_prefixes\": [\n        \"23\",\n        \"45\"\n      ],\n      \"force_symmetric_rtp\": true,\n      \"rtp_ping\": true,\n      \"callback_url\": null\n    },\n    \"relationships\": {\n      \"dids\": {\n        \"links\": {\n          \"self\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/relationships/dids\",\n          \"related\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/dids\"\n        }\n      }\n    },\n    \"meta\": {\n      \"spent_amount\": \"0.0\"\n    }\n  },\n  \"meta\": {\n    \"api_version\": \"2022-05-10\"\n  }\n}"
 								},
 								{
 									"name": "200 OK (Setting DIDs)",
@@ -17808,24 +17521,20 @@
 										"header": [
 											{
 												"key": "Accept",
-												"value": "application/vnd.api+json",
-												"type": "text"
+												"value": "application/vnd.api+json"
 											},
 											{
 												"key": "Content-Type",
-												"name": "Content-Type",
-												"value": "application/vnd.api+json",
-												"type": "text"
+												"value": "application/vnd.api+json"
 											},
 											{
 												"key": "Api-Key",
-												"value": "yourDidwwApiKey",
-												"type": "text"
+												"value": "yourDidwwApiKey"
 											}
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"data\": {\r\n        \"id\": \"291ef437-8896-4834-b0c2-eefaa0bbde98\",\r\n        \"type\": \"voice_out_trunks\",\r\n        \"attributes\": {\r\n            \"name\": \"Outbound trunk 99\",\r\n            \"allowed_sip_ips\": [\r\n                \"192.168.1.1\"\r\n            ],\r\n            \"on_cli_mismatch_action\": \"replace_cli\",\r\n            \"capacity_limit\": 300,\r\n            \"allow_any_did_as_cli\": true,\r\n            \"status\": \"blocked\",\r\n            \"threshold_amount\": \"1000.0\",\r\n            \"default_dst_action\": \"allow_all\",\r\n            \"dst_prefixes\": [\r\n                \"23\",\r\n                \"45\"\r\n            ],\r\n            \"media_encryption_mode\": \"disabled\",\r\n            \"allowed_rtp_ips\": [\r\n                \"192.168.1.1\"\r\n            ],\r\n            \"force_symmetric_rtp\": true,\r\n            \"callback_url\": \"http://10.201.10.1/test.php\",\r\n            \"rtp_ping\": true\r\n        },\r\n        \"relationships\": {\r\n            \"default_did\": {\r\n                \"data\": {\r\n                    \"type\": \"dids\",\r\n                    \"id\": \"7a6c177d-a054-4c75-9b4c-b1596ed6fa25\"\r\n                }\r\n            },\r\n            \"dids\": {\r\n                \"data\": [\r\n                    {\r\n                        \"type\": \"dids\",\r\n                        \"id\": \"7a6c177d-a054-4c75-9b4c-b1596ed6fa25\"\r\n                    }\r\n                ]\r\n            }\r\n        }\r\n    }\r\n}",
+											"raw": "{\r\n    \"data\": {\r\n        \"id\": \"291ef437-8896-4834-b0c2-eefaa0bbde98\",\r\n        \"type\": \"voice_out_trunks\",\r\n        \"attributes\": {\r\n            \"name\": \"Outbound trunk 99\",\r\n            \"allowed_sip_ips\": [\r\n                \"192.168.1.1\"\r\n            ],\r\n            \"on_cli_mismatch_action\": \"send_original_cli\",\r\n            \"capacity_limit\": 300,\r\n            \"allow_any_did_as_cli\": true,\r\n            \"status\": \"blocked\",\r\n            \"threshold_amount\": \"1000.0\",\r\n            \"default_dst_action\": \"allow_all\",\r\n            \"dst_prefixes\": [\r\n                \"23\",\r\n                \"45\"\r\n            ],\r\n            \"media_encryption_mode\": \"disabled\",\r\n            \"allowed_rtp_ips\": [\r\n                \"192.168.1.1\"\r\n            ],\r\n            \"force_symmetric_rtp\": true,\r\n            \"callback_url\": \"http://10.201.10.1/test.php\",\r\n            \"rtp_ping\": true\r\n        },\r\n        \"relationships\": {\r\n            \"dids\": {\r\n                \"data\": [\r\n                    {\r\n                        \"type\": \"dids\",\r\n                        \"id\": \"7a6c177d-a054-4c75-9b4c-b1596ed6fa25\"\r\n                    }\r\n                ]\r\n            }\r\n        }\r\n    }\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -17849,7 +17558,7 @@
 									},
 									"status": "OK",
 									"code": 200,
-									"_postman_previewlanguage": "json",
+									"_postman_previewlanguage": "Text",
 									"header": [
 										{
 											"key": "Server",
@@ -17933,7 +17642,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"data\": {\n        \"id\": \"291ef437-8896-4834-b0c2-eefaa0bbde98\",\n        \"type\": \"voice_out_trunks\",\n        \"attributes\": {\n            \"allowed_sip_ips\": [\n                \"192.168.1.1/32\"\n            ],\n            \"allowed_rtp_ips\": [\n                \"192.168.1.1/32\"\n            ],\n            \"allow_any_did_as_cli\": false,\n            \"status\": \"blocked\",\n            \"on_cli_mismatch_action\": \"replace_cli\",\n            \"name\": \"Outbound trunk 99\",\n            \"capacity_limit\": 300,\n            \"username\": \"e1********\",\n            \"password\": \"ke********\",\n            \"created_at\": \"2022-03-03T08:21:48.322Z\",\n            \"threshold_reached\": false,\n            \"threshold_amount\": \"1000.0\",\n            \"media_encryption_mode\": \"disabled\",\n            \"default_dst_action\": \"allow_all\",\n            \"dst_prefixes\": [\n                \"23\",\n                \"45\"\n            ],\n            \"force_symmetric_rtp\": true,\n            \"rtp_ping\": true,\n            \"callback_url\": \"http://10.201.10.1/test.php\"\n        },\n        \"relationships\": {\n            \"default_did\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/voice_out_trunks/291ef437-8896-4834-b0c2-eefaa0bbde98/relationships/default_did\",\n                    \"related\": \"https://api.didww.com/v3/voice_out_trunks/291ef437-8896-4834-b0c2-eefaa0bbde98/default_did\"\n                }\n            },\n            \"dids\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/voice_out_trunks/291ef437-8896-4834-b0c2-eefaa0bbde98/relationships/dids\",\n                    \"related\": \"https://api.didww.com/v3/voice_out_trunks/291ef437-8896-4834-b0c2-eefaa0bbde98/dids\"\n                }\n            }\n        },\n        \"meta\": {\n            \"spent_amount\": \"0.0\"\n        }\n    },\n    \"meta\": {\n        \"api_version\": \"2022-05-10\"\n    }\n}"
+									"body": "{\n    \"data\": {\n        \"id\": \"291ef437-8896-4834-b0c2-eefaa0bbde98\",\n        \"type\": \"voice_out_trunks\",\n        \"attributes\": {\n            \"allowed_sip_ips\": [\n                \"192.168.1.1/32\"\n            ],\n            \"allowed_rtp_ips\": [\n                \"192.168.1.1/32\"\n            ],\n            \"allow_any_did_as_cli\": false,\n            \"status\": \"blocked\",\n            \"on_cli_mismatch_action\": \"send_original_cli\",\n            \"name\": \"Outbound trunk 99\",\n            \"capacity_limit\": 300,\n            \"username\": \"e1********\",\n            \"password\": \"ke********\",\n            \"created_at\": \"2022-03-03T08:21:48.322Z\",\n            \"threshold_reached\": false,\n            \"threshold_amount\": \"1000.0\",\n            \"media_encryption_mode\": \"disabled\",\n            \"default_dst_action\": \"allow_all\",\n            \"dst_prefixes\": [\n                \"23\",\n                \"45\"\n            ],\n            \"force_symmetric_rtp\": true,\n            \"rtp_ping\": true,\n            \"callback_url\": \"http://10.201.10.1/test.php\"\n        },\n        \"relationships\": {\n            \"dids\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/voice_out_trunks/291ef437-8896-4834-b0c2-eefaa0bbde98/relationships/dids\",\n                    \"related\": \"https://api.didww.com/v3/voice_out_trunks/291ef437-8896-4834-b0c2-eefaa0bbde98/dids\"\n                }\n            }\n        },\n        \"meta\": {\n            \"spent_amount\": \"0.0\"\n        }\n    },\n    \"meta\": {\n        \"api_version\": \"2022-05-10\"\n    }\n}"
 								}
 							]
 						},
@@ -34372,7 +34081,7 @@
 				{
 					"name": "Voice OUT Trunk Object",
 					"item": [],
-					"description": "<h1 id=\"voice-out-trunk-object\"></h1>\n\n#### Model\n\n> `{`\n> \n> > **type** (*string*): **voice_out_trunks**  \n> > Trunks\n> \n> > **id** (*string*)  \n> > Unique ID identifier of Trunk.\n> \n> > **attributes** (*object*) `{`  \n> > Trunk configuration complex object.\n> > \n> > > **name** (*string, NOT nullable*)  \n> > > The voice out trunk name.\n> > \n> > > **allowed_sip_ips** (*array[string], NOT nullable*)  \n> > > The allowed originating IPs. Array from 0 to 15 items: IP v4/v6 single or subnet.\n> >  \n> > > **allowed_rtp_ips** (*array[string], nullable*)  \n> > > The allowed RTP IPs. Array from 0 to 10 items: IP v4/v6 single or subnet.\n> >  \n> > > **on_cli_mismatch_action** (*enumerate[string], NOT nullable*): **send_original_cli**, **replace_cli**, **reject_call**  \n> > > Possible values are:\n> > > *send_original_cli* - the system will pass the `FROM` header value to the termination gateway.\n> > > *replace_cli* - the system will replace the `FROM` header value to the specified value in default_did relationship.\n> > > *reject_call* - the system will reject the call if the `FROM` header value does not match any of the allowed DIDs.\n> >  \n> > > **capacity_limit** (*integer, nullable*): \n> > > The capacity limit of the voice out trunk. Allowed values from 0 to 32767.\n> >  \n> > > **allow_any_did_as_cli** (*boolean, NOT nullable*): \n> > > When set to `True`, passed than DIDs relationship can not be set to explicit DIDs. if DIDs relationship is omitted in payload already linked DIDs will be automatically unassigned. \n> > > Default value is `False`.\n> >  \n> > > **status** (*enumerate[string], NOT nullable*): **active**, **blocked**\n> > > Can be either: *active* or *blocked*. \n> > > Default value is `active`.\n> >  \n> > > **threshold_amount** (*string, NOT nullable*): \n> > > The outbound trunk 24 hour threshold limit. Can be from 0.0 to 100000.0.\n> >  \n> > > **default_dst_action** (*enumerate[string], NOT nullable*): **allow_all**, **reject_all**\n> > > Can be either: *allow_all* or *reject_all*.\n> > > Default value is `allow_all`.\n> >  \n> > > **dst_prefixes** (*array[string], nullable*)\n> > > The allowed destination prefixes.\n> >  \n> > > **media_encryption_mode** (*enumerate[string], NOT nullable*): **disabled**, **srtp_sdes**, **srtp_dtls**, **zrtp**\n> > > Media encryption mode.\n> > > See [RFC4568 about SRTP SDES](https://datatracker.ietf.org/doc/html/rfc4568), [RFC5764 about SRTP DTLS](https://datatracker.ietf.org/doc/html/rfc5764), and [RFC6189 about ZRTP](https://datatracker.ietf.org/doc/html/rfc6189) for more details.\n> > > Possible values:\n> > > *disabled* - Disabled\n> > > *srtp_sdes* - SRTP SDES\n> > > *srtp_dtls* - SRTP DTLS\n> > > *zrtp* - ZRTP\n> >  \n> > > **callback_url** (*string, nullable*)\n> > > Can be null or valid HTTP(s) URL.\n> >  \n> > > **username** (*string, NOT nullable*)\n> > > The username for digest [authentication method](https://datatracker.ietf.org/doc/html/rfc8760).\n> >  \n> > > **password** (*string, NOT nullable*)\n> > > The username for digest [authentication method](https://datatracker.ietf.org/doc/html/rfc8760).\n> >  \n> > > **threshold_reached** (*boolean, NOT nullable*)\n> > > The 24 hour limit indicator. If the threshold_amount has been reached during the 24 hours, this indicator will be `true`.\n> >  \n> > > **force_symmetric_rtp** (*boolean, NOT nullable*)\n> > > Forced to work in Symmetric RTP / COMEDIA mode.\n> >  \n> > > **rtp_ping** (*boolean, NOT nullable*)\n> > > Use RTP PING when connecting a call.\n> > > After establishing the call, DIDWW will send empty RTP packet RTP PING.\n> > > It is necessary if both parties operate in Symmetric RTP / Comedia mode and expect the other party to start sending RTP first.\n> > \n> > > **created_at** (*DateTime*)  \n> > > Voice Out Trunk created at DateTime.\n> >  \n> > `}`\n> \n> > **relationships** (*object*) `{`\n> > \n> > > **default_did** (*object*): ***to-one***\n> > > relationship to [DID Object](#did-object)\n> > > The DID number if `on_cli_mismatch_action` is set to `replace_cli`.\n> > \n> > > **dids** (*object*): ***to-many*** \n> > > relationship to [DID Object](#did-object)\n> > > The DID numbers if `allow_any_did_as_cli` is set to `false`.\n> > \n> > `}`\n>  \n> > **meta** (*object*) `{`\n> > \n> > > **spent_amount** (*string*):\n> > > amount of spent according to `threshold_amount`\n> > \n> > `}`\n>\n> `}`\n\n#### Example\n\n``` json\n{\n\t\"id\": \"457bf47d-446d-41cd-91c3-dfbda7bf0753\",\n\t\"type\": \"voice_out_trunks\",\n\t\"attributes\": {\n\t\t\"allowed_sip_ips\": [\n\t\t\t\"0.0.0.0/0\"\n\t\t],\n\t\t\"allowed_rtp_ips\": [\n\t\t\t\"0.0.0.0/0\"\n\t\t],\n\t\t\"allow_any_did_as_cli\": true,\n\t\t\"status\": \"active\",\n\t\t\"on_cli_mismatch_action\": \"replace_cli\",\n\t\t\"name\": \"Outbound trunk 1\",\n\t\t\"capacity_limit\": 100,\n\t\t\"username\": \"671******\",\n\t\t\"password\": \"3k0******\",\n\t\t\"created_at\": \"2022-05-10T18:59:28.875Z\",\n\t\t\"threshold_reached\": false,\n\t\t\"threshold_amount\": \"10000.0\",\n\t\t\"media_encryption_mode\": \"disabled\",\n\t\t\"default_dst_action\": \"allow_all\",\n\t\t\"dst_prefixes\": [],\n\t\t\"force_symmetric_rtp\": false,\n\t\t\"rtp_ping\": false,\n\t\t\"callback_url\": null\n\t},\n\t\"relationships\": {\n\t\t\"default_did\": {\n\t\t\t\"links\": {\n\t\t\t\t\"self\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/relationships/default_did\",\n\t\t\t\t\"related\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/default_did\"\n\t\t\t}\n\t\t},\n\t\t\"dids\": {\n\t\t\t\"links\": {\n\t\t\t\t\"self\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/relationships/dids\",\n\t\t\t\t\"related\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/dids\"\n\t\t\t}\n\t\t}\n\t},\n\t\"meta\": {\n\t\t\"spent_amount\": \"0.0\"\n\t}\n}\n```"
+					"description": "<h1 id=\"voice-out-trunk-object\"></h1>\n\n#### Model\n\n> `{`\n> \n> > **type** (*string*): **voice_out_trunks**  \n> > Trunks\n> \n> > **id** (*string*)  \n> > Unique ID identifier of Trunk.\n> \n> > **attributes** (*object*) `{`  \n> > Trunk configuration complex object.\n> > \n> > > **name** (*string, NOT nullable*)  \n> > > The voice out trunk name.\n> > \n> > > **allowed_sip_ips** (*array[string], NOT nullable*)  \n> > > The allowed originating IPs. Array from 0 to 15 items: IP v4/v6 single or subnet.\n> >  \n> > > **allowed_rtp_ips** (*array[string], nullable*)  \n> > > The allowed RTP IPs. Array from 0 to 10 items: IP v4/v6 single or subnet.\n> >  \n> > > **on_cli_mismatch_action** (*enumerate[string], NOT nullable*): **send_original_cli**, **reject_call**  \n> > > Possible values are:\n> > > *send_original_cli* - the system will pass the `FROM` header value to the termination gateway.\n> > > *reject_call* - the system will reject the call if the `FROM` header value does not match any of the allowed DIDs.\n> >  \n> > > **capacity_limit** (*integer, nullable*): \n> > > The capacity limit of the voice out trunk. Allowed values from 0 to 32767.\n> >  \n> > > **allow_any_did_as_cli** (*boolean, NOT nullable*): \n> > > When set to `True`, passed than DIDs relationship can not be set to explicit DIDs. if DIDs relationship is omitted in payload already linked DIDs will be automatically unassigned. \n> > > Default value is `False`.\n> >  \n> > > **status** (*enumerate[string], NOT nullable*): **active**, **blocked**\n> > > Can be either: *active* or *blocked*. \n> > > Default value is `active`.\n> >  \n> > > **threshold_amount** (*string, NOT nullable*): \n> > > The outbound trunk 24 hour threshold limit. Can be from 0.0 to 100000.0.\n> >  \n> > > **default_dst_action** (*enumerate[string], NOT nullable*): **allow_all**, **reject_all**\n> > > Can be either: *allow_all* or *reject_all*.\n> > > Default value is `allow_all`.\n> >  \n> > > **dst_prefixes** (*array[string], nullable*)\n> > > The allowed destination prefixes.\n> >  \n> > > **media_encryption_mode** (*enumerate[string], NOT nullable*): **disabled**, **srtp_sdes**, **srtp_dtls**, **zrtp**\n> > > Media encryption mode.\n> > > See [RFC4568 about SRTP SDES](https://datatracker.ietf.org/doc/html/rfc4568), [RFC5764 about SRTP DTLS](https://datatracker.ietf.org/doc/html/rfc5764), and [RFC6189 about ZRTP](https://datatracker.ietf.org/doc/html/rfc6189) for more details.\n> > > Possible values:\n> > > *disabled* - Disabled\n> > > *srtp_sdes* - SRTP SDES\n> > > *srtp_dtls* - SRTP DTLS\n> > > *zrtp* - ZRTP\n> >  \n> > > **callback_url** (*string, nullable*)\n> > > Can be null or valid HTTP(s) URL.\n> >  \n> > > **username** (*string, NOT nullable*)\n> > > The username for digest [authentication method](https://datatracker.ietf.org/doc/html/rfc8760).\n> >  \n> > > **password** (*string, NOT nullable*)\n> > > The username for digest [authentication method](https://datatracker.ietf.org/doc/html/rfc8760).\n> >  \n> > > **threshold_reached** (*boolean, NOT nullable*)\n> > > The 24 hour limit indicator. If the threshold_amount has been reached during the 24 hours, this indicator will be `true`.\n> >  \n> > > **force_symmetric_rtp** (*boolean, NOT nullable*)\n> > > Forced to work in Symmetric RTP / COMEDIA mode.\n> >  \n> > > **rtp_ping** (*boolean, NOT nullable*)\n> > > Use RTP PING when connecting a call.\n> > > After establishing the call, DIDWW will send empty RTP packet RTP PING.\n> > > It is necessary if both parties operate in Symmetric RTP / Comedia mode and expect the other party to start sending RTP first.\n> > \n> > > **created_at** (*DateTime*)  \n> > > Voice Out Trunk created at DateTime.\n> >  \n> > `}`\n> \n> > **relationships** (*object*) `{`\n> > \n> > > **dids** (*object*): ***to-many*** \n> > > relationship to [DID Object](#did-object)\n> > > The DID numbers if `allow_any_did_as_cli` is set to `false`.\n> > \n> > `}`\n>  \n> > **meta** (*object*) `{`\n> > \n> > > **spent_amount** (*string*):\n> > > amount of spent according to `threshold_amount`\n> > \n> > `}`\n>\n> `}`\n\n#### Example\n\n``` json\n{\n\t\"id\": \"457bf47d-446d-41cd-91c3-dfbda7bf0753\",\n\t\"type\": \"voice_out_trunks\",\n\t\"attributes\": {\n\t\t\"allowed_sip_ips\": [\n\t\t\t\"0.0.0.0/0\"\n\t\t],\n\t\t\"allowed_rtp_ips\": [\n\t\t\t\"0.0.0.0/0\"\n\t\t],\n\t\t\"allow_any_did_as_cli\": true,\n\t\t\"status\": \"active\",\n\t\t\"on_cli_mismatch_action\": \"send_original_cli\",\n\t\t\"name\": \"Outbound trunk 1\",\n\t\t\"capacity_limit\": 100,\n\t\t\"username\": \"671******\",\n\t\t\"password\": \"3k0******\",\n\t\t\"created_at\": \"2022-05-10T18:59:28.875Z\",\n\t\t\"threshold_reached\": false,\n\t\t\"threshold_amount\": \"10000.0\",\n\t\t\"media_encryption_mode\": \"disabled\",\n\t\t\"default_dst_action\": \"allow_all\",\n\t\t\"dst_prefixes\": [],\n\t\t\"force_symmetric_rtp\": false,\n\t\t\"rtp_ping\": false,\n\t\t\"callback_url\": null\n\t},\n\t\"relationships\": {\n\t\t\"dids\": {\n\t\t\t\"links\": {\n\t\t\t\t\"self\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/relationships/dids\",\n\t\t\t\t\"related\": \"https://api.didww.com/v3/voice_out_trunks/457bf47d-446d-41cd-91c3-dfbda7bf0753/dids\"\n\t\t\t}\n\t\t}\n\t},\n\t\"meta\": {\n\t\t\"spent_amount\": \"0.0\"\n\t}\n}\n```"
 				},
 				{
 					"name": "Capacity Pool Object",
