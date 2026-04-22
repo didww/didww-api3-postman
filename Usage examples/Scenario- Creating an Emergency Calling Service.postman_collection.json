@@ -1,0 +1,1519 @@
+{
+  "info": {
+    "_postman_id": "5ea64c6b-21be-43b4-9305-131c0438742f",
+    "name": "Scenario: Creating an Emergency Calling Service",
+    "description": "To do this you need to find DIDs that support emergency calling and are not yet assigned to any Emergency Calling Service. Check the Emergency Requirements for the country and DID Group Type to understand what identity and address details are required. Select or create an Identity and Address that meets the requirements, then create an Emergency Verification. A new Emergency Calling Service will be created automatically.\n\n> ### Attention\n>\n> Requests should be run one-by-one on real environment for real values usage\n\nSteps 4 and 6 are **optional** — run them only if you need to create a new Identity or Address. If you already have an existing Identity and Address, skip those steps.\n\n#### Environment variables\n\n| Name | Description |\n| --- | --- |\n| `host` | API host |\n| `apiKey` | Your DIDWW API key |\n\n#### Collection variables\n\n| Name | Description |\n| --- | --- |\n| `did.id` | DID id available for emergency registration |\n| `did_group.id` | DID Group id extracted from the selected DID |\n| `country.id` | Country id extracted from the selected DID Group |\n| `did_group_type.id` | DID Group Type id extracted from the selected DID Group |\n| `emergency_requirement.id` | Emergency Requirement id for the selected country and DID Group Type |\n| `identity.id` | Identity id to use for emergency verification |\n| `address.id` | Address id linked to the selected identity |\n| `emergency_verification.id` | Created Emergency Verification id |\n| `emergency_calling_service.id` | Emergency Calling Service id created automatically |",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get DIDs",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"DID available for Emergency Calling Service exist\", function () {",
+              "    const response = pm.response.json();",
+              "",
+              "    pm.expect(response.data).to.be.an('array')",
+              "    pm.expect(response.data.length).to.be.greaterThan(0)",
+              "",
+              "    // find first DID with no emergency calling service assigned",
+              "    const did = response.data.find(d => {",
+              "        const rel = d.relationships && d.relationships.emergency_calling_service;",
+              "        return rel && rel.data === null;",
+              "    });",
+              "",
+              "    pm.expect(did).is.not.undefined",
+              "",
+              "    // set collection variable values if test successful",
+              "    pm.collectionVariables.set('did.id', did.id);",
+              "",
+              "    // if DID has identity assigned, use it; otherwise will be selected in Get Identities step",
+              "    const identityData = did.relationships && did.relationships.identity && did.relationships.identity.data;",
+              "    if (identityData) {",
+              "        pm.collectionVariables.set('identity.id', identityData.id);",
+              "    }",
+              "",
+              "    // extract country.id and did_group_type.id from included",
+              "    const didGroup = response.included && response.included.find(i => i.type === \"did_groups\" && i.id === did.relationships.did_group.data.id);",
+              "    if (didGroup) {",
+              "        pm.collectionVariables.set('did_group.id', didGroup.id);",
+              "        const countryData = didGroup.relationships && didGroup.relationships.country && didGroup.relationships.country.data;",
+              "        if (countryData) {",
+              "            pm.collectionVariables.set('country.id', countryData.id);",
+              "        }",
+              "        const dgtData = didGroup.relationships && didGroup.relationships.did_group_type && didGroup.relationships.did_group_type.data;",
+              "        if (dgtData) {",
+              "            pm.collectionVariables.set('did_group_type.id', dgtData.id);",
+              "        }",
+              "    }",
+              "",
+              "    // proceed next request in Collection Runner if test successful",
+              "    postman.setNextRequest(\"Get Emergency Requirements\");",
+              "});",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Api-Key",
+            "value": "{{apiKey}}",
+            "type": "text"
+          }
+        ],
+        "description": "<h1 id=\"get-dids\"></h1>\n\nReturns a list of DIDs owned by your account that support emergency calling and do not have it enabled yet. The response includes the related DID Group, Country, DID Group Type, Identity (if assigned), Emergency Calling Service (to check if already assigned), and Address Verification (if exists).",
+        "url": {
+          "raw": "https://{{host}}/v3/dids?filter[did_group.features]=emergency&filter[emergency_enabled]=false&include=did_group,did_group.country,did_group.did_group_type,identity,emergency_calling_service,address_verification",
+          "protocol": "https",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "v3",
+            "dids"
+          ],
+          "query": [
+            {
+              "key": "filter[did_group.features]",
+              "value": "emergency",
+              "description": "`string` - Filters by the did_group.features field.\n* **Allow blank** - *No*.\n* **Allow array** - *Yes*."
+            },
+            {
+              "key": "filter[emergency_enabled]",
+              "value": "false",
+              "description": "`boolean` - Filters by the `emergency_enabled` field.\n* **Allow blank** - *No*.\n* **Allow array** - *No*."
+            },
+            {
+              "key": "include",
+              "value": "did_group,did_group.country,did_group.did_group_type,identity,emergency_calling_service,address_verification",
+              "description": "Comma-separated values of include parameter."
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "200 Ok (DID without Identity)",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Api-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://api.didww.com/v3/dids?filter[did_group.features]=emergency&filter[emergency_enabled]=false&include=did_group,did_group.country,did_group.did_group_type,identity,emergency_calling_service,address_verification",
+              "protocol": "https",
+              "host": [
+                "api.didww.com"
+              ],
+              "path": [
+                "v3",
+                "dids"
+              ],
+              "query": [
+                {
+                  "key": "filter[did_group.features]",
+                  "value": "emergency"
+                },
+                {
+                  "key": "filter[emergency_enabled]",
+                  "value": "false"
+                },
+                {
+                  "key": "include",
+                  "value": "did_group,did_group.country,did_group.did_group_type,identity,emergency_calling_service,address_verification"
+                }
+              ]
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/vnd.api+json",
+              "enabled": true
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"data\": [\n        {\n            \"id\": \"b1a2c3d4-e5f6-7890-abcd-111111111111\",\n            \"type\": \"dids\",\n            \"attributes\": {\n                \"blocked\": false,\n                \"capacity_limit\": 1,\n                \"description\": null,\n                \"terminated\": false,\n                \"awaiting_registration\": false,\n                \"number\": \"13125550002\",\n                \"expires_at\": \"2027-06-25T08:21:41.795Z\",\n                \"channels_included_count\": 2,\n                \"created_at\": \"2024-06-25T08:21:41.795Z\",\n                \"pending_removal\": false,\n                \"dedicated_channels_count\": 0,\n                \"emergency_enabled\": false\n            },\n            \"relationships\": {\n                \"did_group\": {\n                    \"data\": {\n                        \"type\": \"did_groups\",\n                        \"id\": \"6efec87f-3a0f-4839-a767-ee6d846b5f46\"\n                    },\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/relationships/did_group\",\n                        \"related\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/did_group\"\n                    }\n                },\n                \"order\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/relationships/order\",\n                        \"related\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/order\"\n                    }\n                },\n                \"voice_in_trunk\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/relationships/voice_in_trunk\",\n                        \"related\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/voice_in_trunk\"\n                    }\n                },\n                \"voice_in_trunk_group\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/relationships/voice_in_trunk_group\",\n                        \"related\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/voice_in_trunk_group\"\n                    }\n                },\n                \"capacity_pool\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/relationships/capacity_pool\",\n                        \"related\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/capacity_pool\"\n                    }\n                },\n                \"shared_capacity_group\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/relationships/shared_capacity_group\",\n                        \"related\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/shared_capacity_group\"\n                    }\n                },\n                \"address_verification\": {\n                    \"data\": null,\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/relationships/address_verification\",\n                        \"related\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/address_verification\"\n                    }\n                },\n                \"emergency_calling_service\": {\n                    \"data\": null,\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/relationships/emergency_calling_service\",\n                        \"related\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/emergency_calling_service\"\n                    }\n                },\n                \"emergency_verification\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/relationships/emergency_verification\",\n                        \"related\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/emergency_verification\"\n                    }\n                },\n                \"identity\": {\n                    \"data\": null,\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/relationships/identity\",\n                        \"related\": \"https://api.didww.com/v3/dids/b1a2c3d4-e5f6-7890-abcd-111111111111/identity\"\n                    }\n                }\n            }\n        }\n    ],\n    \"included\": [\n        {\n            \"id\": \"6efec87f-3a0f-4839-a767-ee6d846b5f46\",\n            \"type\": \"did_groups\",\n            \"attributes\": {\n                \"prefix\": \"312\",\n                \"features\": [\n                    \"voice_in\",\n                    \"p2p\",\n                    \"a2p\",\n                    \"emergency\"\n                ],\n                \"is_metered\": false,\n                \"area_name\": \"Chicago\",\n                \"allow_additional_channels\": true,\n                \"service_restrictions\": null\n            },\n            \"relationships\": {\n                \"country\": {\n                    \"data\": {\n                        \"type\": \"countries\",\n                        \"id\": \"f0ce4464-dfeb-412f-8ad1-ee27a858d0c2\"\n                    },\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/relationships/country\",\n                        \"related\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/country\"\n                    }\n                },\n                \"city\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/relationships/city\",\n                        \"related\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/city\"\n                    }\n                },\n                \"did_group_type\": {\n                    \"data\": {\n                        \"type\": \"did_group_types\",\n                        \"id\": \"994ea201-4a4d-4b27-ac4b-b5916ac969a3\"\n                    },\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/relationships/did_group_type\",\n                        \"related\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/did_group_type\"\n                    }\n                },\n                \"region\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/relationships/region\",\n                        \"related\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/region\"\n                    }\n                },\n                \"stock_keeping_units\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/relationships/stock_keeping_units\",\n                        \"related\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/stock_keeping_units\"\n                    }\n                },\n                \"address_requirement\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/relationships/address_requirement\",\n                        \"related\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/address_requirement\"\n                    }\n                }\n            },\n            \"meta\": {\n                \"available_dids_enabled\": true,\n                \"needs_registration\": false,\n                \"is_available\": true,\n                \"total_count\": 5\n            }\n        },\n        {\n            \"id\": \"f0ce4464-dfeb-412f-8ad1-ee27a858d0c2\",\n            \"type\": \"countries\",\n            \"attributes\": {\n                \"name\": \"United States\",\n                \"prefix\": \"1\",\n                \"iso\": \"US\"\n            },\n            \"relationships\": {\n                \"regions\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/countries/f0ce4464-dfeb-412f-8ad1-ee27a858d0c2/relationships/regions\",\n                        \"related\": \"https://api.didww.com/v3/countries/f0ce4464-dfeb-412f-8ad1-ee27a858d0c2/regions\"\n                    }\n                }\n            }\n        },\n        {\n            \"id\": \"994ea201-4a4d-4b27-ac4b-b5916ac969a3\",\n            \"type\": \"did_group_types\",\n            \"attributes\": {\n                \"name\": \"Local\"\n            }\n        }\n    ],\n    \"links\": {\n        \"first\": \"https://api.didww.com/v3/dids?filter%5Bdid_group.features%5D=emergency&filter%5Bemergency_enabled%5D=false&include=did_group%2Cdid_group.country%2Cdid_group.did_group_type%2Cidentity%2Cemergency_calling_service%2Caddress_verification&page%5Bnumber%5D=1&page%5Bsize%5D=10\",\n        \"last\": \"https://api.didww.com/v3/dids?filter%5Bdid_group.features%5D=emergency&filter%5Bemergency_enabled%5D=false&include=did_group%2Cdid_group.country%2Cdid_group.did_group_type%2Cidentity%2Cemergency_calling_service%2Caddress_verification&page%5Bnumber%5D=1&page%5Bsize%5D=10\"\n    },\n    \"meta\": {\n        \"total_records\": 1,\n        \"api_version\": \"2026-04-16\"\n    }\n}"
+        },
+        {
+          "name": "200 Ok (DID with Identity from End User Registration)",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Api-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://api.didww.com/v3/dids?filter[did_group.features]=emergency&filter[emergency_enabled]=false&include=did_group,did_group.country,did_group.did_group_type,identity,emergency_calling_service,address_verification",
+              "protocol": "https",
+              "host": [
+                "api.didww.com"
+              ],
+              "path": [
+                "v3",
+                "dids"
+              ],
+              "query": [
+                {
+                  "key": "filter[did_group.features]",
+                  "value": "emergency"
+                },
+                {
+                  "key": "filter[emergency_enabled]",
+                  "value": "false"
+                },
+                {
+                  "key": "include",
+                  "value": "did_group,did_group.country,did_group.did_group_type,identity,emergency_calling_service,address_verification"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/vnd.api+json",
+              "enabled": true
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"data\": [\n        {\n            \"id\": \"f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c\",\n            \"type\": \"dids\",\n            \"attributes\": {\n                \"blocked\": false,\n                \"capacity_limit\": 1,\n                \"description\": \"string\",\n                \"terminated\": false,\n                \"awaiting_registration\": false,\n                \"number\": \"13125550001\",\n                \"expires_at\": \"2027-06-25T08:21:41.795Z\",\n                \"channels_included_count\": 2,\n                \"created_at\": \"2024-06-25T08:21:41.795Z\",\n                \"pending_removal\": false,\n                \"dedicated_channels_count\": 0,\n                \"emergency_enabled\": false\n            },\n            \"relationships\": {\n                \"did_group\": {\n                    \"data\": {\n                        \"type\": \"did_groups\",\n                        \"id\": \"6efec87f-3a0f-4839-a767-ee6d846b5f46\"\n                    },\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/relationships/did_group\",\n                        \"related\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/did_group\"\n                    }\n                },\n                \"order\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/relationships/order\",\n                        \"related\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/order\"\n                    }\n                },\n                \"voice_in_trunk\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/relationships/voice_in_trunk\",\n                        \"related\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/voice_in_trunk\"\n                    }\n                },\n                \"voice_in_trunk_group\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/relationships/voice_in_trunk_group\",\n                        \"related\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/voice_in_trunk_group\"\n                    }\n                },\n                \"capacity_pool\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/relationships/capacity_pool\",\n                        \"related\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/capacity_pool\"\n                    }\n                },\n                \"shared_capacity_group\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/relationships/shared_capacity_group\",\n                        \"related\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/shared_capacity_group\"\n                    }\n                },\n                \"address_verification\": {\n                    \"data\": {\n                        \"type\": \"address_verifications\",\n                        \"id\": \"c8e004b0-87ec-4987-b4fb-ee89db099f0e\"\n                    },\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/relationships/address_verification\",\n                        \"related\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/address_verification\"\n                    }\n                },\n                \"emergency_calling_service\": {\n                    \"data\": null,\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/relationships/emergency_calling_service\",\n                        \"related\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/emergency_calling_service\"\n                    }\n                },\n                \"emergency_verification\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/relationships/emergency_verification\",\n                        \"related\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/emergency_verification\"\n                    }\n                },\n                \"identity\": {\n                    \"data\": {\n                        \"type\": \"identities\",\n                        \"id\": \"0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c\"\n                    },\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/relationships/identity\",\n                        \"related\": \"https://api.didww.com/v3/dids/f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c/identity\"\n                    }\n                }\n            }\n        }\n    ],\n    \"included\": [\n        {\n            \"id\": \"6efec87f-3a0f-4839-a767-ee6d846b5f46\",\n            \"type\": \"did_groups\",\n            \"attributes\": {\n                \"prefix\": \"312\",\n                \"features\": [\n                    \"voice_in\",\n                    \"p2p\",\n                    \"a2p\",\n                    \"emergency\"\n                ],\n                \"is_metered\": false,\n                \"area_name\": \"Chicago\",\n                \"allow_additional_channels\": true,\n                \"service_restrictions\": null\n            },\n            \"relationships\": {\n                \"country\": {\n                    \"data\": {\n                        \"type\": \"countries\",\n                        \"id\": \"f0ce4464-dfeb-412f-8ad1-ee27a858d0c2\"\n                    },\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/relationships/country\",\n                        \"related\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/country\"\n                    }\n                },\n                \"city\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/relationships/city\",\n                        \"related\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/city\"\n                    }\n                },\n                \"did_group_type\": {\n                    \"data\": {\n                        \"type\": \"did_group_types\",\n                        \"id\": \"994ea201-4a4d-4b27-ac4b-b5916ac969a3\"\n                    },\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/relationships/did_group_type\",\n                        \"related\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/did_group_type\"\n                    }\n                },\n                \"region\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/relationships/region\",\n                        \"related\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/region\"\n                    }\n                },\n                \"stock_keeping_units\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/relationships/stock_keeping_units\",\n                        \"related\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/stock_keeping_units\"\n                    }\n                },\n                \"address_requirement\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/relationships/address_requirement\",\n                        \"related\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/address_requirement\"\n                    }\n                }\n            },\n            \"meta\": {\n                \"available_dids_enabled\": true,\n                \"needs_registration\": false,\n                \"is_available\": true,\n                \"total_count\": 5\n            }\n        },\n        {\n            \"id\": \"f0ce4464-dfeb-412f-8ad1-ee27a858d0c2\",\n            \"type\": \"countries\",\n            \"attributes\": {\n                \"name\": \"United States\",\n                \"prefix\": \"1\",\n                \"iso\": \"US\"\n            },\n            \"relationships\": {\n                \"regions\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/countries/f0ce4464-dfeb-412f-8ad1-ee27a858d0c2/relationships/regions\",\n                        \"related\": \"https://api.didww.com/v3/countries/f0ce4464-dfeb-412f-8ad1-ee27a858d0c2/regions\"\n                    }\n                }\n            }\n        },\n        {\n            \"id\": \"994ea201-4a4d-4b27-ac4b-b5916ac969a3\",\n            \"type\": \"did_group_types\",\n            \"attributes\": {\n                \"name\": \"Local\"\n            }\n        },\n        {\n            \"id\": \"0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c\",\n            \"type\": \"identities\",\n            \"attributes\": {\n                \"first_name\": \"Jane\",\n                \"last_name\": \"Smith\",\n                \"phone_number\": \"15551234567\",\n                \"id_number\": \"0000000000\",\n                \"birth_date\": \"2000-01-01\",\n                \"company_name\": null,\n                \"company_reg_number\": null,\n                \"vat_id\": null,\n                \"description\": \"Personal details\",\n                \"personal_tax_id\": null,\n                \"identity_type\": \"personal\",\n                \"created_at\": \"2020-09-14T07:29:41.393Z\",\n                \"external_reference_id\": null,\n                \"verified\": false,\n                \"contact_email\": \"jane@example.com\"\n            },\n            \"relationships\": {\n                \"country\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/identities/0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c/relationships/country\",\n                        \"related\": \"https://api.didww.com/v3/identities/0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c/country\"\n                    }\n                },\n                \"proofs\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/identities/0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c/relationships/proofs\",\n                        \"related\": \"https://api.didww.com/v3/identities/0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c/proofs\"\n                    }\n                },\n                \"addresses\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/identities/0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c/relationships/addresses\",\n                        \"related\": \"https://api.didww.com/v3/identities/0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c/addresses\"\n                    }\n                },\n                \"permanent_documents\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/identities/0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c/relationships/permanent_documents\",\n                        \"related\": \"https://api.didww.com/v3/identities/0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c/permanent_documents\"\n                    }\n                }\n            }\n        },\n        {\n            \"id\": \"c8e004b0-87ec-4987-b4fb-ee89db099f0e\",\n            \"type\": \"address_verifications\",\n            \"attributes\": {\n                \"external_reference_id\": null,\n                \"service_description\": null,\n                \"callback_url\": null,\n                \"callback_method\": null,\n                \"status\": \"approved\",\n                \"reject_reasons\": [],\n                \"reject_comment\": null,\n                \"reference\": \"SHB-485120\",\n                \"created_at\": \"2020-09-15T06:38:12.650Z\"\n            },\n            \"relationships\": {\n                \"dids\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/address_verifications/c8e004b0-87ec-4987-b4fb-ee89db099f0e/relationships/dids\",\n                        \"related\": \"https://api.didww.com/v3/address_verifications/c8e004b0-87ec-4987-b4fb-ee89db099f0e/dids\"\n                    }\n                },\n                \"address\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/address_verifications/c8e004b0-87ec-4987-b4fb-ee89db099f0e/relationships/address\",\n                        \"related\": \"https://api.didww.com/v3/address_verifications/c8e004b0-87ec-4987-b4fb-ee89db099f0e/address\"\n                    }\n                },\n                \"identity\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/address_verifications/c8e004b0-87ec-4987-b4fb-ee89db099f0e/relationships/identity\",\n                        \"related\": \"https://api.didww.com/v3/address_verifications/c8e004b0-87ec-4987-b4fb-ee89db099f0e/identity\"\n                    }\n                }\n            }\n        }\n    ],\n    \"meta\": {\n        \"total_records\": 1,\n        \"api_version\": \"2026-04-16\"\n    },\n    \"links\": {\n        \"first\": \"https://api.didww.com/v3/dids?filter%5Bdid_group.features%5D=emergency&filter%5Bemergency_enabled%5D=false&include=did_group%2Cdid_group.country%2Cdid_group.did_group_type%2Cidentity%2Cemergency_calling_service%2Caddress_verification&page%5Bnumber%5D=1&page%5Bsize%5D=50\",\n        \"last\": \"https://api.didww.com/v3/dids?filter%5Bdid_group.features%5D=emergency&filter%5Bemergency_enabled%5D=false&include=did_group%2Cdid_group.country%2Cdid_group.did_group_type%2Cidentity%2Cemergency_calling_service%2Caddress_verification&page%5Bnumber%5D=1&page%5Bsize%5D=50\"\n    }\n}"
+        },
+        {
+          "name": "200 Ok (DID with Porting Identity)",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Api-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://api.didww.com/v3/dids?filter[did_group.features]=emergency&filter[emergency_enabled]=false&include=did_group,did_group.country,did_group.did_group_type,identity,emergency_calling_service,address_verification",
+              "protocol": "https",
+              "host": [
+                "api.didww.com"
+              ],
+              "path": [
+                "v3",
+                "dids"
+              ],
+              "query": [
+                {
+                  "key": "filter[did_group.features]",
+                  "value": "emergency"
+                },
+                {
+                  "key": "filter[emergency_enabled]",
+                  "value": "false"
+                },
+                {
+                  "key": "include",
+                  "value": "did_group,did_group.country,did_group.did_group_type,identity,emergency_calling_service,address_verification"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/vnd.api+json",
+              "enabled": true
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"data\": [\n        {\n            \"id\": \"c3d4e5f6-a7b8-9012-cdef-222222222222\",\n            \"type\": \"dids\",\n            \"attributes\": {\n                \"blocked\": false,\n                \"capacity_limit\": 1,\n                \"description\": \"string\",\n                \"terminated\": false,\n                \"awaiting_registration\": false,\n                \"number\": \"13125550003\",\n                \"expires_at\": \"2027-06-25T08:21:41.795Z\",\n                \"channels_included_count\": 2,\n                \"created_at\": \"2024-06-25T08:21:41.795Z\",\n                \"pending_removal\": false,\n                \"dedicated_channels_count\": 0,\n                \"emergency_enabled\": false\n            },\n            \"relationships\": {\n                \"did_group\": {\n                    \"data\": {\n                        \"type\": \"did_groups\",\n                        \"id\": \"6efec87f-3a0f-4839-a767-ee6d846b5f46\"\n                    },\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/relationships/did_group\",\n                        \"related\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/did_group\"\n                    }\n                },\n                \"order\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/relationships/order\",\n                        \"related\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/order\"\n                    }\n                },\n                \"voice_in_trunk\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/relationships/voice_in_trunk\",\n                        \"related\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/voice_in_trunk\"\n                    }\n                },\n                \"voice_in_trunk_group\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/relationships/voice_in_trunk_group\",\n                        \"related\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/voice_in_trunk_group\"\n                    }\n                },\n                \"capacity_pool\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/relationships/capacity_pool\",\n                        \"related\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/capacity_pool\"\n                    }\n                },\n                \"shared_capacity_group\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/relationships/shared_capacity_group\",\n                        \"related\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/shared_capacity_group\"\n                    }\n                },\n                \"address_verification\": {\n                    \"data\": null,\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/relationships/address_verification\",\n                        \"related\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/address_verification\"\n                    }\n                },\n                \"emergency_calling_service\": {\n                    \"data\": null,\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/relationships/emergency_calling_service\",\n                        \"related\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/emergency_calling_service\"\n                    }\n                },\n                \"emergency_verification\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/relationships/emergency_verification\",\n                        \"related\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/emergency_verification\"\n                    }\n                },\n                \"identity\": {\n                    \"data\": {\n                        \"type\": \"identities\",\n                        \"id\": \"7a8b9c0d-1e2f-3456-abcd-999999999999\"\n                    },\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/relationships/identity\",\n                        \"related\": \"https://api.didww.com/v3/dids/c3d4e5f6-a7b8-9012-cdef-222222222222/identity\"\n                    }\n                }\n            }\n        }\n    ],\n    \"included\": [\n        {\n            \"id\": \"6efec87f-3a0f-4839-a767-ee6d846b5f46\",\n            \"type\": \"did_groups\",\n            \"attributes\": {\n                \"prefix\": \"312\",\n                \"features\": [\n                    \"voice_in\",\n                    \"p2p\",\n                    \"a2p\",\n                    \"emergency\"\n                ],\n                \"is_metered\": false,\n                \"area_name\": \"Chicago\",\n                \"allow_additional_channels\": true,\n                \"service_restrictions\": null\n            },\n            \"relationships\": {\n                \"country\": {\n                    \"data\": {\n                        \"type\": \"countries\",\n                        \"id\": \"f0ce4464-dfeb-412f-8ad1-ee27a858d0c2\"\n                    },\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/relationships/country\",\n                        \"related\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/country\"\n                    }\n                },\n                \"city\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/relationships/city\",\n                        \"related\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/city\"\n                    }\n                },\n                \"did_group_type\": {\n                    \"data\": {\n                        \"type\": \"did_group_types\",\n                        \"id\": \"994ea201-4a4d-4b27-ac4b-b5916ac969a3\"\n                    },\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/relationships/did_group_type\",\n                        \"related\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/did_group_type\"\n                    }\n                },\n                \"region\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/relationships/region\",\n                        \"related\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/region\"\n                    }\n                },\n                \"stock_keeping_units\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/relationships/stock_keeping_units\",\n                        \"related\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/stock_keeping_units\"\n                    }\n                },\n                \"address_requirement\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/relationships/address_requirement\",\n                        \"related\": \"https://api.didww.com/v3/did_groups/6efec87f-3a0f-4839-a767-ee6d846b5f46/address_requirement\"\n                    }\n                }\n            },\n            \"meta\": {\n                \"available_dids_enabled\": true,\n                \"needs_registration\": false,\n                \"is_available\": true,\n                \"total_count\": 5\n            }\n        },\n        {\n            \"id\": \"f0ce4464-dfeb-412f-8ad1-ee27a858d0c2\",\n            \"type\": \"countries\",\n            \"attributes\": {\n                \"name\": \"United States\",\n                \"prefix\": \"1\",\n                \"iso\": \"US\"\n            },\n            \"relationships\": {\n                \"regions\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/countries/f0ce4464-dfeb-412f-8ad1-ee27a858d0c2/relationships/regions\",\n                        \"related\": \"https://api.didww.com/v3/countries/f0ce4464-dfeb-412f-8ad1-ee27a858d0c2/regions\"\n                    }\n                }\n            }\n        },\n        {\n            \"id\": \"994ea201-4a4d-4b27-ac4b-b5916ac969a3\",\n            \"type\": \"did_group_types\",\n            \"attributes\": {\n                \"name\": \"Local\"\n            }\n        },\n        {\n            \"id\": \"7a8b9c0d-1e2f-3456-abcd-999999999999\",\n            \"type\": \"identities\",\n            \"attributes\": {\n                \"first_name\": \"John\",\n                \"last_name\": \"Doe\",\n                \"phone_number\": \"15559876543\",\n                \"id_number\": null,\n                \"birth_date\": null,\n                \"company_name\": null,\n                \"company_reg_number\": null,\n                \"vat_id\": null,\n                \"description\": null,\n                \"personal_tax_id\": null,\n                \"identity_type\": \"personal\",\n                \"created_at\": \"2023-01-10T09:00:00.000Z\",\n                \"external_reference_id\": null,\n                \"verified\": false,\n                \"contact_email\": null\n            },\n            \"relationships\": {\n                \"country\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/identities/7a8b9c0d-1e2f-3456-abcd-999999999999/relationships/country\",\n                        \"related\": \"https://api.didww.com/v3/identities/7a8b9c0d-1e2f-3456-abcd-999999999999/country\"\n                    }\n                },\n                \"birth_country\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/identities/7a8b9c0d-1e2f-3456-abcd-999999999999/relationships/birth_country\",\n                        \"related\": \"https://api.didww.com/v3/identities/7a8b9c0d-1e2f-3456-abcd-999999999999/relationships/birth_country\"\n                    }\n                },\n                \"proofs\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/identities/7a8b9c0d-1e2f-3456-abcd-999999999999/relationships/proofs\",\n                        \"related\": \"https://api.didww.com/v3/identities/7a8b9c0d-1e2f-3456-abcd-999999999999/proofs\"\n                    }\n                },\n                \"addresses\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/identities/7a8b9c0d-1e2f-3456-abcd-999999999999/relationships/addresses\",\n                        \"related\": \"https://api.didww.com/v3/identities/7a8b9c0d-1e2f-3456-abcd-999999999999/addresses\"\n                    }\n                },\n                \"permanent_documents\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/identities/7a8b9c0d-1e2f-3456-abcd-999999999999/relationships/permanent_documents\",\n                        \"related\": \"https://api.didww.com/v3/identities/7a8b9c0d-1e2f-3456-abcd-999999999999/permanent_documents\"\n                    }\n                }\n            }\n        }\n    ],\n    \"meta\": {\n        \"total_records\": 1,\n        \"api_version\": \"2026-04-16\"\n    },\n    \"links\": {\n        \"first\": \"https://api.didww.com/v3/dids?filter%5Bdid_group.features%5D=emergency&filter%5Bemergency_enabled%5D=false&include=did_group%2Cdid_group.country%2Cdid_group.did_group_type%2Cidentity%2Cemergency_calling_service%2Caddress_verification&page%5Bnumber%5D=1&page%5Bsize%5D=50\",\n        \"last\": \"https://api.didww.com/v3/dids?filter%5Bdid_group.features%5D=emergency&filter%5Bemergency_enabled%5D=false&include=did_group%2Cdid_group.country%2Cdid_group.did_group_type%2Cidentity%2Cemergency_calling_service%2Caddress_verification&page%5Bnumber%5D=1&page%5Bsize%5D=50\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Emergency Requirements",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Emergency Requirement exist\", function () {",
+              "    const response = pm.response.json();",
+              "",
+              "    pm.expect(response.data).to.be.an('array')",
+              "    pm.expect(response.data.length).to.be.greaterThan(0)",
+              "",
+              "    const requirement = response.data[0]",
+              "    pm.expect(requirement).is.not.undefined",
+              "",
+              "    // set collection variable value if test successful",
+              "    pm.collectionVariables.set('emergency_requirement.id', requirement.id);",
+              "",
+              "    // proceed next request in Collection Runner if test successful",
+              "    postman.setNextRequest(\"Get Identities\");",
+              "});",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Api-Key",
+            "value": "{{apiKey}}",
+            "type": "text"
+          }
+        ],
+        "description": "<h1 id=\"get-emergency-requirements\"></h1>\n\nReturns the list of emergency requirements for the selected country and DID Group Type. Review the `requirement_restriction_message`, mandatory fields and `estimate_setup_time` to understand what identity and address details are required before proceeding.",
+        "url": {
+          "raw": "https://{{host}}/v3/emergency_requirements?filter[country.id]={{country.id}}&filter[did_group_type.id]={{did_group_type.id}}",
+          "protocol": "https",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "v3",
+            "emergency_requirements"
+          ],
+          "query": [
+            {
+              "key": "filter[country.id]",
+              "value": "{{country.id}}",
+              "description": "`string` - Filters by country id.\n* **Allow blank** - *No*.\n* **Allow array** - *No*."
+            },
+            {
+              "key": "filter[did_group_type.id]",
+              "value": "{{did_group_type.id}}",
+              "description": "`string` - Filters by DID group type id.\n* **Allow blank** - *No*.\n* **Allow array** - *No*."
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "200 Ok (Filter by country.id and did_group_type.id)",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Api-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://api.didww.com/v3/emergency_requirements?filter[country.id]=f0ce4464-dfeb-412f-8ad1-ee27a858d0c2&filter[did_group_type.id]=994ea201-4a4d-4b27-ac4b-b5916ac969a3",
+              "protocol": "https",
+              "host": [
+                "api.didww.com"
+              ],
+              "path": [
+                "v3",
+                "emergency_requirements"
+              ],
+              "query": [
+                {
+                  "key": "filter[country.id]",
+                  "value": "f0ce4464-dfeb-412f-8ad1-ee27a858d0c2"
+                },
+                {
+                  "key": "filter[did_group_type.id]",
+                  "value": "994ea201-4a4d-4b27-ac4b-b5916ac969a3"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/vnd.api+json",
+              "enabled": true
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"data\": [\n        {\n            \"id\": \"d210e6e4-1716-4342-b04c-7a6ef6feb171\",\n            \"type\": \"emergency_requirements\",\n            \"attributes\": {\n                \"identity_type\": \"personal\",\n                \"address_area_level\": \"city\",\n                \"personal_area_level\": \"country\",\n                \"business_area_level\": null,\n                \"address_mandatory_fields\": [\n                    \"State/Province/Region\"\n                ],\n                \"personal_mandatory_fields\": [\n                    \"Birth Date\",\n                    \"Contact email\"\n                ],\n                \"business_mandatory_fields\": [],\n                \"estimate_setup_time\": \"1-2 business days\",\n                \"requirement_restriction_message\": \"USA Local DID emergency registration requirements:\\r\\n\\r\\n1. Name, last name and contact phone number.\\r\\n2. Current address must be from the same city as the DID ordered (street, building number, postal code, city).\\r\\n\\r\\nEmergency calling will not be activated until full registration details are provided and approved.\"\n            },\n            \"relationships\": {\n                \"country\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/emergency_requirements/d210e6e4-1716-4342-b04c-7a6ef6feb171/relationships/country\",\n                        \"related\": \"https://api.didww.com/v3/emergency_requirements/d210e6e4-1716-4342-b04c-7a6ef6feb171/country\"\n                    }\n                },\n                \"did_group_type\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/emergency_requirements/d210e6e4-1716-4342-b04c-7a6ef6feb171/relationships/did_group_type\",\n                        \"related\": \"https://api.didww.com/v3/emergency_requirements/d210e6e4-1716-4342-b04c-7a6ef6feb171/did_group_type\"\n                    }\n                }\n            },\n            \"meta\": {\n                \"setup_price\": \"0.00\",\n                \"monthly_price\": \"2.50\"\n            }\n        }\n    ],\n    \"meta\": {\n        \"total_records\": 1,\n        \"api_version\": \"2026-04-16\"\n    },\n    \"links\": {\n        \"first\": \"https://api.didww.com/v3/emergency_requirements?filter%5Bcountry.id%5D=f0ce4464-dfeb-412f-8ad1-ee27a858d0c2&filter%5Bdid_group_type.id%5D=994ea201-4a4d-4b27-ac4b-b5916ac969a3&page%5Bnumber%5D=1&page%5Bsize%5D=50\",\n        \"last\": \"https://api.didww.com/v3/emergency_requirements?filter%5Bcountry.id%5D=f0ce4464-dfeb-412f-8ad1-ee27a858d0c2&filter%5Bdid_group_type.id%5D=994ea201-4a4d-4b27-ac4b-b5916ac969a3&page%5Bnumber%5D=1&page%5Bsize%5D=50\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Identities",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Identity exist\", function () {",
+              "    const response = pm.response.json();",
+              "",
+              "    pm.expect(response.data).to.be.an('array')",
+              "    pm.expect(response.data.length).to.be.greaterThan(0)",
+              "",
+              "    const identity = response.data[0]",
+              "    pm.expect(identity).is.not.undefined",
+              "",
+              "    // set collection variable value if test successful",
+              "    pm.collectionVariables.set('identity.id', identity.id);",
+              "",
+              "    // proceed next request in Collection Runner if test successful",
+              "    postman.setNextRequest(\"Get Addresses\");",
+              "});",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Api-Key",
+            "value": "{{apiKey}}",
+            "type": "text"
+          }
+        ],
+        "description": "<h1 id=\"get-identities\"></h1>\n\nReturns a list of Identities owned by your account. Select the identity that matches the Emergency Requirement (identity type, mandatory fields). If the DID already has an assigned identity from step 1, that identity must be used.",
+        "url": {
+          "raw": "https://{{host}}/v3/identities",
+          "protocol": "https",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "v3",
+            "identities"
+          ],
+          "query": []
+        }
+      },
+      "response": [
+        {
+          "name": "200 Ok (Simple request)",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Api-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://api.didww.com/v3/identities",
+              "protocol": "https",
+              "host": [
+                "api.didww.com"
+              ],
+              "path": [
+                "v3",
+                "identities"
+              ],
+              "query": []
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/vnd.api+json",
+              "enabled": true
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"data\": [\n        {\n            \"id\": \"0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c\",\n            \"type\": \"identities\",\n            \"attributes\": {\n                \"first_name\": \"Jane\",\n                \"last_name\": \"Smith\",\n                \"phone_number\": \"353-1-9015266\",\n                \"id_number\": \"0000000000\",\n                \"birth_date\": \"2000-01-01\",\n                \"company_name\": null,\n                \"company_reg_number\": null,\n                \"vat_id\": null,\n                \"description\": \"Personal details\",\n                \"personal_tax_id\": null,\n                \"identity_type\": \"personal\",\n                \"created_at\": \"2020-09-14T07:29:41.393Z\",\n                \"external_reference_id\": null,\n                \"verified\": false,\n                \"contact_email\": null\n            },\n            \"relationships\": {\n                \"country\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/identities/0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c/relationships/country\",\n                        \"related\": \"https://api.didww.com/v3/identities/0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c/country\"\n                    }\n                },\n                \"birth_country\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/identities/0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c/relationships/birth_country\",\n                        \"related\": \"https://api.didww.com/v3/identities/0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c/relationships/birth_country\"\n                    }\n                },\n                \"proofs\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/identities/0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c/relationships/proofs\",\n                        \"related\": \"https://api.didww.com/v3/identities/0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c/proofs\"\n                    }\n                },\n                \"addresses\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/identities/0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c/relationships/addresses\",\n                        \"related\": \"https://api.didww.com/v3/identities/0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c/addresses\"\n                    }\n                },\n                \"permanent_documents\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/identities/0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c/relationships/permanent_documents\",\n                        \"related\": \"https://api.didww.com/v3/identities/0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c/permanent_documents\"\n                    }\n                }\n            }\n        }\n    ],\n    \"meta\": {\n        \"total_records\": 1,\n        \"api_version\": \"2026-04-16\"\n    },\n    \"links\": {\n        \"first\": \"https://api.didww.com/v3/identities?page%5Bnumber%5D=1&page%5Bsize%5D=50\",\n        \"last\": \"https://api.didww.com/v3/identities?page%5Bnumber%5D=1&page%5Bsize%5D=50\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Create Identity (Optional)",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Api-Key",
+            "value": "{{apiKey}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "https://{{host}}/v3/identities",
+          "protocol": "https",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "v3",
+            "identities"
+          ]
+        },
+        "description": "<h1 id=\"create-identity\"></h1>\n\nOptional step. Create a new Identity if you do not have one yet. Use the `id` from the response as `{{identity.id}}` in the next steps.\n\nTwo response variants are provided: Personal Identity and Business Identity. Run the appropriate one depending on your use case.\n\n#### Request Body Scheme\n\n> `{`\n>\n> > **data** (*object, required*) `{`\n> >\n> > > **type** (*string, required*): **identities**\n> >\n> > > **attributes** (*object, required*) `{`\n> > >\n> > > > **identity_type** (*string, required*): **personal** or **business**  \n> > > > Type of Identity.\n> > >\n> > > > **first_name** (*string, required*)  \n> > > > First name (or company representative first name).\n> > >\n> > > > **last_name** (*string, required*)  \n> > > > Last name (or company representative last name).\n> > >\n> > > > **phone_number** (*string, required*)  \n> > > > Phone number. Only digits allowed.\n> > >\n> > > > **company_name** (*string, required for Business*)  \n> > > > Company name. Required when `identity_type` is `Business`.\n> > >\n> > > > **company_reg_number** (*string, optional*)  \n> > > > Company registration number.\n> > >\n> > > > **vat_id** (*string, optional*)  \n> > > > Company VAT ID.\n> > >\n> > > > **personal_tax_id** (*string, optional*)  \n> > > > Personal or company representative Tax ID.\n> > >\n> > > > **birth_date** (*DateTime[string], optional*)  \n> > > > Birth date.\n> > >\n> > > > **id_number** (*string, optional*)  \n> > > > ID number.\n> > >\n> > > > **description** (*string, optional*)  \n> > > > Description.\n> > >\n> > > > **external_reference_id** (*string, optional*)  \n> > > > Identifier for identity in external system.\n> > >\n> > > > **contact_email** (*string, optional*)  \n> > > > Contact email.\n> > >\n> > > `}`\n> >\n> > > **relationships** (*object, optional*) `{`\n> > >\n> > > > **country** (*object, required for Business, optional for Personal*): [***to-one***](#updating-to-one-relationships)  \n> > > > Specifies the country for identity.\n> > >\n> > > > **birth_country** (*object, optional*): [***to-one***](#updating-to-one-relationships)  \n> > > > Specifies the birth country for identity.\n> > >\n> > > `}`\n> >\n> > `}`\n>\n> `}`"
+      },
+      "response": [
+        {
+          "name": "201 Created (Create Personal Identity)",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Api-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"data\": {\n        \"type\": \"identities\",\n        \"attributes\": {\n            \"first_name\": \"string\",\n            \"last_name\": \"string\",\n            \"phone_number\": \"string\",\n            \"id_number\": \"string\",\n            \"description\": \"string\",\n            \"personal_tax_id\": \"string\",\n            \"identity_type\": \"Personal\"\n        }\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://api.didww.com/v3/identities",
+              "protocol": "https",
+              "host": [
+                "api",
+                "didww",
+                "com"
+              ],
+              "path": [
+                "v3",
+                "identities"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/vnd.api+json",
+              "enabled": true
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"data\": {\n        \"id\": \"39623bf9-381f-4da6-ab29-2d3eb8783d81\",\n        \"type\": \"identities\",\n        \"attributes\": {\n            \"first_name\": \"string\",\n            \"last_name\": \"string\",\n            \"phone_number\": \"string\",\n            \"id_number\": \"string\",\n            \"birth_date\": null,\n            \"company_name\": null,\n            \"company_reg_number\": null,\n            \"vat_id\": null,\n            \"description\": \"string\",\n            \"personal_tax_id\": \"string\",\n            \"identity_type\": \"personal\",\n            \"created_at\": \"2021-03-22T11:53:32.240Z\",\n            \"external_reference_id\": null,\n            \"verified\": false,\n            \"contact_email\": null\n        },\n        \"relationships\": {\n            \"country\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/identities/39623bf9-381f-4da6-ab29-2d3eb8783d81/relationships/country\",\n                    \"related\": \"https://api.didww.com/v3/identities/39623bf9-381f-4da6-ab29-2d3eb8783d81/country\"\n                }\n            },\n            \"birth_country\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/identities/39623bf9-381f-4da6-ab29-2d3eb8783d81/relationships/birth_country\",\n                    \"related\": \"https://api.didww.com/v3/identities/39623bf9-381f-4da6-ab29-2d3eb8783d81/relationships/birth_country\"\n                }\n            },\n            \"proofs\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/identities/39623bf9-381f-4da6-ab29-2d3eb8783d81/relationships/proofs\",\n                    \"related\": \"https://api.didww.com/v3/identities/39623bf9-381f-4da6-ab29-2d3eb8783d81/proofs\"\n                }\n            },\n            \"addresses\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/identities/39623bf9-381f-4da6-ab29-2d3eb8783d81/relationships/addresses\",\n                    \"related\": \"https://api.didww.com/v3/identities/39623bf9-381f-4da6-ab29-2d3eb8783d81/addresses\"\n                }\n            },\n            \"permanent_documents\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/identities/39623bf9-381f-4da6-ab29-2d3eb8783d81/relationships/permanent_documents\",\n                    \"related\": \"https://api.didww.com/v3/identities/39623bf9-381f-4da6-ab29-2d3eb8783d81/permanent_documents\"\n                }\n            }\n        }\n    },\n    \"meta\": {\n        \"api_version\": \"2026-04-16\"\n    }\n}"
+        },
+        {
+          "name": "201 Created (Create Business Identity)",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Api-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"data\": {\n        \"type\": \"identities\",\n        \"attributes\": {\n            \"first_name\": \"string\",\n            \"last_name\": \"string\",\n            \"phone_number\": \"string\",\n            \"id_number\": \"string\",\n            \"birth_date\": \"string\",\n            \"company_name\": \"string\",\n            \"company_reg_number\": \"string\",\n            \"vat_id\": \"string\",\n            \"description\": \"string\",\n            \"personal_tax_id\": \"string\",\n            \"identity_type\": \"Business\"\n        },\n        \"relationships\": {\n            \"country\": {\n                \"data\": {\n                    \"id\": \"6d0effab-3fe3-4e07-acc6-1d3ddc717ebc\",\n                    \"type\": \"countries\"\n                }\n            },\n            \"birth_country\": {\n                \"data\": {\n                    \"id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n                    \"type\": \"countries\"\n                }\n            }\n        }\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://api.didww.com/v3/identities",
+              "protocol": "https",
+              "host": [
+                "api",
+                "didww",
+                "com"
+              ],
+              "path": [
+                "v3",
+                "identities"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/vnd.api+json",
+              "enabled": true
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"data\": {\n        \"id\": \"fb7f3f67-014c-496b-b918-f874f2689a40\",\n        \"type\": \"identities\",\n        \"attributes\": {\n            \"first_name\": \"string\",\n            \"last_name\": \"string\",\n            \"phone_number\": \"string\",\n            \"id_number\": \"string\",\n            \"birth_date\": null,\n            \"company_name\": \"string\",\n            \"company_reg_number\": null,\n            \"vat_id\": null,\n            \"description\": \"string\",\n            \"personal_tax_id\": \"string\",\n            \"identity_type\": \"business\",\n            \"created_at\": \"2021-03-22T12:08:29.987Z\",\n            \"external_reference_id\": null,\n            \"verified\": false,\n            \"contact_email\": null\n        },\n        \"relationships\": {\n            \"country\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/identities/fb7f3f67-014c-496b-b918-f874f2689a40/relationships/country\",\n                    \"related\": \"https://api.didww.com/v3/identities/fb7f3f67-014c-496b-b918-f874f2689a40/country\"\n                }\n            },\n            \"birth_country\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/identities/fb7f3f67-014c-496b-b918-f874f2689a40/relationships/birth_country\",\n                    \"related\": \"https://api.didww.com/v3/identities/fb7f3f67-014c-496b-b918-f874f2689a40/relationships/birth_country\"\n                }\n            },\n            \"proofs\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/identities/fb7f3f67-014c-496b-b918-f874f2689a40/relationships/proofs\",\n                    \"related\": \"https://api.didww.com/v3/identities/fb7f3f67-014c-496b-b918-f874f2689a40/proofs\"\n                }\n            },\n            \"addresses\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/identities/fb7f3f67-014c-496b-b918-f874f2689a40/relationships/addresses\",\n                    \"related\": \"https://api.didww.com/v3/identities/fb7f3f67-014c-496b-b918-f874f2689a40/addresses\"\n                }\n            },\n            \"permanent_documents\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/identities/fb7f3f67-014c-496b-b918-f874f2689a40/relationships/permanent_documents\",\n                    \"related\": \"https://api.didww.com/v3/identities/fb7f3f67-014c-496b-b918-f874f2689a40/permanent_documents\"\n                }\n            }\n        }\n    },\n    \"meta\": {\n        \"api_version\": \"2026-04-16\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Addresses",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Address exist\", function () {",
+              "    const response = pm.response.json();",
+              "",
+              "    pm.expect(response.data).to.be.an('array')",
+              "    pm.expect(response.data.length).to.be.greaterThan(0)",
+              "",
+              "    const address = response.data[0]",
+              "    pm.expect(address).is.not.undefined",
+              "",
+              "    // set collection variable value if test successful",
+              "    pm.collectionVariables.set('address.id', address.id);",
+              "",
+              "    // proceed next request in Collection Runner if test successful",
+              "    postman.setNextRequest(\"Create Emergency Requirement Validation\");",
+              "});",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Api-Key",
+            "value": "{{apiKey}}",
+            "type": "text"
+          }
+        ],
+        "description": "<h1 id=\"get-addresses\"></h1>\n\nReturns a list of Addresses linked to the selected Identity. Select the address that meets the Emergency Requirement area level (City or Country).",
+        "url": {
+          "raw": "https://{{host}}/v3/addresses?filter[identity.id]={{identity.id}}",
+          "protocol": "https",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "v3",
+            "addresses"
+          ],
+          "query": [
+            {
+              "key": "filter[identity.id]",
+              "value": "{{identity.id}}",
+              "description": "`string` - Filters by the id field of identity relationship.\n* **Allow blank** - *No*.\n* **Allow array** - *No*."
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "200 Ok (Filter by identity.id)",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Api-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://api.didww.com/v3/addresses?filter[identity.id]=0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c",
+              "protocol": "https",
+              "host": [
+                "api.didww.com"
+              ],
+              "path": [
+                "v3",
+                "addresses"
+              ],
+              "query": [
+                {
+                  "key": "filter[identity.id]",
+                  "value": "0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/vnd.api+json",
+              "enabled": true
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"data\": [\n        {\n            \"id\": \"49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0\",\n            \"type\": \"addresses\",\n            \"attributes\": {\n                \"city_name\": \"Antwerp\",\n                \"postal_code\": \"4641PA\",\n                \"address\": \"49th Ave\",\n                \"description\": \"Address of Rise Industries\",\n                \"created_at\": \"2020-09-16T10:23:07.846Z\",\n                \"verified\": true,\n                \"external_reference_id\": null\n            },\n            \"relationships\": {\n                \"identity\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/relationships/identity\",\n                        \"related\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/identity\"\n                    }\n                },\n                \"country\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/relationships/country\",\n                        \"related\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/country\"\n                    }\n                },\n                \"proofs\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/relationships/proofs\",\n                        \"related\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/proofs\"\n                    }\n                },\n                \"area\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/relationships/area\",\n                        \"related\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/area\"\n                    }\n                },\n                \"city\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/relationships/city\",\n                        \"related\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/city\"\n                    }\n                }\n            }\n        }\n    ],\n    \"meta\": {\n        \"total_records\": 1,\n        \"api_version\": \"2026-04-16\"\n    },\n    \"links\": {\n        \"first\": \"https://api.didww.com/v3/addresses?filter%5Bidentity.id%5D=0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c&page%5Bnumber%5D=1&page%5Bsize%5D=50\",\n        \"last\": \"https://api.didww.com/v3/addresses?filter%5Bidentity.id%5D=0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c&page%5Bnumber%5D=1&page%5Bsize%5D=50\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Create Address (Optional)",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Api-Key",
+            "value": "{{apiKey}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "https://{{host}}/v3/addresses",
+          "protocol": "https",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "v3",
+            "addresses"
+          ]
+        },
+        "description": "<h1 id=\"create-address\"></h1>\n\nOptional step. Create a new Address linked to the Identity if you do not have one yet. Use the `id` from the response as `{{address.id}}` in the next steps.\n\n#### Request Body Scheme\n\n> `{`\n>\n> > **data** (*object, required*) `{`\n> >\n> > > **type** (*string, required*): **addresses**\n> >\n> > > **attributes** (*object, required*) `{`\n> > >\n> > > > **city_name** (*string, required*)  \n> > > > City name of the address.\n> > >\n> > > > **postal_code** (*string, required*)  \n> > > > Postal code of the address.\n> > >\n> > > > **address** (*string, required*)  \n> > > > Full address.\n> > >\n> > > > **description** (*string, optional*)  \n> > > > The description of the address.\n> > >\n> > > > **external_reference_id** (*string, optional*)  \n> > > > Identifier for Address in external system.\n> > >\n> > > `}`\n> >\n> > > **relationships** (*object, required*) `{`\n> > >\n> > > > **identity** (*object, required*): [***to-one***](#updating-to-one-relationships)  \n> > > > Specifies the [*Identity*](#identity-object) for the address.\n> > >\n> > > > **country** (*object, required*): [***to-one***](#updating-to-one-relationships)  \n> > > > Specifies the [*Country*](#country-object) for the address.\n> > >\n> > > `}`\n> >\n> > `}`\n>\n> `}`"
+      },
+      "response": [
+        {
+          "name": "201 Created",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Api-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"data\": {\n        \"type\": \"addresses\",\n        \"attributes\": {\n            \"city_name\": \"string\",\n            \"postal_code\": \"string\",\n            \"address\": \"string\",\n            \"description\": \"string\"\n        },\n        \"relationships\": {\n            \"identity\": {\n                \"data\": {\n                    \"id\": \"39623bf9-381f-4da6-ab29-2d3eb8783d81\",\n                    \"type\": \"identities\"\n                }\n            },\n            \"country\": {\n                \"data\": {\n                    \"id\": \"38003e8b-cccc-41d4-b1a6-d1e6fddf2c0f\",\n                    \"type\": \"countries\"\n                }\n            }\n        }\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://api.didww.com/v3/addresses",
+              "protocol": "https",
+              "host": [
+                "api",
+                "didww",
+                "com"
+              ],
+              "path": [
+                "v3",
+                "addresses"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/vnd.api+json",
+              "enabled": true
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"data\": {\n        \"id\": \"49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0\",\n        \"type\": \"addresses\",\n        \"attributes\": {\n            \"city_name\": \"string\",\n            \"postal_code\": \"string\",\n            \"address\": \"string\",\n            \"description\": \"string\",\n            \"created_at\": \"2020-09-16T10:23:07.846Z\",\n            \"verified\": false,\n            \"external_reference_id\": null\n        },\n        \"relationships\": {\n            \"identity\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/relationships/identity\",\n                    \"related\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/identity\"\n                }\n            },\n            \"country\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/relationships/country\",\n                    \"related\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/country\"\n                }\n            },\n            \"proofs\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/relationships/proofs\",\n                    \"related\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/proofs\"\n                }\n            },\n            \"area\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/relationships/area\",\n                    \"related\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/area\"\n                }\n            },\n            \"city\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/relationships/city\",\n                    \"related\": \"https://api.didww.com/v3/addresses/49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0/city\"\n                }\n            }\n        }\n    },\n    \"meta\": {\n        \"api_version\": \"2026-04-16\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Create Emergency Requirement Validation",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Emergency Requirement Validation passed\", function () {",
+              "    pm.response.to.have.status(201);",
+              "",
+              "    const response = pm.response.json();",
+              "    pm.expect(response.data.type).to.eq('emergency_requirement_validations')",
+              "",
+              "    // proceed next request in Collection Runner if test successful",
+              "    postman.setNextRequest(\"Create Emergency Verification\");",
+              "});",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Api-Key",
+            "value": "{{apiKey}}",
+            "type": "text"
+          }
+        ],
+        "description": "<h1 id=\"emergency-requirement-validations\"></h1>\n\nChecks if the [Address](#address-object) and or [Identity](#identity-object) created is valid against the [Emergency Requirement](#emergency-requirement-object).\n\n\n\n#### Request Body Scheme\n\n> `{`\n>\n> > **data** (*object, required*) `{`\n> >\n> > > **type** (*string, required*): **emergency_requirement_validations**\n> >\n> > > **relationships** (*object, required*) `{`\n> > >\n> > > > **emergency_requirement** (*object, required*): [***to-one***](#updating-to-one-relationships)  \n> > > > Specifies the [*Emergency Requirement*](#emergency-requirement-object).\n> > >\n> > > > **address** (*object, optional*): [***to-one***](#updating-to-one-relationships)  \n> > > > Specifies the [*Address*](#address-object).\n> > >\n> > > > **identity** (*object, optional*): [***to-one***](#updating-to-one-relationships)  \n> > > > Specifies the [*Identity*](#identity-object).\n> > >\n> > > `}`\n> >\n> > `}`\n>\n> `}`\n\n#### Request Body Examples\n\n``` json\n{\n  \"data\": {\n    \"type\": \"emergency_requirement_validations\",\n    \"relationships\": {\n      \"emergency_requirement\": {\n        \"data\": {\n          \"id\": \"d210e6e4-1716-4342-b04c-7a6ef6feb171\",\n          \"type\": \"emergency_requirements\"\n        }\n      },\n      \"address\": {\n        \"data\": {\n          \"id\": \"49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0\",\n          \"type\": \"addresses\"\n        }\n      },\n      \"identity\": {\n        \"data\": {\n          \"id\": \"0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c\",\n          \"type\": \"identities\"\n        }\n      }\n    }\n  }\n}\n\n```\n\n* * *\n\n``` json\n{\n  \"data\": {\n    \"type\": \"emergency_requirement_validations\",\n    \"relationships\": {\n      \"emergency_requirement\": {\n        \"data\": {\n          \"id\": \"d210e6e4-1716-4342-b04c-7a6ef6feb171\",\n          \"type\": \"emergency_requirements\"\n        }\n      }\n      \"identity\": {\n        \"data\": {\n          \"id\": \"0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c\",\n          \"type\": \"identities\"\n        }\n      }\n    }\n  }\n}\n\n```\n\n* * *\n\n``` json\n{\n  \"data\": {\n    \"type\": \"emergency_requirement_validations\",\n    \"relationships\": {\n      \"emergency_requirement\": {\n        \"data\": {\n          \"id\": \"d210e6e4-1716-4342-b04c-7a6ef6feb171\",\n          \"type\": \"emergency_requirements\"\n        }\n      },\n      \"address\": {\n        \"data\": {\n          \"id\": \"49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0\",\n          \"type\": \"addresses\"\n        }\n      }\n    }\n  }\n}\n\n```",
+        "url": {
+          "raw": "https://{{host}}/v3/emergency_requirement_validations",
+          "protocol": "https",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "v3",
+            "emergency_requirement_validations"
+          ],
+          "query": []
+        },
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        }
+      },
+      "response": [
+        {
+          "name": "201 Created (Validation Request Success)",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Api-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://api.didww.com/v3/emergency_requirement_validations",
+              "protocol": "https",
+              "host": [
+                "api.didww.com"
+              ],
+              "path": [
+                "v3",
+                "emergency_requirement_validations"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"data\": {\n        \"type\": \"emergency_requirement_validations\",\n        \"relationships\": {\n            \"emergency_requirement\": {\n                \"data\": {\n                    \"id\": \"d210e6e4-1716-4342-b04c-7a6ef6feb171\",\n                    \"type\": \"emergency_requirements\"\n                }\n            },\n            \"address\": {\n                \"data\": {\n                    \"id\": \"49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0\",\n                    \"type\": \"addresses\"\n                }\n            },\n            \"identity\": {\n                \"data\": {\n                    \"id\": \"0c95a4c3-c5e6-4ea0-a8ba-bfb65850913c\",\n                    \"type\": \"identities\"\n                }\n            }\n        }\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/vnd.api+json",
+              "enabled": true
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"data\": {\n        \"id\": \"d210e6e4-1716-4342-b04c-7a6ef6feb171\",\n        \"type\": \"emergency_requirement_validations\"\n    },\n    \"meta\": {\n        \"api_version\": \"2026-04-16\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Create Emergency Verification",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Emergency Verification created\", function () {",
+              "    const response = pm.response.json();",
+              "",
+              "    pm.expect(response.data.type).to.eq('emergency_verifications')",
+              "    pm.expect(response.data.attributes.status).to.eq('pending')",
+              "",
+              "    // set collection variable values if test successful",
+              "    pm.collectionVariables.set('emergency_verification.id', response.data.id);",
+              "    pm.collectionVariables.set('emergency_calling_service.id', response.data.relationships.emergency_calling_service.data.id);",
+              "",
+              "    // proceed next request in Collection Runner if test successful",
+              "    postman.setNextRequest(\"Get Emergency Verification\");",
+              "});",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Api-Key",
+            "value": "{{apiKey}}",
+            "type": "text"
+          }
+        ],
+        "description": "<h1 id=\"create-emergency-verification-new-calling-service\"></h1>\n\nCreates an Emergency Verification in New Calling Service mode. Use this mode when registering emergency calling for DIDs for the first time. A new Emergency Calling Service will be created automatically.\n\n#### Request Body Scheme\n\n> `{`\n>\n> > **data** (*object, required*) `{`\n> >\n> > > **type** (*string, required*): **emergency_verifications**\n> >\n> > > **attributes** (*object, optional*) `{`\n> > >\n> > > > **callback_url** (*string, optional*)  \n> > > > The HTTPS endpoint to where events related to verification status will be delivered.\n> > >\n> > > > **callback_method** (*string, optional*)  \n> > > > The HTTP method used for verification status events. Allowed values: `get`, `post`. Required if `callback_url` is provided.\n> > >\n> > > > **external_reference_id** (*string, optional*)  \n> > > > Identifier for Emergency Verification in external system.\n> > >\n> > > `}`\n> >\n> > > **relationships** (*object, required*) `{`\n> > >\n> > > > **address** (*object, required*): [***to-one***](#updating-to-one-relationships)  \n> > > > Specifies the ID of [*Address*](#address-object) for emergency verification.\n> > >\n> > > > **dids** (*object, required*): [***to-many***](#updating-to-many-relationships)  \n> > > > Specifies the IDs of [*DIDs*](#did-object) to register for emergency calling. All DIDs must be from the same city or area.\n> > >\n> > > `}`\n> >\n> > `}`\n>\n> `}`\n\nSee [Callback details](#callbacks-details) for information about `callback_url` and `callback_method`.\n\n#### Request Body Example\n\n``` json\n{\n    \"data\": {\n        \"type\": \"emergency_verifications\",\n        \"attributes\": {\n            \"callback_url\": \"https://example.com/callbacks/emergency\",\n            \"callback_method\": \"post\"\n        },\n        \"relationships\": {\n            \"address\": {\n                \"data\": {\n                    \"id\": \"49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0\",\n                    \"type\": \"addresses\"\n                }\n            },\n            \"dids\": {\n                \"data\": [\n                    {\n                        \"id\": \"f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c\",\n                        \"type\": \"dids\"\n                    },\n                    {\n                        \"id\": \"a2b3c4d5-e6f7-8901-abcd-ef1234567890\",\n                        \"type\": \"dids\"\n                    }\n                ]\n            }\n        }\n    }\n}\n```\n\n> #### Note\n>\n> The `dids` relationship accepts one or more DID IDs. All DIDs must belong to the same city or area and must not be already assigned to another Emergency Calling Service.\n> If a DID has an assigned Identity, the same Identity must be used in the verification — otherwise a `422` error will be returned.",
+        "url": {
+          "raw": "https://{{host}}/v3/emergency_verifications",
+          "protocol": "https",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "v3",
+            "emergency_verifications"
+          ],
+          "query": []
+        },
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        }
+      },
+      "response": [
+        {
+          "name": "201 Created (Create Emergency Verification)",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Api-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://api.didww.com/v3/emergency_verifications",
+              "protocol": "https",
+              "host": [
+                "api.didww.com"
+              ],
+              "path": [
+                "v3",
+                "emergency_verifications"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"data\": {\n        \"type\": \"emergency_verifications\",\n        \"attributes\": {\n            \"callback_url\": \"https://example.com/callbacks/emergency\",\n            \"callback_method\": \"post\"\n        },\n        \"relationships\": {\n            \"address\": {\n                \"data\": {\n                    \"id\": \"49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0\",\n                    \"type\": \"addresses\"\n                }\n            },\n            \"dids\": {\n                \"data\": [\n                    {\n                        \"id\": \"f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c\",\n                        \"type\": \"dids\"\n                    },\n                    {\n                        \"id\": \"a2b3c4d5-e6f7-8901-abcd-ef1234567890\",\n                        \"type\": \"dids\"\n                    }\n                ]\n            }\n        }\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/vnd.api+json",
+              "enabled": true
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"data\": {\n        \"id\": \"89c0164e-752f-4995-a0fa-0ced21e60e4a\",\n        \"type\": \"emergency_verifications\",\n        \"attributes\": {\n            \"reference\": \"SHB-485120\",\n            \"status\": \"pending\",\n            \"reject_reasons\": [],\n            \"reject_comment\": null,\n            \"callback_url\": \"https://example.com/callbacks/emergency\",\n            \"callback_method\": \"post\",\n            \"created_at\": \"2026-03-20T12:20:04.584Z\",\n            \"external_reference_id\": \"test\"\n        },\n        \"relationships\": {\n            \"address\": {\n                \"data\": {\n                    \"id\": \"49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0\",\n                    \"type\": \"addresses\"\n                }\n            },\n            \"emergency_calling_service\": {\n                \"data\": {\n                    \"id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n                    \"type\": \"emergency_calling_services\"\n                }\n            },\n            \"dids\": {\n                \"data\": [\n                    {\n                        \"id\": \"f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c\",\n                        \"type\": \"dids\"\n                    },\n                    {\n                        \"id\": \"a2b3c4d5-e6f7-8901-abcd-ef1234567890\",\n                        \"type\": \"dids\"\n                    }\n                ]\n            }\n        }\n    },\n    \"meta\": {\n        \"api_version\": \"2026-04-16\"\n    }\n}"
+        },
+        {
+          "name": "422 Unprocessable Entity (Identity Mismatch Error)",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Api-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://api.didww.com/v3/emergency_verifications",
+              "protocol": "https",
+              "host": [
+                "api.didww.com"
+              ],
+              "path": [
+                "v3",
+                "emergency_verifications"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"data\": {\n        \"type\": \"emergency_verifications\",\n        \"attributes\": {\n            \"callback_url\": \"https://example.com/callbacks/emergency\",\n            \"callback_method\": \"post\"\n        },\n        \"relationships\": {\n            \"address\": {\n                \"data\": {\n                    \"id\": \"49f09b7f-c5bf-4c90-bac1-a8b335d2c3f0\",\n                    \"type\": \"addresses\"\n                }\n            },\n            \"dids\": {\n                \"data\": [\n                    {\n                        \"id\": \"f10d40c7-fd0b-4d63-bb9b-27810a1a8f5c\",\n                        \"type\": \"dids\"\n                    }\n                ]\n            }\n        }\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Unprocessable Entity",
+          "code": 422,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/vnd.api+json",
+              "enabled": true
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"errors\": [\n        {\n            \"title\": \"can be used only with Identity Business - Example Company Ltd\",\n            \"detail\": \"dids/cc4c423f-68b5-4e1a-878c-2328eb24f3fa - can be used only with Identity Business - Example Company Ltd\",\n            \"code\": \"100\",\n            \"source\": {\n                \"pointer\": \"/data/relationships/dids/cc4c423f-68b5-4e1a-878c-2328eb24f3fa\"\n            },\n            \"status\": \"422\"\n        }\n    ]\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Emergency Verification",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Emergency Verification exist\", function () {",
+              "    const response = pm.response.json();",
+              "",
+              "    pm.expect(response.data.type).to.eq('emergency_verifications')",
+              "    pm.expect(response.data.attributes.status).to.be.oneOf([\"pending\", \"approved\", \"rejected\"])",
+              "",
+              "    console.log(\"Emergency Verification status:\", response.data.attributes.status);",
+              "});",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Api-Key",
+            "value": "{{apiKey}}",
+            "type": "text"
+          }
+        ],
+        "description": "<h1 id=\"get-emergency-verification\"></h1>\n\nReturns a single Emergency Verification status and reason if the verification was rejected.",
+        "url": {
+          "raw": "https://{{host}}/v3/emergency_verifications/:id",
+          "protocol": "https",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "v3",
+            "emergency_verifications",
+            ":id"
+          ],
+          "query": [],
+          "variable": [
+            {
+              "key": "id",
+              "value": "<uuid>",
+              "description": "Unique ID number for the emergency verification"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "200 Ok (Approved Verification)",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Api-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://api.didww.com/v3/emergency_verifications/89c0164e-752f-4995-a0fa-0ced21e60e4a",
+              "protocol": "https",
+              "host": [
+                "api.didww.com"
+              ],
+              "path": [
+                "v3",
+                "emergency_verifications",
+                "89c0164e-752f-4995-a0fa-0ced21e60e4a"
+              ],
+              "query": []
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/vnd.api+json",
+              "enabled": true
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"data\": {\n        \"id\": \"c8e004b0-87ec-4987-b4fb-ee89db099f0e\",\n        \"type\": \"emergency_verifications\",\n        \"attributes\": {\n            \"reference\": \"SHB-991234\",\n            \"status\": \"approved\",\n            \"reject_reasons\": [],\n            \"reject_comment\": null,\n            \"callback_url\": null,\n            \"callback_method\": null,\n            \"created_at\": \"2026-01-10T09:00:00.000Z\",\n            \"external_reference_id\": null\n        },\n        \"relationships\": {\n            \"address\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/emergency_verifications/c8e004b0-87ec-4987-b4fb-ee89db099f0e/relationships/address\",\n                    \"related\": \"https://api.didww.com/v3/emergency_verifications/c8e004b0-87ec-4987-b4fb-ee89db099f0e/address\"\n                }\n            },\n            \"emergency_calling_service\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/emergency_verifications/c8e004b0-87ec-4987-b4fb-ee89db099f0e/relationships/emergency_calling_service\",\n                    \"related\": \"https://api.didww.com/v3/emergency_verifications/c8e004b0-87ec-4987-b4fb-ee89db099f0e/emergency_calling_service\"\n                }\n            },\n            \"dids\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/emergency_verifications/c8e004b0-87ec-4987-b4fb-ee89db099f0e/relationships/dids\",\n                    \"related\": \"https://api.didww.com/v3/emergency_verifications/c8e004b0-87ec-4987-b4fb-ee89db099f0e/dids\"\n                }\n            }\n        }\n    },\n    \"meta\": {\n        \"api_version\": \"2026-04-16\"\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Emergency Calling Service",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Emergency Calling Service exist\", function () {",
+              "    const response = pm.response.json();",
+              "",
+              "    pm.expect(response.data.type).to.eq('emergency_calling_services')",
+              "    pm.expect(response.data.attributes.status).to.be.oneOf([\"new\", \"in_process\", \"active\", \"changes_required\"])",
+              "",
+              "    console.log(\"Emergency Calling Service status:\", response.data.attributes.status);",
+              "});",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/vnd.api+json",
+            "type": "text"
+          },
+          {
+            "key": "Api-Key",
+            "value": "{{apiKey}}",
+            "type": "text"
+          }
+        ],
+        "description": "<h1 id=\"get-emergency-calling-service\"></h1>\n\nReturns a single Emergency Calling Service owned by your account.",
+        "url": {
+          "raw": "https://{{host}}/v3/emergency_calling_services/:id",
+          "protocol": "https",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "v3",
+            "emergency_calling_services",
+            ":id"
+          ],
+          "query": [],
+          "variable": [
+            {
+              "key": "id",
+              "value": "<uuid>",
+              "description": "Unique ID number for the emergency calling service"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "200 Ok",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json",
+                "type": "text"
+              },
+              {
+                "key": "Api-Key",
+                "value": "{{apiKey}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://api.didww.com/v3/emergency_calling_services/a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+              "protocol": "https",
+              "host": [
+                "api.didww.com"
+              ],
+              "path": [
+                "v3",
+                "emergency_calling_services",
+                "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+              ],
+              "query": []
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/vnd.api+json",
+              "enabled": true
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"data\": {\n        \"id\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n        \"type\": \"emergency_calling_services\",\n        \"attributes\": {\n            \"name\": \"E911 Service - New York Office\",\n            \"reference\": \"SHB-485120\",\n            \"status\": \"in_process\",\n            \"activated_at\": \"2026-01-15T10:30:00.000Z\",\n            \"canceled_at\": null,\n            \"renew_date\": \"2026-07-15\",\n            \"created_at\": \"2026-01-10T08:00:00.000Z\"\n        },\n        \"relationships\": {\n            \"country\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/emergency_calling_services/a1b2c3d4-e5f6-7890-abcd-ef1234567890/relationships/country\",\n                    \"related\": \"https://api.didww.com/v3/emergency_calling_services/a1b2c3d4-e5f6-7890-abcd-ef1234567890/country\"\n                }\n            },\n            \"did_group_type\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/emergency_calling_services/a1b2c3d4-e5f6-7890-abcd-ef1234567890/relationships/did_group_type\",\n                    \"related\": \"https://api.didww.com/v3/emergency_calling_services/a1b2c3d4-e5f6-7890-abcd-ef1234567890/did_group_type\"\n                }\n            },\n            \"order\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/emergency_calling_services/a1b2c3d4-e5f6-7890-abcd-ef1234567890/relationships/order\",\n                    \"related\": \"https://api.didww.com/v3/emergency_calling_services/a1b2c3d4-e5f6-7890-abcd-ef1234567890/order\"\n                }\n            },\n            \"emergency_requirement\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/emergency_calling_services/a1b2c3d4-e5f6-7890-abcd-ef1234567890/relationships/emergency_requirement\",\n                    \"related\": \"https://api.didww.com/v3/emergency_calling_services/a1b2c3d4-e5f6-7890-abcd-ef1234567890/emergency_requirement\"\n                }\n            },\n            \"emergency_verification\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/emergency_calling_services/a1b2c3d4-e5f6-7890-abcd-ef1234567890/relationships/emergency_verification\",\n                    \"related\": \"https://api.didww.com/v3/emergency_calling_services/a1b2c3d4-e5f6-7890-abcd-ef1234567890/emergency_verification\"\n                }\n            },\n            \"dids\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/emergency_calling_services/a1b2c3d4-e5f6-7890-abcd-ef1234567890/relationships/dids\",\n                    \"related\": \"https://api.didww.com/v3/emergency_calling_services/a1b2c3d4-e5f6-7890-abcd-ef1234567890/dids\"\n                }\n            }\n        },\n        \"meta\": {\n            \"setup_price\": \"0.00\",\n            \"monthly_price\": \"2.50\"\n        }\n    },\n    \"meta\": {\n        \"api_version\": \"2026-04-16\"\n    }\n}"
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// prevent execution of next request in Collection Runner unless next request is defined.",
+          "postman.setNextRequest(null);"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.test(\"apiKey is set in Environment variables\", ()=>{",
+          "    const apiKey = pm.variables.get(\"apiKey\")",
+          "    ",
+          "    pm.expect(apiKey, \"apiKey is absent in Environment Variables\").not.undefined",
+          "    pm.expect(apiKey, \"apiKey value is empty in Environment Variables\").not.empty",
+          "    pm.expect(apiKey, \"apiKey value is not redefined in Environment Variables\").not.eq(\"yourDidwwApiKey\")",
+          "",
+          "});",
+          "",
+          "pm.test(\"Status code is successful\", function () {",
+          "    pm.response.to.be.success;",
+          "});"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "did.id",
+      "value": "{{did.id}}",
+      "type": "string"
+    },
+    {
+      "key": "did_group.id",
+      "value": "{{did_group.id}}",
+      "type": "string"
+    },
+    {
+      "key": "country.id",
+      "value": "{{country.id}}",
+      "type": "string"
+    },
+    {
+      "key": "did_group_type.id",
+      "value": "{{did_group_type.id}}",
+      "type": "string"
+    },
+    {
+      "key": "emergency_requirement.id",
+      "value": "{{emergency_requirement.id}}",
+      "type": "string"
+    },
+    {
+      "key": "identity.id",
+      "value": "{{identity.id}}",
+      "type": "string"
+    },
+    {
+      "key": "address.id",
+      "value": "{{address.id}}",
+      "type": "string"
+    },
+    {
+      "key": "emergency_verification.id",
+      "value": "{{emergency_verification.id}}",
+      "type": "string"
+    },
+    {
+      "key": "emergency_calling_service.id",
+      "value": "{{emergency_calling_service.id}}",
+      "type": "string"
+    }
+  ]
+}
