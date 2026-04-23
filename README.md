@@ -3,7 +3,8 @@ This is a Postman Collections for the DIDWW API3 endpoints for different version
 * 2017-09-18
 * 2021-04-19
 * 2021-12-15
-* 2022-05-10 (Latest)
+* 2022-05-10
+* 2026-04-16 (Latest)
 
 Refer to the main [DIDWW API documentation](https://doc.didww.com/api3/index.html) for more details.
 
