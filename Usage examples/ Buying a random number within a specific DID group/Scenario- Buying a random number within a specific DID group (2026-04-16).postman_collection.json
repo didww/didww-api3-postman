@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "6e754e30-7626-4a02-8778-8dfbbfcea6bf",
-		"name": "Scenario: Buying a random number within a specific DID group",
+		"name": "Scenario: Buying a random number within a specific DID group (2026-04-16)",
 		"description": "To do this you need to select a DID Group by country (UK) and city name (London) as well as by DID Group Type (local). You also need to select a Stock keeping unit (sku_id) which indicates DID number price and one of its available capacity options (usually DID price + 0 channels/2 channels).\n\nThis is how this functionality looks in DIDWW user panel:\n\n![](https://user-images.githubusercontent.com/120269/143892525-f39554cc-8fa2-4aad-a9f3-6dc4b866e551.png)\n\n> ### Attention\n> \n> Requests should be run one-by-one on real environment for real values usage\n\n#### Environment variables\n\n| Name | Description |\n| --- | --- |\n| `baseUrl` | API host url |\n| `apiKey` | Your DIDWW API key |\n\n#### Collection variables\n\n| Name | Description |\n| --- | --- |\n| `did_group_type.id` | Local group type id |\n| `country.id` | GB country id |\n| `city.id` | London id |\n| `stock_keeping_unit.id` | ID of Stock keeping unit with 2 channels included |",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "15857673"

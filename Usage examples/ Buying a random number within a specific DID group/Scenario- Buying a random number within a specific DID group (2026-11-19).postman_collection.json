@@ -1,0 +1,595 @@
+{
+	"info": {
+		"_postman_id": "93617b1f-aa2c-4e76-8b85-20e52c65aaca",
+		"name": "Scenario: Buying a random number within a specific DID group (2026-11-19)",
+		"description": "Buys a random number from a DID group selected by country (United Kingdom), city (London) and number type (`local`). The order names a stock keeping unit (SKU) of the group: the SKU sets the number price and the channels included with it (usually the DID price with 0 or 2 channels).\n\nLearn more: [Buy Available DID Number(s)](https://doc.didww.com/api3/examples/buy-dids.html).\n\n> ### Attention\n>\n> The requests run against the environment you select: **Create DID order** places an order and charges the account. Send them one by one, or run the collection in the Collection Runner: each request selects the next one when its test passes.\n\n#### Using this collection\n\n1. Fork the collection together with the **DIDWW Sandbox** or **DIDWW Production** environment and select the environment.\n2. Put your API key into the `apiKey` variable of the environment as its *current value*. Keep forked environments private.\n3. Send the first request. The collection mints an access token with your API key (`POST https://{{authHost}}/token`) and reuses it until shortly before it expires. When minting fails, the request reports the reason as a script error.\n\n#### Environment variables\n\n| Name | Description |\n| --- | --- |\n| `host` | API host, for example `sandbox-api.didww.com` |\n| `authHost` | Host of the token service, for example `auth-sandbox.didww.com` |\n| `apiKey` | Your DIDWW API key |\n\n#### Collection variables\n\n| Name | Description |\n| --- | --- |\n| `country.id` | United Kingdom country ID |\n| `city.id` | London city ID |\n| `stock_keeping_unit.id` | ID of the stock keeping unit with included channels |\n| `apiVersion` | The API version the token selects: `2026-11-19` |\n| `tokenScope` | `full` (the default) or `read` |\n| `accessToken`, `accessTokenExpiresAt`, `accessTokenFingerprint`, `accessTokenError` | Set by the collection; do not edit them |",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "58791732"
+	},
+	"item": [
+		{
+			"name": "Get Countries",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.api+json"
+					}
+				],
+				"url": {
+					"raw": "https://{{host}}/v3/countries?filter[iso]=GB",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v3",
+						"countries"
+					],
+					"query": [
+						{
+							"key": "filter[iso]",
+							"value": "GB"
+						}
+					]
+				},
+				"description": "**Step 1.** Find the United Kingdom and save its ID in `country.id`.\n\nReturns a list of countries. [Pagination](https://doc.didww.com/api3/specification/pagination.html#api-pagination) is disabled.\n\n## Request\n\nHTTP Method: `GET`\n\nURI Path: `/v3/countries`\n\n> **Note**\n>\n> For all returned data attributes, see [Country Object](https://doc.didww.com/api3/2026-11-19/coverage-resources/countries/country-object.html).\n\n### URI Query Parameters\n\n| Name | Type | Is Required? | Description |\n| --- | --- | --- | --- |\n| include | `string` | No | [Inclusion](https://doc.didww.com/api3/specification/includes.html#api-includes) |\n| filter[&lt;filter\\_name>] | `string`, `boolean` | No | [Filtering](https://doc.didww.com/api3/specification/filtering.html#api-filters) |\n| fields[countries] | `string` | No | [Sparse fieldsets](https://doc.didww.com/api3/specification/sparse-fieldsets.html#api-sparse-fieldsets) |\n| sort | `string` | No | [Sorting](https://doc.didww.com/api3/specification/sorting.html#api-sorting) |\n\n### Includes\n\n| Value | Description |\n| --- | --- |\n| regions | [Region Object](https://doc.didww.com/api3/2026-11-19/coverage-resources/regions/region-object.html#region-object-v35) |\n\n### Filters\n\n| Filter Name | Type | Allow Blank | Allow Array | Filters by: |\n| --- | --- | --- | --- | --- |\n| id | `string` | No | Yes | Country `id` field. |\n| name | `string` | Yes | Yes | Country `name` field. |\n| prefix | `string` | Yes | Yes | Country `prefix` field. |\n| iso | `string` | Yes | Yes | Country `iso` field. |\n| is\\_available | `boolean` | No | No | Indicates if DID numbers in the specified country are currently available for purchase. |\n\n### Sorting\n\n| Value | Sorts by |\n| --- | --- |\n| name | Country `name` field |\n| prefix | Country `prefix` field |\n| iso | Country `iso` field |\n\n## Other Responses\n\n| Code | Success | Description |\n| --- | --- | --- |\n| 400 | No | [Bad Request](https://doc.didww.com/api3/specification/errors/index.html#api-bad-request) |\n| 401 | No | [Unauthorized](https://doc.didww.com/api3/2026-11-19/authentication.html#authentication-v35) |\n| 429 | No | The request budget of the account for the current window is spent (`too_many_requests`). `Retry-After` gives the number of seconds to wait. |"
+			},
+			"response": [
+				{
+					"id": "a753efbf-6229-5f25-a84c-05cb10a626fe",
+					"name": "200 OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.api+json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.api+json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "https://api.didww.com/v3/countries",
+							"protocol": "https",
+							"host": [
+								"api",
+								"didww",
+								"com"
+							],
+							"path": [
+								"v3",
+								"countries"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/vnd.api+json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": [\n        {\n            \"id\": \"9c56fe0f-eff0-4742-85f6-24868959344a\",\n            \"type\": \"countries\",\n            \"attributes\": {\n                \"name\": \"United Kingdom\",\n                \"prefix\": \"44\",\n                \"iso\": \"GB\"\n            },\n            \"relationships\": {\n                \"regions\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/countries/9c56fe0f-eff0-4742-85f6-24868959344a/relationships/regions\",\n                        \"related\": \"https://api.didww.com/v3/countries/9c56fe0f-eff0-4742-85f6-24868959344a/regions\"\n                    }\n                }\n            }\n        },\n        {\n            \"id\": \"5d3d7640-16d2-4dc0-9aca-408789fbefc6\",\n            \"type\": \"countries\",\n            \"attributes\": {\n                \"name\": \"United States\",\n                \"prefix\": \"1\",\n                \"iso\": \"US\"\n            },\n            \"relationships\": {\n                \"regions\": {\n                    \"links\": {\n                        \"self\": \"https://api.didww.com/v3/countries/5d3d7640-16d2-4dc0-9aca-408789fbefc6/relationships/regions\",\n                        \"related\": \"https://api.didww.com/v3/countries/5d3d7640-16d2-4dc0-9aca-408789fbefc6/regions\"\n                    }\n                }\n            }\n        }\n    ],\n    \"meta\": {\n        \"api_version\": \"2026-11-19\"\n    }\n}"
+				}
+			],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test('Country exists', () => {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response.data).to.be.an('array').that.is.not.empty;",
+							"",
+							"    const country = response.data[0];",
+							"    pm.expect(country.attributes.iso).to.eq('GB');",
+							"",
+							"    pm.collectionVariables.set('country.id', country.id);",
+							"    pm.execution.setNextRequest('Get Cities');",
+							"});"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Get Cities",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.api+json"
+					}
+				],
+				"url": {
+					"raw": "https://{{host}}/v3/cities?filter[name]=London&filter[country.id]={{country.id}}",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v3",
+						"cities"
+					],
+					"query": [
+						{
+							"key": "filter[name]",
+							"value": "London"
+						},
+						{
+							"key": "filter[country.id]",
+							"value": "{{country.id}}"
+						}
+					]
+				},
+				"description": "**Step 2.** Find London and save its ID in `city.id`.\n\nReturns a list of cities. Maximum [page size](https://doc.didww.com/api3/specification/pagination.html#api-pagination) is 1000. Default page size is 1000.\n\n## Request\n\nHTTP Method: `GET`\n\nURI Path: `/v3/cities`\n\n> **Note**\n>\n> For all returned data attributes, see [City Object](https://doc.didww.com/api3/2026-11-19/coverage-resources/city/city-object.html).\n\n### URI Query Parameters\n\n| Name | Type | Is Required? | Description |\n| --- | --- | --- | --- |\n| include | `string` | No | [Inclusion](https://doc.didww.com/api3/specification/includes.html#api-includes) |\n| filter[&lt;filter\\_name>] | `string`, `boolean` | No | [Filtering](https://doc.didww.com/api3/specification/filtering.html#api-filters) |\n| fields[cities] | `string` | No | [Sparse fieldsets](https://doc.didww.com/api3/specification/sparse-fieldsets.html#api-sparse-fieldsets) |\n| sort | `string` | No | [Sorting](https://doc.didww.com/api3/specification/sorting.html#api-sorting) |\n| page[number] | `integer` | No | [Page number](https://doc.didww.com/api3/specification/pagination.html#api-pagination). |\n| page[size] | `integer` | No | [Page size](https://doc.didww.com/api3/specification/pagination.html#api-pagination). Pagination defaults to `1000` records per page. The maximum is `1000`. |\n\n### Includes\n\n| Value | Description |\n| --- | --- |\n| country | [Country Object](https://doc.didww.com/api3/2026-11-19/coverage-resources/countries/country-object.html#country-object-v35) |\n| region | [Region Object](https://doc.didww.com/api3/2026-11-19/coverage-resources/regions/region-object.html#region-object-v35) |\n| area | [Area Object](https://doc.didww.com/api3/2026-11-19/regulation-resources/areas/area-object.html#area-object-v35) |\n\n### Filters\n\n| Filter Name | Type | Allow Blank | Allow Array | Filters by: |\n| --- | --- | --- | --- | --- |\n| id | `string` | No | Yes | City `id` field. |\n| name | `string` | Yes | Yes | City `name` field. Case insensitive. |\n| country.id | `string` | Yes | Yes | A `country.id` field. |\n| region.id | `string` | Yes | Yes | A `region.id` field. |\n| is\\_available | `boolean` | No | No | Indicates if DID numbers in the specified city are currently available for purchase |\n| area.id | `string` | Yes | Yes | A `area.id` field. |\n\n### Sorting\n\n| Value | Sort by |\n| --- | --- |\n| name | City `name` field. |\n\n## Other Responses\n\n| Code | Success | Description |\n| --- | --- | --- |\n| 400 | No | [Bad Request](https://doc.didww.com/api3/specification/errors/index.html#api-bad-request) |\n| 401 | No | [Unauthorized](https://doc.didww.com/api3/2026-11-19/authentication.html#authentication-v35) |\n| 429 | No | The request budget of the account for the current window is spent (`too_many_requests`). `Retry-After` gives the number of seconds to wait. |"
+			},
+			"response": [
+				{
+					"id": "eeda889e-0d60-5969-8c90-98c752f44ad7",
+					"name": "200 OK (Filter by name or country.id)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.api+json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.api+json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "https://api.didww.com/v3/cities?filter[name]=Springfield&filter[country.id]=3b11ad09-dc7e-451a-9d32-ae9c1604aaa8",
+							"protocol": "https",
+							"host": [
+								"api",
+								"didww",
+								"com"
+							],
+							"path": [
+								"v3",
+								"cities"
+							],
+							"query": [
+								{
+									"key": "filter[name]",
+									"value": "Springfield"
+								},
+								{
+									"key": "filter[country.id]",
+									"value": "3b11ad09-dc7e-451a-9d32-ae9c1604aaa8"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/vnd.api+json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"data\": [\n    {\n      \"id\": \"79c1ee51-a2dd-4fb2-8c08-ab9120909118\",\n      \"type\": \"cities\",\n      \"attributes\": {\n        \"name\": \"Springfield\"\n      },\n      \"relationships\": {\n        \"country\": {\n          \"links\": {\n            \"self\": \"https://api.didww.com/v3/cities/79c1ee51-a2dd-4fb2-8c08-ab9120909118/relationships/country\",\n            \"related\": \"https://api.didww.com/v3/cities/79c1ee51-a2dd-4fb2-8c08-ab9120909118/country\"\n          }\n        },\n        \"region\": {\n          \"links\": {\n            \"self\": \"https://api.didww.com/v3/cities/79c1ee51-a2dd-4fb2-8c08-ab9120909118/relationships/region\",\n            \"related\": \"https://api.didww.com/v3/cities/79c1ee51-a2dd-4fb2-8c08-ab9120909118/region\"\n          }\n        },\n        \"area\": {\n          \"links\": {\n            \"self\": \"https://api.didww.com/v3/cities/79c1ee51-a2dd-4fb2-8c08-ab9120909118/relationships/area\",\n            \"related\": \"https://api.didww.com/v3/cities/79c1ee51-a2dd-4fb2-8c08-ab9120909118/area\"\n          }\n        }\n      }\n    }\n  ],\n  \"meta\": {\n    \"total_records\": 1,\n    \"api_version\": \"2026-11-19\"\n  },\n  \"links\": {\n    \"first\": \"https://api.didww.com/v3/cities?filter%5Bcountry.id%5D=3b11ad09-dc7e-451a-9d32-ae9c1604aaa8&filter%5Bname%5D=Springfield&page%5Bnumber%5D=1&page%5Bsize%5D=1000\",\n    \"last\": \"https://api.didww.com/v3/cities?filter%5Bcountry.id%5D=3b11ad09-dc7e-451a-9d32-ae9c1604aaa8&filter%5Bname%5D=Springfield&page%5Bnumber%5D=1&page%5Bsize%5D=1000\"\n  }\n}"
+				}
+			],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test('City exists', () => {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response.data).to.be.an('array').that.is.not.empty;",
+							"",
+							"    const city = response.data[0];",
+							"    pm.expect(city.attributes.name).to.eq('London');",
+							"",
+							"    pm.collectionVariables.set('city.id', city.id);",
+							"    pm.execution.setNextRequest('Get DID Groups');",
+							"});"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Get DID Groups",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.api+json"
+					}
+				],
+				"url": {
+					"raw": "https://{{host}}/v3/did_groups?include=stock_keeping_units&filter[is_available]=true&filter[country.id]={{country.id}}&filter[city.id]={{city.id}}&filter[number_type]=local",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v3",
+						"did_groups"
+					],
+					"query": [
+						{
+							"key": "include",
+							"value": "stock_keeping_units"
+						},
+						{
+							"key": "filter[is_available]",
+							"value": "true"
+						},
+						{
+							"key": "filter[country.id]",
+							"value": "{{country.id}}"
+						},
+						{
+							"key": "filter[city.id]",
+							"value": "{{city.id}}"
+						},
+						{
+							"key": "filter[number_type]",
+							"value": "local"
+						}
+					]
+				},
+				"description": "**Step 3.** Find the available local DID groups in London with their stock keeping units, and save the ID of an SKU with included channels in `stock_keeping_unit.id`.\n\nReturns a list of DID Groups, which is essentially a list of the current DIDWW coverage. DID Groups are phone numbers that share a common city or area code.\n\n## Request\n\nHTTP Method: `GET`\n\nURI Path: `/v3/did_groups`\n\n> **Note**\n>\n> For all returned data attributes, see [Did Group Object](https://doc.didww.com/api3/2026-11-19/coverage-resources/did-group/did-group-object.html).\n\n### URI Query Parameters\n\n| Name | Type | Is Required? | Description |\n| --- | --- | --- | --- |\n| include | `string` | No | [Inclusion](https://doc.didww.com/api3/specification/includes.html#api-includes) |\n| filter[&lt;filter\\_name>] | `string`, `boolean`, `Integer` | No | [Filtering](https://doc.didww.com/api3/specification/filtering.html#api-filters) |\n| fields[did\\_groups] | `string` | No | [Sparse fieldsets](https://doc.didww.com/api3/specification/sparse-fieldsets.html#api-sparse-fieldsets) |\n| sort | `string` | No | [Sorting](https://doc.didww.com/api3/specification/sorting.html#api-sorting) |\n| page[number] | `integer` | No | [Page number](https://doc.didww.com/api3/specification/pagination.html#api-pagination). |\n| page[size] | `integer` | No | [Page size](https://doc.didww.com/api3/specification/pagination.html#api-pagination). Pagination defaults to `50` records per page. The maximum is `100`. |\n\n### Includes\n\n| Value | Description |\n| --- | --- |\n| country | [Country Object](https://doc.didww.com/api3/2026-11-19/coverage-resources/countries/country-object.html#country-object-v35) |\n| region | [Region Object](https://doc.didww.com/api3/2026-11-19/coverage-resources/regions/region-object.html#region-object-v35) |\n| city | [City Object](https://doc.didww.com/api3/2026-11-19/coverage-resources/city/city-object.html#city-object-v35) |\n| stock\\_keeping\\_units | A list of [Stock Keeping Unit Objects](https://doc.didww.com/api3/2026-11-19/common-definitions/index.html#stock-keeping-unit-object-v35) |\n| address\\_requirement | [Address Requirement Object](https://doc.didww.com/api3/2026-11-19/regulation-resources/requirements/address-requirement-object.html#address-requirement-object-v35) |\n\n### Filters\n\n| Filter Name | Type | Allow Blank | Allow Array | Filters by: |\n| --- | --- | --- | --- | --- |\n| id | `string` | No | Yes | Group `id` field. |\n| prefix | `string` | Yes | Yes | The group `prefix` field. |\n| nanpa\\_prefix.id | `string` | No | No | The nanpa prefix `id` field. |\n| nanpa\\_prefix.npanxx | `string` | No | No | The nanpa prefix `npa` / `nxx` fields. Takes exactly one six-digit NPA-NXX value (for example `201221`). |\n| area\\_name | `string` | Yes | Yes | The `area_name` field (for example London). Case insensitive. |\n| is\\_metered | `boolean` | No | No | The `is_metered` field. |\n| allow\\_additional\\_channels | `boolean` | No | No | The `allow_additional_channels` field. |\n| available\\_dids\\_enabled | `boolean` | No | No | The `available_dids_enabled` field. |\n| features | `string` | No | Yes | The `features` field. Can be one or several of `voice_in`, `voice_out`, `t38`, `sms_in`, `p2p`, `a2p`, `emergency`, and `cnam_out`. Example: `voice_in,emergency`. |\n| needs\\_registration | `boolean` | No | No | The `needs_registration` field. |\n| is\\_available | `boolean` | No | No | The `is_available` field. |\n| country.id | `string` | Yes | Yes | The `country.id` field. |\n| region.id | `string` | Yes | Yes | The `region.id` field. |\n| city.id | `string` | Yes | Yes | The `city.id` field. |\n| number\\_type | `string` | No | Yes | The `number_type` field. Can be one or several of `local`, `national`, `mobile`, `toll_free`, `shared_cost`, and `global`. A DID Group matches when its number type is any of the listed values. Example: `local,mobile`. |\n| is\\_demo | `boolean` | No | No | The `is_demo` field. |\n| meta.total\\_count\\_gteq | `Integer` | Yes | No | A filter on the list based on the `meta.total_count_gteq` field, where `gteq` stands for greater-equal. |\n\n### Sorting\n\n| Value | Sorts by: |\n| --- | --- |\n| country.name | The `country.name` field. |\n| number\\_type | The `number_type` field. |\n| prefix | City `prefix` field. |\n| is\\_metered | The `is_metered` field. |\n| area\\_name | The `area_name` field. |\n| allow\\_additional\\_channels | The `allow_additional_channels` field. |\n| is\\_demo | The `is_demo` field. |\n| service\\_restrictions | The `service_restrictions` field. |\n\n> **Note**\n>\n> In version `2026-11-19`, the number type of a DID Group is returned in the `number_type` attribute. The `did_group_type` include, the `did_group_type.id` filter, the `did_group_type.name` sort, and `did_group_type` in `fields[did_groups]` are not accepted and return `400 Bad Request`. A `number_type` filter value outside the listed values also returns `400 Bad Request`.\n\n## Other Responses\n\n| Code | Success | Description |\n| --- | --- | --- |\n| 400 | No | [Bad Request](https://doc.didww.com/api3/specification/errors/index.html#api-bad-request) |\n| 401 | No | [Unauthorized](https://doc.didww.com/api3/2026-11-19/authentication.html#authentication-v35) |\n| 429 | No | The request budget of the account for the current window is spent (`too_many_requests`). `Retry-After` gives the number of seconds to wait. |"
+			},
+			"response": [
+				{
+					"id": "b976ec09-7756-5aaa-a7c9-00d477877fef",
+					"name": "200 OK (Filter by country.id, number_type - Include sku_id)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.api+json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.api+json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "https://api.didww.com/v3/did_groups?filter[country.id]=c8647639-fc9c-47b2-acec-7c9e14465c25&filter[number_type]=mobile&include=stock_keeping_units",
+							"protocol": "https",
+							"host": [
+								"api",
+								"didww",
+								"com"
+							],
+							"path": [
+								"v3",
+								"did_groups"
+							],
+							"query": [
+								{
+									"key": "filter[country.id]",
+									"value": "c8647639-fc9c-47b2-acec-7c9e14465c25"
+								},
+								{
+									"key": "filter[number_type]",
+									"value": "mobile"
+								},
+								{
+									"key": "include",
+									"value": "stock_keeping_units"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/vnd.api+json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": [{\n        \"id\": \"1d5aad75-b853-4125-9a1a-da3fedfc5674\",\n        \"type\": \"did_groups\",\n        \"attributes\": {\n            \"prefix\": \"7\",\n            \"features\": [\n                \"voice_in\",\n                \"voice_out\",\n                \"sms_in\",\n                \"p2p\",\n                \"a2p\",\n                \"cnam_out\",\n                \"emergency\"\n            ],\n            \"is_metered\": false,\n            \"area_name\": \"Mobile\",\n            \"allow_additional_channels\": true,\n            \"service_restrictions\": null,\n            \"number_type\": \"mobile\",\n            \"is_demo\": false\n        },\n        \"relationships\": {\n            \"country\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/did_groups/1d5aad75-b853-4125-9a1a-da3fedfc5674/relationships/country\",\n                    \"related\": \"https://api.didww.com/v3/did_groups/1d5aad75-b853-4125-9a1a-da3fedfc5674/country\"\n                }\n            },\n            \"city\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/did_groups/1d5aad75-b853-4125-9a1a-da3fedfc5674/relationships/city\",\n                    \"related\": \"https://api.didww.com/v3/did_groups/1d5aad75-b853-4125-9a1a-da3fedfc5674/city\"\n                }\n            },\n            \"region\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/did_groups/1d5aad75-b853-4125-9a1a-da3fedfc5674/relationships/region\",\n                    \"related\": \"https://api.didww.com/v3/did_groups/1d5aad75-b853-4125-9a1a-da3fedfc5674/region\"\n                }\n            },\n            \"stock_keeping_units\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/did_groups/1d5aad75-b853-4125-9a1a-da3fedfc5674/relationships/stock_keeping_units\",\n                    \"related\": \"https://api.didww.com/v3/did_groups/1d5aad75-b853-4125-9a1a-da3fedfc5674/stock_keeping_units\"\n                },\n                \"data\": [{\n                        \"type\": \"stock_keeping_units\",\n                        \"id\": \"cb17c069-098e-4be1-a7eb-eb4529e8c5f5\"\n                    },\n                    {\n                        \"type\": \"stock_keeping_units\",\n                        \"id\": \"e194165e-eda7-4718-9bbe-c5c583bd189a\"\n                    }\n                ]\n            },\n            \"address_requirement\": {\n                \"links\": {\n                    \"self\": \"https://api.didww.com/v3/did_groups/1d5aad75-b853-4125-9a1a-da3fedfc5674/relationships/address_requirement\",\n                    \"related\": \"https://api.didww.com/v3/did_groups/1d5aad75-b853-4125-9a1a-da3fedfc5674/address_requirement\"\n                }\n            }\n        },\n        \"meta\": {\n            \"available_dids_enabled\": true,\n            \"needs_registration\": false,\n            \"is_available\": true,\n            \"total_count\": 99\n        }\n    }],\n    \"included\": [{\n            \"id\": \"cb17c069-098e-4be1-a7eb-eb4529e8c5f5\",\n            \"type\": \"stock_keeping_units\",\n            \"attributes\": {\n                \"setup_price\": \"0.0\",\n                \"monthly_price\": \"0.3\",\n                \"channels_included_count\": 0\n            }\n        },\n        {\n            \"id\": \"e194165e-eda7-4718-9bbe-c5c583bd189a\",\n            \"type\": \"stock_keeping_units\",\n            \"attributes\": {\n                \"setup_price\": \"0.0\",\n                \"monthly_price\": \"0.8\",\n                \"channels_included_count\": 2\n            }\n        }\n    ],\n    \"meta\": {\n        \"total_records\": 1,\n        \"api_version\": \"2026-11-19\"\n    },\n    \"links\": {\n        \"first\": \"https://api.didww.com/v3/did_groups?filter%5Bcountry.id%5D=c8647639-fc9c-47b2-acec-7c9e14465c25&filter%5Bnumber_type%5D=mobile&include=stock_keeping_units&page%5Bnumber%5D=1&page%5Bsize%5D=50\",\n        \"last\": \"https://api.didww.com/v3/did_groups?filter%5Bcountry.id%5D=c8647639-fc9c-47b2-acec-7c9e14465c25&filter%5Bnumber_type%5D=mobile&include=stock_keeping_units&page%5Bnumber%5D=1&page%5Bsize%5D=50\"\n    }\n}"
+				}
+			],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test('Stock keeping unit with included channels exists', () => {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response.data).to.be.an('array').that.is.not.empty;",
+							"",
+							"    // An SKU of the matching DID groups that includes channels (for example 2 channels)",
+							"    const sku = (response.included || []).find(i => i.type === 'stock_keeping_units' && i.attributes.channels_included_count > 0);",
+							"    pm.expect(sku, 'no SKU with included channels').to.not.be.undefined;",
+							"",
+							"    pm.collectionVariables.set('stock_keeping_unit.id', sku.id);",
+							"    pm.execution.setNextRequest('Create DID order');",
+							"});"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Create DID order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/vnd.api+json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/vnd.api+json"
+					}
+				],
+				"url": {
+					"raw": "https://{{host}}/v3/orders",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v3",
+						"orders"
+					]
+				},
+				"description": "**Step 4.** Order one number of the selected SKU. `allow_back_ordering` lets the order wait for a number when none is in stock.\n\nCreates a new DID order to purchase phone numbers (DIDs) based on availability, reservations, or predefined stock-keeping units (SKUs). This request allows you to order specific available DIDs, reserve numbers from a particular region, or request multiple DIDs in bulk.\n\n## Request\n\nHTTP Method: `POST`\n\nURI Path: `/v3/orders`\n\n> **Note**\n>\n> For all returned data attributes, see [Order Object](https://doc.didww.com/api3/2026-11-19/inventory-resources/order/order-object.html).\n\n## Body\n\n| Name | Type | Is Required? | Description |\n| --- | --- | --- | --- |\n| allow\\_back\\_ordering | `boolean` | No | Specifies whether back-ordering is allowed. The default value is `true`. If true, the system allows ordering DIDs that are not currently available. If false, only currently available DIDs can be ordered. |\n| items | <code>Array&lt;CreateOrderItem&gt;</code> | Yes | Array of items to be ordered. Each item must contain one of the valid order item attributes. |\n| callback\\_url | `string` | No | The HTTP or HTTPS endpoint to which order related events will be delivered. |\n| callback\\_method | `string` | No | The HTTP method used for order events. Supported methods: `post`, `get`. |\n| external\\_reference\\_id | `string` | No | Optional identifier for the order in the customer's external system. Maximum length is 100 characters. |\n\n> **Note**\n>\n> - If `allow_back_ordering` is omitted, the request behaves as if `allow_back_ordering = true`.\n> - `allow_back_ordering = true`: Proceeds with the order when items are not in stock.\n> - `allow_back_ordering = false`: Does not proceed with the order when items are not in stock.\n> - Insufficient balance validation for `POST /v3/orders` is based on the current order amount only. Existing pending orders are not included in this validation. If the customer's available balance covers the current order amount, the order can be created successfully even when other pending orders already exist.\n\nSee [Order callback details](https://doc.didww.com/api3/2026-11-19/callbacks-details.html#callbacks-order-v35) for information about\n`callback_url`, `callback_method`, and the Order callback payload.\n\n### Order Item\n\n| Name | Type | Is Required? | Description |\n| --- | --- | --- | --- |\n| type | `string` | Yes | Item object type: `did_order_items` for DIDs and `capacity_order_items` for Channels. |\n| attributes | One of [DID Order Item Attributes](https://doc.didww.com/api3/2026-11-19/inventory-resources/order/create-order.html#did-order-item-attributes-v35), [Capacity Order Item Attributes](https://doc.didww.com/api3/2026-11-19/inventory-resources/order/create-order.html#capacity-order-item-attributes-v35) | Yes | Order Item Attributes object. |\n\n### Order Item Attributes\n\n**DID**\n\n| Name | Type | Is Required? | Description |\n| --- | --- | --- | --- |\n| sku\\_id | `string` | Yes | The Stock Keeping Unit (SKU) ID representing the DID product being ordered. Send at most one of `qty`, `available_did_id` and `did_reservation_id`: more than one is rejected. With none of them, one number is bought. |\n| qty | `integer` | No | The quantity of DIDs to be ordered. Defaults to `1`. |\n| did\\_reservation\\_id | `string` | No | The ID of a previously reserved DID. Use this to complete the purchase of a reserved DID. |\n| nanpa\\_prefix\\_id | `string` | No | The ID representing a North American Numbering Plan (NANPA) prefix (NPA-NXX group). Used for ordering numbers from a specific region. |\n| billing\\_cycles\\_count | `integer` | No | The number of billing cycles for which the DID will automatically renew before expiration. Each billing cycle follows the DID service billing period. For monthly billing, `1` renews the DID for one month, `12` renews it for twelve months, and `0` disables automatic renewal. Allowed values: `0` to `999`. |\n| available\\_did\\_id | `string` | No | The ID of a specific available DID to be ordered. Used when ordering a known available number. |\n\n**Capacity**\n\n| Name | Type | Is Required? | Description |\n| --- | --- | --- | --- |\n| qty | `integer` | No | Number of channels to buy. Defaults to `1`. |\n| capacity\\_pool\\_id | `string` | Yes | Capacity Pool ID. |\n\n## Other Responses\n\n| Code | Success | Description |\n| --- | --- | --- |\n| 400 | No | The body is malformed, or [Insufficient Balance Error Object](https://doc.didww.com/api3/specification/errors/index.html#api-insufficient-balance-error-object) |\n| 422 | No | [Validation Error Object](https://doc.didww.com/api3/specification/errors/index.html#api-validation-error-object). The order was rejected. |\n| 401 | No | [Unauthorized](https://doc.didww.com/api3/2026-11-19/authentication.html#authentication-v35) |\n| 403 | No | The customer is in read-only mode. Also returned when the access token carries the `read` scope, which does not cover this method (title `Insufficient scope`, `WWW-Authenticate: Bearer error=\"insufficient_scope\"`). See [Scopes](https://doc.didww.com/api3/2026-11-19/authentication.html#authentication-scopes-v35). |\n| 429 | No | The request budget of the account for the current window is spent (`too_many_requests`). `Retry-After` gives the number of seconds to wait. |",
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": {\n        \"type\": \"orders\",\n        \"attributes\": {\n            \"allow_back_ordering\": true,\n            \"items\": [\n                {\n                    \"type\": \"did_order_items\",\n                    \"attributes\": {\n                        \"qty\": 1,\n                        \"sku_id\": \"{{stock_keeping_unit.id}}\"\n                    }\n                }\n            ]\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				}
+			},
+			"response": [
+				{
+					"id": "0ad8efb9-c194-55f4-8ac6-09053efaae71",
+					"name": "201 Created (Simple request)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.api+json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/vnd.api+json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "https://api.didww.com/v3/orders",
+							"protocol": "https",
+							"host": [
+								"api",
+								"didww",
+								"com"
+							],
+							"path": [
+								"v3",
+								"orders"
+							]
+						},
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": {\n    \"type\": \"orders\",\n    \"attributes\": {\n      \"items\": [\n        {\n          \"type\": \"did_order_items\",\n          \"attributes\": {\n            \"qty\": 1,\n            \"sku_id\": \"a78bb6d8-b05e-4e12-afe6-ad84ac979088\"\n          }\n        }\n      ]\n    }\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/vnd.api+json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"data\": {\n    \"id\": \"9eeaab6c-b758-41b8-af86-8978a86603a2\",\n    \"type\": \"orders\",\n    \"attributes\": {\n      \"reference\": \"FZH-374899\",\n      \"external_reference_id\": null,\n      \"amount\": \"10.0\",\n      \"status\": \"pending\",\n      \"created_at\": \"2017-06-25T14:56:31.513Z\",\n      \"description\": \"DID\",\n      \"items\": [\n        {\n          \"type\": \"did_order_items\",\n          \"attributes\": {\n            \"qty\": 1,\n            \"nrc\": \"5.0\",\n            \"mrc\": \"5.0\",\n            \"prorated_mrc\": true,\n            \"billed_from\": \"2018-08-15\",\n            \"billed_to\": \"2018-09-15\",\n            \"setup_price\": \"5.0\",\n            \"monthly_price\": \"5.0\",\n            \"did_group_id\": \"d01704b0-6522-47d5-8865-3398c417ed1d\"\n          }\n        }\n      ],\n      \"callback_method\": null,\n      \"callback_url\": null\n    }\n  },\n  \"meta\": {\n    \"api_version\": \"2026-11-19\"\n  }\n}"
+				}
+			],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test('DID order created', () => {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response.data.type).to.eq('orders');",
+							"    pm.expect(response.data.attributes.status).to.be.oneOf(['pending', 'completed']);",
+							"    pm.expect(response.data.attributes.items[0].type).to.eq('did_order_items');",
+							"});"
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// The Collection Runner stops after this request unless its test selects the next one.",
+					"pm.execution.setNextRequest(null);",
+					"",
+					"// Every request is sent with a bearer token. The token is minted with your API key",
+					"// (POST /token on {{authHost}}) and reused until a minute before it expires; a change of the",
+					"// API key, auth host, API version or scope mints a new one. Requests set to \"No Auth\" skip this.",
+					"const cryptoJs = require('crypto-js');",
+					"const authHost = pm.variables.replaceIn('{{authHost}}');",
+					"const apiKey = pm.variables.get('apiKey');",
+					"const apiVersion = pm.variables.get('apiVersion');",
+					"const scope = pm.variables.get('tokenScope') || 'full';",
+					"const ownAuth = pm.request.auth && pm.request.auth.type;",
+					"",
+					"if (ownAuth !== 'noauth' && pm.variables.replaceIn(pm.request.url.getHost()) !== authHost) {",
+					"    if (!apiKey || !authHost || authHost.includes('{{')) {",
+					"        pm.collectionVariables.unset('accessToken');",
+					"        throw new Error('Select the DIDWW Sandbox or DIDWW Production environment and set apiKey (and authHost) to mint an access token.');",
+					"    }",
+					"    const fingerprint = cryptoJs.SHA256([authHost, apiKey, apiVersion, scope].join('|')).toString();",
+					"    const token = pm.collectionVariables.get('accessToken');",
+					"    const expiresAt = Number(pm.collectionVariables.get('accessTokenExpiresAt')) || 0;",
+					"    const fresh = token && pm.collectionVariables.get('accessTokenFingerprint') === fingerprint && Date.now() < expiresAt - 60000;",
+					"",
+					"    if (!fresh) {",
+					"        pm.collectionVariables.unset('accessToken');",
+					"        const failed = pm.collectionVariables.get('accessTokenError');",
+					"        if (failed && failed.startsWith(fingerprint + '|') && Date.now() < Number(failed.split('|')[1]) + 30000) {",
+					"            throw new Error('POST /token failed less than 30 seconds ago for this API key and host: ' + failed.split('|').slice(2).join('|'));",
+					"        }",
+					"        const body = { aud: [\"api.didww.com\", \"api-vin.didww.com\", \"api-vout.didww.com\", \"api-sms.didww.com\"], scope: scope };",
+					"        if (apiVersion) {",
+					"            body.api_version = apiVersion;",
+					"        }",
+					"        pm.sendRequest({",
+					"            url: `https://${authHost}/token`,",
+					"            method: 'POST',",
+					"            header: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Api-Key': apiKey },",
+					"            body: { mode: 'raw', raw: JSON.stringify(body) }",
+					"        }, (err, res) => {",
+					"            if (err || res.code !== 200) {",
+					"                let reason = err ? String(err) : `${res.code} ${res.status}`;",
+					"                if (!err) {",
+					"                    try { reason += ': ' + (res.json().error_description || res.json().error); } catch (e) {}",
+					"                }",
+					"                pm.collectionVariables.set('accessTokenError', [fingerprint, Date.now(), reason].join('|'));",
+					"                console.error('POST /token failed with ' + reason);",
+					"                throw new Error('POST /token failed with ' + reason);",
+					"            }",
+					"            const minted = res.json();",
+					"            pm.collectionVariables.unset('accessTokenError');",
+					"            pm.collectionVariables.set('accessToken', minted.access_token);",
+					"            pm.collectionVariables.set('accessTokenExpiresAt', String(Date.now() + minted.expires_in * 1000));",
+					"            pm.collectionVariables.set('accessTokenFingerprint', fingerprint);",
+					"        });",
+					"    }",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// A refused or expired token is dropped, so the next request mints a new one.",
+					"if (pm.response.code === 401 && String(pm.response.headers.get('WWW-Authenticate') || '').includes('invalid_token')) {",
+					"    pm.collectionVariables.unset('accessToken');",
+					"}",
+					"",
+					"pm.test('Status code is successful', () => {",
+					"    pm.response.to.be.success;",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "country.id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "city.id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "stock_keeping_unit.id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "apiVersion",
+			"value": "2026-11-19",
+			"type": "string"
+		},
+		{
+			"key": "tokenScope",
+			"value": "full",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "accessTokenExpiresAt",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "accessTokenFingerprint",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "accessTokenError",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

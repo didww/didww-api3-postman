@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "91281b51-7c46-4ff2-af66-22042f9d8158",
-		"name": "Scenario: Buying a specific number by NPA/NXX prefix",
+		"name": "Scenario: Buying a specific number by NPA/NXX prefix (2026-04-16)",
 		"description": "To do this you need to select a NPA/NXX group by country (US) and region name (New York) as well as by NPA/NXX value (212461). You also need to select a Stock keeping unit (sku_id) which indicates DID number price and one of its available capacity options (usually DID price + 0 channels/2 channels).\n\n\n> ### Attention\n> \n> Requests should be run one-by-one on real environment for real values usage\n\n#### Environment variables\n\n| Name | Description |\n| --- | --- |\n| `host` | API host |\n| `apiKey` | Your DIDWW API key |\n\n#### Collection variables\n\n| Name | Description |\n| --- | --- |\n| `country.id` | US country id |\n| `region.id` | New York region id |\n| `nanpa_prefix.id` | The id if NPA/NXX prefix group, having NPA: 212, NXX: 461 |\n| `stock_keeping_unit.id` | ID of Stock keeping unit with 2 channels included |",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "15857673"
