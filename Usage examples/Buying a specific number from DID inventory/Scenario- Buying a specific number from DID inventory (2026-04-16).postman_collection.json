@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "32210c67-63a9-49ce-bcf9-de951df33524",
-		"name": "Scenario: Buying a specific number from DID inventory",
+		"name": "Scenario: Buying a specific number from DID inventory (2026-04-16)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "15857673"
 	},
